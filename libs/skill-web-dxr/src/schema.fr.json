@@ -712,7 +712,17 @@
             "schema": {
               "type": "object"
             }
-          },
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-scene": {
+      "post": {
+        "tags": ["web", "spatial"],
+        "summary": "Scene XR",
+        "description": "Affichage d'une scène XR",
+        "parameters": [
           {
             "name": "position",
             "summary": "Position",
@@ -1083,6 +1093,61 @@
             "description": "Echelle de l'élément",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "curved",
+            "summary": "Incurvé",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-teleport": {
+      "post": {
+        "tags": ["web", "spatial"],
+        "summary": "Zone de téléportation",
+        "description": "Affichage d'une zone de téléportation",
+        "parameters": [
+          {
+            "name": "color",
+            "summary": "Couleur",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotationx",
+            "summary": "Rotation X",
+            "required": false,
+            "description": "Rotation X de l'arrivée",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "rotationy",
+            "summary": "Rotation Y",
+            "required": false,
+            "description": "Rotation Y de l'arrivée",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "summary": "Hauteur",
+            "required": false,
+            "description": "Hauteur",
+            "schema": {
+              "type": "number"
             }
           }
         ],
