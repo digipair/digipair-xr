@@ -8,73 +8,388 @@
     "x-icon": "🏗"
   },
   "paths": {
-    "/digipair-editor": {
+    "/xr-camrender-camera": {
       "post": {
-        "tags": ["web"],
-        "summary": "Editeur de raisonnements",
-        "description": "Editeur no-code de raisonnements IA",
+        "tags": ["web", "spatial"],
+        "summary": "Camera",
+        "description": "Affichage d'une camera",
         "parameters": [
           {
-            "name": "digipair",
-            "summary": "Digipair",
+            "name": "fps",
+            "summary": "Frames par seconde",
+            "required": false,
+            "description": "Frames par seconde",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "cid",
+            "summary": "Identifiant",
+            "required": false,
+            "description": "Identifiant de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "width",
+            "summary": "Largeur",
+            "required": false,
+            "description": "Largeur de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "summary": "Hauteur",
+            "required": false,
+            "description": "Hauteur de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/xr-camrender-screen": {
+      "post": {
+        "tags": ["web", "spatial"],
+        "summary": "Ecran de camera",
+        "description": "Affichage d'un écran de camera",
+        "parameters": [
+          {
+            "name": "cid",
+            "summary": "Identifiant",
+            "required": false,
+            "description": "Identifiant de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "width",
+            "summary": "Largeur",
+            "required": false,
+            "description": "Largeur de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "summary": "Hauteur",
+            "required": false,
+            "description": "Hauteur de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-html": {
+      "post": {
+        "tags": ["web", "spatial"],
+        "summary": "Container HTML",
+        "description": "Affichage d'un container html",
+        "parameters": [
+          {
+            "name": "width",
+            "summary": "Largeur",
+            "required": false,
+            "description": "Largeur du container",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "style",
+            "summary": "Style",
+            "required": false,
+            "description": "Style du container",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-info": {
+      "post": {
+        "tags": ["web", "spatial"],
+        "summary": "Information",
+        "description": "Affichage d'un container d'information",
+        "parameters": [
+          {
+            "name": "color",
+            "summary": "Couleur",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "width",
+            "summary": "Largeur",
+            "required": false,
+            "description": "Largeur du container",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "style",
+            "summary": "Style",
+            "required": false,
+            "description": "Style du container",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "icon",
+            "summary": "Icone",
+            "required": false,
+            "description": "Icone",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-mesh": {
+      "post": {
+        "tags": ["web", "spatial"],
+        "summary": "Mesh",
+        "description": "Gestion d'un mesh d'un object 3D",
+        "parameters": [
+          {
+            "name": "object",
+            "summary": "Objet à mapper",
             "required": true,
-            "description": "Informations du digipair propriétaire du raisonnement",
+            "description": "Objet à mapper",
             "schema": {
-              "type": "object"
+              "type": "string"
             }
           },
           {
-            "name": "reasoning",
-            "summary": "Raisonnement",
+            "name": "shared",
+            "summary": "Partagé",
+            "required": false,
+            "description": "Partagé",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-mesh-animation-mixer": {
+      "post": {
+        "tags": ["web", "spatial"],
+        "summary": "Mesh animé",
+        "description": "Gestion d'un mesh animé",
+        "parameters": [
+          {
+            "name": "object",
+            "summary": "Objet à mapper",
             "required": true,
-            "description": "Informations du raisonnement à éditer",
+            "description": "Objet à mapper",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shared",
+            "summary": "Partagé",
+            "required": false,
+            "description": "Partagé",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "url",
+            "summary": "Url de l'animation",
+            "required": true,
+            "description": "Url de l'animation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mixer",
+            "summary": "Mixer",
+            "required": true,
+            "description": "Mixer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orgin",
+            "summary": "Origin",
+            "required": false,
+            "description": "Origin",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-ready-player-me": {
+      "post": {
+        "tags": ["web", "spatial"],
+        "summary": "Utilisateur ReadyPlayerMe",
+        "description": "Affichage d'un utilisateur ReadyPlayerMe",
+        "parameters": [
+          {
+            "name": "playerinfo",
+            "summary": "Informations",
+            "required": true,
+            "description": "Informations de l'utilisateur",
             "schema": {
               "type": "object"
             }
-          },
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-scene": {
+      "post": {
+        "tags": ["web", "spatial"],
+        "summary": "Scene XR",
+        "description": "Affichage d'une scène XR",
+        "parameters": [
           {
-            "name": "schemas",
-            "summary": "Schemas",
+            "name": "server",
+            "summary": "Serveur réseau",
             "required": false,
-            "description": "Liste des schemas des compétences privées",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "name": "menuColor",
-            "summary": "Couleur de texte du menu",
-            "required": false,
-            "description": "Couleur de texte du menu",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "menuBackgroundColor",
-            "summary": "Couleur de fond du menu",
-            "required": false,
-            "description": "Couleur de fond du menu",
+            "description": "Serveur réseau",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "contentStyle",
-            "summary": "Style personnalisé du conteneur",
+            "name": "draco",
+            "summary": "URL draco",
             "required": false,
-            "description": "Style personnalisé du conteneur",
+            "description": "Url vers draco",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "language",
-            "summary": "Langue",
+            "name": "adapter",
+            "summary": "Adapteur réseau",
             "required": false,
-            "description": "Langue de l'éditeur",
+            "description": "Adapteur réseau",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "development",
+            "summary": "Développement",
+            "required": false,
+            "description": "Mode development",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "debugphysics",
+            "summary": "Debug de la physique",
+            "required": false,
+            "description": "Mode debug de la physique",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-screen-shared": {
+      "post": {
+        "tags": ["web", "spatial"],
+        "summary": "Ecran de partage",
+        "description": "Affichage d'un écran de partage d'écran oui de caméra",
+        "parameters": [
+          {
+            "name": "color",
+            "summary": "Couleur",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "curved",
+            "summary": "Incurvé",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-teleport": {
+      "post": {
+        "tags": ["web", "spatial"],
+        "summary": "Zone de téléportation",
+        "description": "Affichage d'une zone de téléportation",
+        "parameters": [
+          {
+            "name": "color",
+            "summary": "Couleur",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotationx",
+            "summary": "Rotation X",
+            "required": false,
+            "description": "Rotation X de l'arrivée",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "rotationy",
+            "summary": "Rotation Y",
+            "required": false,
+            "description": "Rotation Y de l'arrivée",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "summary": "Hauteur",
+            "required": false,
+            "description": "Hauteur",
+            "schema": {
+              "type": "number"
             }
           }
         ],

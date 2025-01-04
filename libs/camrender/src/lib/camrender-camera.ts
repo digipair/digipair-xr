@@ -22,7 +22,7 @@ export class CamrenderCameraElement extends DXRElement {
   cid!: string;
 
   @property({ default: 300 })
-  height!: 'number';
+  height!: number;
 
   @property({ default: 400 })
   width!: number;
