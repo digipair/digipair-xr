@@ -1,4 +1,4 @@
-import { Entity, MetaElement, THREE } from '@digipair-xr/core';
+import { DXRElement, Entity, THREE } from '@digipair-xr/core';
 
 function getPathTo(element: Element, root: Element): string {
   if (element.id !== '') return 'id("' + element.id + '")';
@@ -30,7 +30,7 @@ function kebabCase(text: string) {
     .toLowerCase();
 }
 
-export abstract class MeshCommon extends MetaElement {
+export abstract class MeshCommon extends DXRElement {
   abstract object: string;
   abstract shared: boolean;
 
@@ -44,7 +44,7 @@ export abstract class MeshCommon extends MetaElement {
 
   private get parentEl(): Entity | null | undefined {
     return this.el.parentElement?.closest(
-      `meta-mesh, meta-spline, a-gltf-model, a-obj-model`,
+      `dxr-mesh, dxr-spline, a-gltf-model, a-obj-model`,
     );
   }
 
@@ -100,7 +100,7 @@ export abstract class MeshCommon extends MetaElement {
     };
 
     this.el.setAttribute(
-      'meta-element',
+      'dxr-element',
       `element: ${btoa(
         encodeURIComponent(JSON.stringify('a-entity')),
       )}; attributes: ${btoa(

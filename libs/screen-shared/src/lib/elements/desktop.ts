@@ -1,15 +1,15 @@
 import {
-    customElement,
-    Entity,
-    html,
-    MetaElement,
-    property,
-    TemplateResult,
-    THREE,
+  customElement,
+  DXRElement,
+  Entity,
+  html,
+  property,
+  TemplateResult,
+  THREE,
 } from '@digipair-xr/core';
 
-@customElement('meta-screen-shared-desktop')
-export class ScreenSharedDesktopElement extends MetaElement {
+@customElement('dxr-screen-shared-desktop')
+export class ScreenSharedDesktopElement extends DXRElement {
   @property()
   screenid!: string;
 

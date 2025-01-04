@@ -1,14 +1,14 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    property,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  property,
+  TemplateResult,
 } from '@digipair-xr/core';
 import '../common/icon.element';
 
-@customElement('meta-menu-button')
-export class MenuButtonButtonElement extends MetaElement {
+@customElement('dxr-menu-button')
+export class MenuButtonButtonElement extends DXRElement {
   @property()
   icon!: string;
 
@@ -23,8 +23,8 @@ export class MenuButtonButtonElement extends MetaElement {
         animation__mouseclick="property: position; to: 0 0 0.001; startEvents: click; dur: 500; easing: easeOutElastic"
         selectable
       >
-        <meta-icon color="#202020" position="-0.013 0 0" icon=${this.icon}>
-        </meta-icon>
+        <dxr-icon color="#202020" position="-0.013 0 0" icon=${this.icon}>
+        </dxr-icon>
       </a-circle>
     `;
   }

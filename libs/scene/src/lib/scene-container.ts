@@ -1,19 +1,19 @@
 import {
-    customElement,
-    html,
-    inject,
-    MetaElement,
-    nothing,
-    property,
-    TemplateResult,
-    unsafeHTML,
+  customElement,
+  DXRElement,
+  html,
+  inject,
+  nothing,
+  property,
+  TemplateResult,
+  unsafeHTML,
 } from '@digipair-xr/core';
 import { PlayerProvider } from '@digipair-xr/player';
 
-@customElement('meta-scene-container', {
+@customElement('dxr-scene-container', {
   providers: [PlayerProvider],
 })
-export class SceneContainerElement extends MetaElement {
+export class SceneContainerElement extends DXRElement {
   @property()
   session!: string;
 
@@ -47,7 +47,7 @@ export class SceneContainerElement extends MetaElement {
 
   private scene(): TemplateResult {
     const scene = this.el
-      .closest(`meta-scene`)
+      .closest(`dxr-scene`)
       .querySelector(':scope > template[slot=scene]');
 
     return html`${!scene ? nothing : unsafeHTML(scene.innerHTML)}`;
@@ -61,7 +61,7 @@ export class SceneContainerElement extends MetaElement {
     };
 
     return html`
-      <meta-player></meta-player>
+      <dxr-player></dxr-player>
 
       ${this.scene()}
     `;

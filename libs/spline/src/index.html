@@ -37,42 +37,42 @@
     </script>
   </head>
   <body>
-    <meta-scene session="77dc9175-d25b-40c8-9f85-475b1d80c03d" development>
+    <dxr-scene session="77dc9175-d25b-40c8-9f85-475b1d80c03d" development>
       <template slot="scene">
         <a-sky hide-on-ar color="#F29EC0"></a-sky>
         <a-entity light="type: ambient; intensity: 0.6;"></a-entity>
-        <meta-spline
+        <dxr-spline
           position="0.2 1.3 -2"
           scene="https://api.codetabs.com/v1/proxy?quest=https://prod.spline.design/rghCnSFI7Ule1uBd/scene.splinecode"
           scale="0.001 0.001 0.001"
         >
-          <meta-mesh
+          <dxr-mesh
             object="Emoji-4"
             selectable
             animation__mouseenter="property: position; to: 20 0 0; startEvents: mouseenter; dur: 500; easing: easeOutElastic"
             animation__mouseleave="property: position; to: 0 0 0; startEvents: mouseleave; dur: 500; easing: easeOutElastic"
-          ></meta-mesh>
-          <meta-mesh
+          ></dxr-mesh>
+          <dxr-mesh
             object="Emoji-1"
             animation="property: position; to: -20 -10 0; dur: 2000; easing: linear; dir: alternate; loop: true;"
-          ></meta-mesh>
-          <meta-mesh
+          ></dxr-mesh>
+          <dxr-mesh
             object="Emoji-2"
             animation="property: position; to: -10 -10 0; dur: 3000; easing: linear; dir: alternate; loop: true;"
-          ></meta-mesh>
-          <meta-mesh
+          ></dxr-mesh>
+          <dxr-mesh
             object="Emoji-3"
             animation="property: position; to: -10 -20 0; dur: 1500; easing: linear; dir: alternate; loop: true;"
-          ></meta-mesh>
-          <meta-mesh
+          ></dxr-mesh>
+          <dxr-mesh
             selectable
             animation__mouseenter="property: position; to: 20 0 0; startEvents: mouseenter; dur: 500; easing: easeOutElastic"
             animation__mouseleave="property: position; to: 0 0 0; startEvents: mouseleave; dur: 500; easing: easeOutElastic"
             object="phone"
           >
-          </meta-mesh>
-        </meta-spline>
+          </dxr-mesh>
+        </dxr-spline>
       </template>
-    </meta-scene>
+    </dxr-scene>
   </body>
 </html>

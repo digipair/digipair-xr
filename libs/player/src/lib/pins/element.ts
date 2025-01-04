@@ -1,19 +1,19 @@
 import {
-    customElement,
-    html,
-    inject,
-    MetaElement,
-    state,
-    TemplateResult,
-    unsafeHTML,
+  customElement,
+  DXRElement,
+  html,
+  inject,
+  state,
+  TemplateResult,
+  unsafeHTML,
 } from '@digipair-xr/core';
 import { PlayerProvider } from '../player/player.provider';
 
 declare const NAF: any;
 declare const AFRAME: any;
 
-@customElement('meta-element')
-export class ElementElement extends MetaElement {
+@customElement('dxr-element')
+export class ElementElement extends DXRElement {
   @state()
   element!: string;
 

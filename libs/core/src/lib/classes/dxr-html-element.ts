@@ -1,7 +1,7 @@
 import { LitElement } from 'lit';
 import { subscription } from '../interfaces/subscription';
 
-export class MetaHtmlElement extends LitElement {
+export class DXRHtmlElement extends LitElement {
   protected override createRenderRoot(): any {
     return this;
   }

@@ -1,8 +1,8 @@
-import { Entity, injectable, MetaProvider } from '@digipair-xr/core';
+import { DXRProvider, Entity, injectable } from '@digipair-xr/core';
 import { Route, Router } from '@vaadin/router';
 
 @injectable()
-export class RouterProvider extends MetaProvider {
+export class RouterProvider extends DXRProvider {
   private routes!: { [key: string]: Route[] };
   private baseUrl!: string;
 

@@ -1,11 +1,11 @@
-import { inject, injectable, MetaProvider, state } from '@digipair-xr/core';
+import { DXRProvider, inject, injectable, state } from '@digipair-xr/core';
 import { PlayerProvider } from '@digipair-xr/player';
 import { RouterProvider } from '@digipair-xr/router';
 
 const SESSION_SHARED = false;
 
 @injectable({ networked: true })
-export class SessionProvider extends MetaProvider {
+export class SessionProvider extends DXRProvider {
   @state()
   route = '';
 

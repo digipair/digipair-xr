@@ -1,18 +1,18 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  TemplateResult,
 } from '@digipair-xr/core';
 
-@customElement('meta-menu-side-profile')
-export class MenuSideElement extends MetaElement {
+@customElement('dxr-menu-side-profile')
+export class MenuSideElement extends DXRElement {
   private get me(): { username: string; preview: string } {
     return JSON.parse(
       decodeURIComponent(
         atob(
-          (this.el.sceneEl?.querySelector('meta-player [meta-avatar]') as any)
-            .components['meta-avatar'].data.playerinfo,
+          (this.el.sceneEl?.querySelector('dxr-player [dxr-avatar]') as any)
+            .components['dxr-avatar'].data.playerinfo,
         ),
       ),
     );
@@ -30,12 +30,12 @@ export class MenuSideElement extends MetaElement {
             </a-circle>
           `
         : html`
-            <meta-icon
+            <dxr-icon
               position="0.09 0.5 0.001"
               icon="account_circle"
               width="2.5"
               color="#202020"
-            ></meta-icon>
+            ></dxr-icon>
           `}
 
       <a-text

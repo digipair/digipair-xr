@@ -1,18 +1,18 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    nothing,
-    property,
-    state,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  nothing,
+  property,
+  state,
+  TemplateResult,
 } from '@digipair-xr/core';
 import './icon.element';
 
 const BACKGROUND = '#0062ff';
 
-@customElement('meta-button')
-export class ButtonElement extends MetaElement {
+@customElement('dxr-button')
+export class ButtonElement extends DXRElement {
   @property({ default: '' })
   content!: string;
 
@@ -41,12 +41,12 @@ export class ButtonElement extends MetaElement {
         ${!this.icon
           ? nothing
           : html`
-              <meta-icon
+              <dxr-icon
                 icon=${this.icon}
                 color="white"
                 width="2"
                 position="0.027 0.041 0"
-              ></meta-icon>
+              ></dxr-icon>
             `}
         ${!this.content
           ? nothing

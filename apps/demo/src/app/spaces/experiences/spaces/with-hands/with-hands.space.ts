@@ -1,17 +1,11 @@
-import {
-    html,
-    inject,
-    MetaElement,
-    nothing,
-    state,
-} from '@digipair-xr/core';
+import { DXRElement, html, inject, nothing, state } from '@digipair-xr/core';
 import '@digipair-xr/design-system';
 import { routeElement } from '@digipair-xr/router';
 import { SessionProvider } from '../../../../session.provider';
 import './stand.element';
 
 @routeElement('experiences-with-hands-space', { networked: true })
-export class WithHandsSpaceElement extends MetaElement {
+export class WithHandsSpaceElement extends DXRElement {
   @state()
   current = -1;
 
@@ -89,7 +83,7 @@ export class WithHandsSpaceElement extends MetaElement {
         material="shader: gradient; topColor: 255 255 255; bottomColor: 0 10 255;"
       ></a-sky>
 
-      <meta-dialog
+      <dxr-dialog
         position="0.346 1.346 -1"
         rotation="0 -45 0"
         icon="storefront"
@@ -106,18 +100,18 @@ export class WithHandsSpaceElement extends MetaElement {
         <a-entity position="0.067 -0.16 0.001">
           ${this.articles.map(
             (article, index) => html`
-              <meta-menu-button-image
+              <dxr-menu-button-image
                 position=${`${0.11 + (index % 3) * 0.18} ${
                   0.4 - Math.floor(index / 3) * 0.18
                 } 0`}
                 image=${article.image}
                 title=${article.title}
                 @click=${() => this.show(index)}
-              ></meta-menu-button-image>
+              ></dxr-menu-button-image>
             `,
           )}
         </a-entity>
-      </meta-dialog>
+      </dxr-dialog>
 
       ${this.current < 0
         ? nothing

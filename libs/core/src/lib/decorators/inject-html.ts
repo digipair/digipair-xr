@@ -1,11 +1,11 @@
 import 'reflect-metadata';
-import { MetaElement } from '../classes/meta-element';
-import { MetaProvider } from '../classes/meta-provider';
+import { DXRElement } from '../classes/dxr-element';
+import { DXRProvider } from '../classes/dxr-provider';
 import { providers } from '../stores/providers';
 
 export const injectHtml = () => (target: Element, property: string) => {
   const type = Reflect.getMetadata('design:type', target, property);
-  const providersByElement = new Map<MetaElement, MetaProvider>();
+  const providersByElement = new Map<DXRElement, DXRProvider>();
 
   Object.defineProperty(target, property, {
     get() {
@@ -22,7 +22,7 @@ export const injectHtml = () => (target: Element, property: string) => {
 
         if (!provider) {
           throw new Error(
-            `${name} cannot be injected. May be it is not correctly provided ?`
+            `${name} cannot be injected. May be it is not correctly provided ?`,
           );
         }
 

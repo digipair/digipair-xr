@@ -1,14 +1,14 @@
 import {
-    customElement,
-    html,
-    inject,
-    MetaElement,
-    property,
+  customElement,
+  DXRElement,
+  html,
+  inject,
+  property,
 } from '@digipair-xr/core';
 import { PlayerProvider } from '../player/player.provider';
 
-@customElement('meta-teleportable')
-export class TeleportableElement extends MetaElement {
+@customElement('dxr-teleportable')
+export class TeleportableElement extends DXRElement {
   @property({ default: 1 })
   width!: number;
 

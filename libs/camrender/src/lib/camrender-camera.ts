@@ -4,21 +4,21 @@
 //   https://wirewhiz.com/how-to-use-a-cameras-output-as-a-texture-in-aframe/
 //
 import {
-    customElement,
-    Entity,
-    html,
-    MetaElement,
-    property,
-    TemplateResult,
-    THREE,
+  customElement,
+  DXRElement,
+  Entity,
+  html,
+  property,
+  TemplateResult,
+  THREE,
 } from '@digipair-xr/core';
 
-@customElement('meta-camrender-camera')
-export class CamrenderCameraElement extends MetaElement {
+@customElement('dxr-camrender-camera')
+export class CamrenderCameraElement extends DXRElement {
   @property({ default: 90 })
   fps!: number;
 
-  @property({ default: 'meta-camrender' })
+  @property({ default: 'dxr-camrender' })
   cid!: string;
 
   @property({ default: 300 })
@@ -33,7 +33,7 @@ export class CamrenderCameraElement extends MetaElement {
   override update(oldData: any): void {
     const data = this.data as any;
     const camera = this.el.querySelector(
-      ':scope > [data-meta-camrender-camera]',
+      ':scope > [data-dxr-camrender-camera]',
     ) as Entity | null;
 
     if (!camera) {
@@ -97,7 +97,7 @@ export class CamrenderCameraElement extends MetaElement {
   override render(): TemplateResult {
     return html`
       <a-entity
-        data-meta-camrender-camera
+        data-dxr-camrender-camera
         camera="active: false; fov: 40; zoom: 1;"
       ></a-entity>
     `;

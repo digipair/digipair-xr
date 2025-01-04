@@ -13,7 +13,7 @@
 Display a [spline](https://spline.design) scene
 
 ```html
-<meta-spline scene="SPLINECODE_URL"></meta-spline>
+<dxr-spline scene="SPLINECODE_URL"></dxr-spline>
 ```
 
 ## @digipair-xr/spline
@@ -21,14 +21,14 @@ Display a [spline](https://spline.design) scene
 Manage a mesh in a GLTF or a Spline object
 
 ```html
-<meta-mesh object="OBJECT_NAME"></meta-mesh>
+<dxr-mesh object="OBJECT_NAME"></dxr-mesh>
 ```
 
 ### Example
 
 ```html
 <a-gltf-model src="/assets/scene.glb">
-  <meta-mesh object="Emoji" animation="property: position; to: -20 -10 0; dur: 2000; easing: linear; dir: alternate; loop: true;"></meta-mesh>
+  <dxr-mesh object="Emoji" animation="property: position; to: -20 -10 0; dur: 2000; easing: linear; dir: alternate; loop: true;"></dxr-mesh>
 </a-gltf-model>
 ```
 
@@ -37,7 +37,7 @@ Manage a mesh in a GLTF or a Spline object
 Display a ring where the user is teleported if he selects it.
 
 ```html
-<meta-teleport></meta-teleport>
+<dxr-teleport></dxr-teleport>
 ```
 
 ## @digipair-xr/design-system
@@ -47,7 +47,7 @@ Display a ring where the user is teleported if he selects it.
 Display a button with icon and/or text
 
 ```html
-<meta-button content="TEXT_CONTENT" icon="ICON" width="WIDTH"></meta-button>
+<dxr-button content="TEXT_CONTENT" icon="ICON" width="WIDTH"></dxr-button>
 ```
 
 ### icon
@@ -55,7 +55,7 @@ Display a button with icon and/or text
 Display an icon
 
 ```html
-<meta-icon icon="ICON"></meta-icon>
+<dxr-icon icon="ICON"></dxr-icon>
 ```
 
 > see the list [here](https://fonts.google.com/icons)  
@@ -66,7 +66,7 @@ Display an icon
 Display an icon in a circle
 
 ```html
-<meta-bubble icon="ICON"></meta-bubble>
+<dxr-bubble icon="ICON"></dxr-bubble>
 ```
 
 ### dialog
@@ -74,7 +74,7 @@ Display an icon in a circle
 Display an dia&log box
 
 ```html
-<meta-dialog color="COLOR" icon="ICON" width="WIDTH" height="HEIGHT"></meta-dialog>
+<dxr-dialog color="COLOR" icon="ICON" width="WIDTH" height="HEIGHT"></dxr-dialog>
 ```
 
 ## @digipair-xr/screen-shared
@@ -82,7 +82,7 @@ Display an dia&log box
 Screen used to shared user webcam or user screen.
 
 ```html
-<meta-screen-shared></meta-screen-shared>
+<dxr-screen-shared></dxr-screen-shared>
 ```
 
 ## @digipair-xr/info
@@ -91,9 +91,9 @@ Display an oinformation icon.
 When the user is behind this icon, a dialog box is displayed with elements inner the template element.
 
 ```html
-<meta-info color="COLOR" icon="ICON" width="WIDTH" height="HEIGHT">
+<dxr-info color="COLOR" icon="ICON" width="WIDTH" height="HEIGHT">
   <template slot="content"></template>
-</meta-info>
+</dxr-info>
 ```
 
 ## AFrame primitives

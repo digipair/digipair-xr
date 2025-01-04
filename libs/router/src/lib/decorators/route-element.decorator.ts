@@ -1,22 +1,18 @@
+import { customElement, DXRElement, DXRProvider } from '@digipair-xr/core';
 import {
-    customElement,
-    MetaElement,
-    MetaProvider,
-} from '@digipair-xr/core';
-import {
-    PreventAndRedirectCommands,
-    Router,
-    RouterLocation,
+  PreventAndRedirectCommands,
+  Router,
+  RouterLocation,
 } from '@vaadin/router';
 
 declare const AFRAME: any;
 
 export const routeElement =
-  <P extends typeof MetaProvider>(
+  <P extends typeof DXRProvider>(
     elementName: string,
     _options?: { networked?: boolean; providers?: P[] },
   ) =>
-  <E extends typeof MetaElement>(ElementClass: E) => {
+  <E extends typeof DXRElement>(ElementClass: E) => {
     customElement(elementName, _options)(ElementClass);
 
     AFRAME.primitives.primitives[elementName]['prototype'].onBeforeEnter = (

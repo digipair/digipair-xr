@@ -1,9 +1,4 @@
-import {
-    customElement,
-    html,
-    inject,
-    MetaElement,
-} from '@digipair-xr/core';
+import { customElement, DXRElement, html, inject } from '@digipair-xr/core';
 import { PlayerProvider } from '@digipair-xr/player';
 import { RouterProvider } from '@digipair-xr/router';
 import '@digipair-xr/screen-shared';
@@ -14,7 +9,7 @@ import { SessionProvider } from './session.provider';
 @customElement('digipair-xr', {
   providers: [RouterProvider, SessionProvider],
 })
-export class PinserMetaverseSpaceElement extends MetaElement {
+export class PinserMetaverseSpaceElement extends DXRElement {
   @inject()
   playerProvider: PlayerProvider;
 
@@ -33,7 +28,7 @@ export class PinserMetaverseSpaceElement extends MetaElement {
 
   override render() {
     return html`
-      <meta-router-outlet></meta-router-outlet>
+      <dxr-router-outlet></dxr-router-outlet>
 
       <a-plane
         rotation="-90 0 0"
@@ -48,12 +43,12 @@ export class PinserMetaverseSpaceElement extends MetaElement {
         collision-filter="group: surface;"
       ></a-plane>
 
-      <meta-teleportable
+      <dxr-teleportable
         width="100"
         height="100"
         position="0 0.001 0"
         visible="false"
-      ></meta-teleportable>
+      ></dxr-teleportable>
     `;
   }
 }

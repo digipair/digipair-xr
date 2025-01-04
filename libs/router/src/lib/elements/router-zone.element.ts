@@ -1,16 +1,16 @@
 import {
-    customElement,
-    Entity,
-    html,
-    inject,
-    MetaElement,
-    property,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  Entity,
+  html,
+  inject,
+  property,
+  TemplateResult,
 } from '@digipair-xr/core';
 import { RouterProvider } from '../providers/router.provider';
 
-@customElement('meta-router-zone')
-export class RouterZoneElement extends MetaElement {
+@customElement('dxr-router-zone')
+export class RouterZoneElement extends DXRElement {
   @property({ default: 1 })
   width!: number;
 

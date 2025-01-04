@@ -1,0 +1,31 @@
+{
+  "name": "skill-web-dxr",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/skill-web-dxr/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/skill-web-dxr",
+        "main": "libs/skill-web-dxr/src/index.ts",
+        "tsConfig": "libs/skill-web-dxr/tsconfig.lib.json",
+        "assets": [
+          "libs/skill-web-dxr/src/index.d.ts",
+          "libs/skill-web-dxr/src/schema.json",
+          "libs/skill-web-dxr/src/schema.fr.json"
+        ],
+        "rollupConfig": ["libs/skill-web-dxr/rollup.build.cjs"],
+        "project": "libs/skill-web-dxr/package.json",
+        "compiler": "swc",
+        "format": ["cjs", "esm"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs skill-web-dxr {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    }
+  },
+  "tags": []
+}

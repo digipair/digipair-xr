@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-    customElement,
-    html,
-    inject,
-    MetaElement,
-    nothing,
-    TemplateResult,
-    THREE,
-    unsafeHTML,
+  customElement,
+  DXRElement,
+  html,
+  inject,
+  nothing,
+  TemplateResult,
+  THREE,
+  unsafeHTML,
 } from '@digipair-xr/core';
 import 'aframe-blink-controls';
 import 'super-hands';
@@ -25,8 +25,8 @@ import './selectable.directive';
 
 declare const NAF: any;
 
-@customElement('meta-player')
-export class PlayerElement extends MetaElement {
+@customElement('dxr-player')
+export class PlayerElement extends DXRElement {
   @inject()
   playerProvider!: PlayerProvider;
 
@@ -34,7 +34,7 @@ export class PlayerElement extends MetaElement {
   private templates = [
     {
       id: 'avatar-template',
-      content: `<a-entity meta-avatar networked-audio-source></a-entity>`,
+      content: `<a-entity dxr-avatar networked-audio-source></a-entity>`,
     },
     {
       id: 'player-template',
@@ -68,7 +68,7 @@ export class PlayerElement extends MetaElement {
 
   private defaultCamera(): TemplateResult {
     return html`
-      <meta-player-camera vrmode=${this.vrmode}></meta-player-camera>
+      <dxr-player-camera vrmode=${this.vrmode}></dxr-player-camera>
     `;
   }
 
@@ -77,15 +77,15 @@ export class PlayerElement extends MetaElement {
       <a-entity rotation="-90 0 90">
         ${!this.playerProvider.playermenu.visible
           ? nothing
-          : html`<meta-player-menu
+          : html`<dxr-player-menu
               scale="0.55 0.5 1"
               position="-0.5 0.15 0"
               rotation="0 0 0"
-            ></meta-player-menu>`}
-        <meta-player-toolbar
+            ></dxr-player-menu>`}
+        <dxr-player-toolbar
           position="-0.15 0.1 0"
           rotation="0 0 0"
-        ></meta-player-toolbar>
+        ></dxr-player-toolbar>
       </a-entity>
     `;
   }
@@ -156,7 +156,7 @@ export class PlayerElement extends MetaElement {
       components: [
         'position',
         'rotation',
-        'meta-avatar',
+        'dxr-avatar',
         'networked-audio-source',
       ],
     });
@@ -170,13 +170,13 @@ export class PlayerElement extends MetaElement {
 
   override render(): TemplateResult {
     const templateCamera = this.el
-      .closest(`meta-scene`)
+      .closest(`dxr-scene`)
       .querySelector(':scope > template[slot=camera]')?.innerHTML;
     const templateHandLeft = this.el
-      .closest(`meta-scene`)
+      .closest(`dxr-scene`)
       .querySelector(':scope > template[slot=handleft]')?.innerHTML;
     const templateHandRight = this.el
-      .closest(`meta-scene`)
+      .closest(`dxr-scene`)
       .querySelector(':scope > template[slot=handright]')?.innerHTML;
 
     return html`
@@ -184,16 +184,16 @@ export class PlayerElement extends MetaElement {
         ? unsafeHTML(
             `<${this.playerProvider.customcursor} vrmode=${this.vrmode}></${this.playerProvider.customcursor}>`,
           )
-        : html`<meta-teleportable-cursor
+        : html`<dxr-teleportable-cursor
             vrmode=${this.vrmode}
-          ></meta-teleportable-cursor>`}
+          ></dxr-teleportable-cursor>`}
       ${this.vrmode || !this.playerProvider.playermenu.visible
         ? nothing
         : html`<a-entity
             position=${this.playerProvider.playermenu.position}
             rotation=${this.playerProvider.playermenu.rotation}
           >
-            <meta-player-menu position="-0.56 -0.27 -0.99"></meta-player-menu>
+            <dxr-player-menu position="-0.56 -0.27 -0.99"></dxr-player-menu>
           </a-entity>`}
 
       <a-entity player networked="template: #player-template;">

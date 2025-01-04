@@ -1,25 +1,25 @@
 import {
-    customElement,
-    Entity,
-    html,
-    MetaElement,
-    property,
-    TemplateResult,
-    unsafeHTML,
+  customElement,
+  DXRElement,
+  Entity,
+  html,
+  property,
+  TemplateResult,
+  unsafeHTML,
 } from '@digipair-xr/core';
 import './logo';
 
-@customElement('meta-avatar')
-export class AvatarElement extends MetaElement {
+@customElement('dxr-avatar')
+export class AvatarElement extends DXRElement {
   @property({ default: {} })
   playerinfo!: string;
 
   private defaultAvatar(): TemplateResult {
-    return html` <meta-logo
+    return html` <dxr-logo
         scale="0.25 0.25 0.25"
         position="0 -0.2 0.2"
         rotation="-22.5 -45 22.5"
-      ></meta-logo>
+      ></dxr-logo>
       <a-entity class="face" position="0 -0.05 .25">
         <a-sphere
           class="eye"
@@ -63,7 +63,7 @@ export class AvatarElement extends MetaElement {
     }
 
     const template = this.el
-      .closest(`meta-scene`)
+      .closest(`dxr-scene`)
       .querySelector(':scope > template[slot=avatar]')?.innerHTML;
 
     if (!template) {

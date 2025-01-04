@@ -1,14 +1,14 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    property,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  property,
+  TemplateResult,
 } from '@digipair-xr/core';
 import { icons } from '../../const/icons.const';
 
-@customElement('meta-icon')
-export class UiIconElement extends MetaElement {
+@customElement('dxr-icon')
+export class UiIconElement extends DXRElement {
   @property()
   icon!: string;
 

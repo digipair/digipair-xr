@@ -1,14 +1,14 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    nothing,
-    TemplateResult,
-    unsafeHTML,
+  customElement,
+  DXRElement,
+  html,
+  nothing,
+  TemplateResult,
+  unsafeHTML,
 } from '@digipair-xr/core';
 
-@customElement('meta-menu')
-export class MenuElement extends MetaElement {
+@customElement('dxr-menu')
+export class MenuElement extends DXRElement {
   override render(): TemplateResult {
     const templateMenu = this.el.querySelector(
       ':scope > template[slot=menu]',

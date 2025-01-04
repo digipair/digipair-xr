@@ -28,6 +28,7 @@
       "@digipair-xr/router": ["libs/router/src/index.ts"],
       "@digipair-xr/scene": ["libs/scene/src/index.ts"],
       "@digipair-xr/screen-shared": ["libs/screen-shared/src/index.ts"],
+      "@digipair-xr/skill-web-dxr": ["libs/skill-web-dxr/src/index.ts"],
       "@digipair-xr/spline": ["libs/spline/src/index.ts"],
       "@digipair-xr/teleport": ["libs/teleport/src/index.ts"]
     }

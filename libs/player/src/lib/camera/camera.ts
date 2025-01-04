@@ -1,15 +1,15 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    nothing,
-    property,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  nothing,
+  property,
+  TemplateResult,
 } from '@digipair-xr/core';
 import '../toolbar/toolbar';
 
-@customElement('meta-player-camera')
-export class PlayerCameraElement extends MetaElement {
+@customElement('dxr-player-camera')
+export class PlayerCameraElement extends DXRElement {
   @property()
   vrmode!: boolean;
 
@@ -23,10 +23,10 @@ export class PlayerCameraElement extends MetaElement {
       ${this.vrmode
         ? nothing
         : html`
-            <meta-player-toolbar
+            <dxr-player-toolbar
               position="0 -0.175 -0.5"
               scale="0.5 0.5 0.5"
-            ></meta-player-toolbar>
+            ></dxr-player-toolbar>
           `}
     `;
   }

@@ -1,11 +1,11 @@
 import {
-    customElement,
-    html,
-    inject,
-    MetaElement,
-    nothing,
-    property,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  inject,
+  nothing,
+  property,
+  TemplateResult,
 } from '@digipair-xr/core';
 import '@digipair-xr/design-system';
 import { ScreenSharedProvider } from '../providers/screen-shared.provider';
@@ -14,10 +14,10 @@ import './webcam';
 
 declare const NAF: any;
 
-@customElement('meta-screen-shared', {
+@customElement('dxr-screen-shared', {
   providers: [ScreenSharedProvider],
 })
-export class ShareScreenElement extends MetaElement {
+export class ShareScreenElement extends DXRElement {
   @property({ default: '#000000' })
   color!: string;
 
@@ -81,31 +81,31 @@ export class ShareScreenElement extends MetaElement {
       ${!this.screenSharedProvider.menuVisible || screenEl
         ? nothing
         : html`
-            <meta-button
+            <dxr-button
               content="Ecran"
               position=${this.curved
                 ? `-0.160 0.043 0.01`
                 : `-0.160 0.043 0.005`}
               @click=${() => this.openDesktop({ curved: this.curved })}
-            ></meta-button>
-            <meta-button
+            ></dxr-button>
+            <dxr-button
               content="Webcam"
               position=${this.curved
                 ? `-0.160 -0.059 0.010`
                 : `-0.160 -0.059 0.005`}
               @click=${() => this.openWebcam({ curved: this.curved })}
-            ></meta-button>
+            ></dxr-button>
           `}
       ${!this.screenSharedProvider.menuVisible || !isMine
         ? nothing
         : html`
-            <meta-button
+            <dxr-button
               content="Stop"
               position=${this.curved
                 ? `-0.160 -0.051 0.010`
                 : `-0.160 -0.051 0.005`}
               @click=${() => this.stop()}
-            ></meta-button>
+            ></dxr-button>
           `}
       <a-entity
         visible="false"

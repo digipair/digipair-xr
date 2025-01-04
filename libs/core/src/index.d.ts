@@ -1,13 +1,17 @@
 import { Entity as _Entity, Scene as _Scene } from 'aframe';
 import { TemplateResult as _TemplateResult } from 'lit';
 import './src/lib/components/hide-on-ar';
-export declare const THREE: typeof import("three");
+export declare const THREE: typeof import('three');
 export { html, noChange, nothing } from 'lit';
-export { customElement as customHtmlElement, property as propertyHtml, state as stateHtml, } from 'lit/decorators.js';
+export {
+  customElement as customHtmlElement,
+  property as propertyHtml,
+  state as stateHtml,
+} from 'lit/decorators.js';
 export { unsafeHTML } from 'lit/directives/unsafe-html.js';
-export { MetaElement } from './src/lib/classes/meta-element';
-export { MetaHtmlElement } from './src/lib/classes/meta-html-element';
-export { MetaProvider } from './src/lib/classes/meta-provider';
+export { DXRElement } from './src/lib/classes/meta-element';
+export { DXRHtmlElement } from './src/lib/classes/meta-html-element';
+export { DXRProvider } from './src/lib/classes/meta-provider';
 export { customElement } from './src/lib/decorators/custom-element';
 export { inject } from './src/lib/decorators/inject';
 export { injectHtml } from './src/lib/decorators/inject-html';

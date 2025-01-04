@@ -1,14 +1,14 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    property,
-    TemplateResult,
-    unsafeHTML,
+  customElement,
+  DXRElement,
+  html,
+  property,
+  TemplateResult,
+  unsafeHTML,
 } from '@digipair-xr/core';
 
 @customElement('experiences-with-hands-stand')
-export class StandElement extends MetaElement {
+export class StandElement extends DXRElement {
   @property()
   pins: any;
 
@@ -26,7 +26,7 @@ export class StandElement extends MetaElement {
     return html`
       <a-rounded color="#ffffff" width="0.5" height="0.5" radius="0.045">
         ${unsafeHTML(`
-          <meta-html
+          <dxr-html
             position="0.245 0.5 0.001"
             width="235px"
             style="color: #000000; text-align: right;"
@@ -39,7 +39,7 @@ export class StandElement extends MetaElement {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
               </p>
             </template>
-          </meta-html>
+          </dxr-html>
         `)}
 
         <a-rounded
@@ -53,7 +53,7 @@ export class StandElement extends MetaElement {
 
         <a-entity
           networked="template: #element-template; persistent: true; owner: scene; networkId: experiences-with-hands-stand-item;"
-          meta-element=${`element: ${btoa(
+          dxr-element=${`element: ${btoa(
             encodeURIComponent(JSON.stringify(element)),
           )}; attributes: ${btoa(
             encodeURIComponent(JSON.stringify(attributes)),

@@ -1,0 +1,88 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "@digipair/skill-web-editor",
+    "summary": "Display of the reasoning editor",
+    "description": "Editing of AI reasonings.",
+    "version": "0.1.0",
+    "x-icon": "🏗"
+  },
+  "paths": {
+    "/digipair-editor": {
+      "post": {
+        "tags": ["web"],
+        "summary": "Reasoning editor",
+        "description": "No-code editor for AI reasonings",
+        "parameters": [
+          {
+            "name": "digipair",
+            "summary": "Digipair",
+            "required": true,
+            "description": "Information of the digipair owning the reasoning",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "name": "reasoning",
+            "summary": "Reasoning",
+            "required": true,
+            "description": "Information of the reasoning to be edited",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "name": "schemas",
+            "summary": "Schemas",
+            "required": false,
+            "description": "List of private skill schemas",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "name": "menuColor",
+            "summary": "Menu text color",
+            "required": false,
+            "description": "Color of the menu text",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "menuBackgroundColor",
+            "summary": "Menu background color",
+            "required": false,
+            "description": "Color of the menu background",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "contentStyle",
+            "summary": "Custom container style",
+            "required": false,
+            "description": "Custom style for the container",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "summary": "Language",
+            "required": false,
+            "description": "Editor language",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

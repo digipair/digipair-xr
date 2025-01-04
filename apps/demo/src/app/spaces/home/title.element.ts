@@ -1,13 +1,13 @@
 import {
-    customHtmlElement,
-    html,
-    injectHtml,
-    MetaHtmlElement,
+  customHtmlElement,
+  DXRHtmlElement,
+  html,
+  injectHtml,
 } from '@digipair-xr/core';
 import { SessionProvider } from '../../session.provider';
 
 @customHtmlElement('home-title')
-export class HomeSpaceElement extends MetaHtmlElement {
+export class HomeSpaceElement extends DXRHtmlElement {
   @injectHtml()
   sessionProvider: SessionProvider;
 

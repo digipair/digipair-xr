@@ -1,9 +1,9 @@
 import {
-    customHtmlElement,
-    html,
-    MetaHtmlElement,
-    propertyHtml,
-    TemplateResult,
+  customHtmlElement,
+  DXRHtmlElement,
+  html,
+  propertyHtml,
+  TemplateResult,
 } from '@digipair-xr/core';
 import 'aframe-extras';
 import 'aframe-gradient-sky';
@@ -13,8 +13,8 @@ import 'aframe-rounded';
 import 'networked-aframe';
 import './scene-container';
 
-@customHtmlElement('meta-scene')
-export class SceneElement extends MetaHtmlElement {
+@customHtmlElement('dxr-scene')
+export class SceneElement extends DXRHtmlElement {
   @propertyHtml()
   private session!: string;
 
@@ -43,12 +43,12 @@ export class SceneElement extends MetaHtmlElement {
         ar-hit-test="footprintDepth: 1;"
         gltf-model=${`dracoDecoderPath: ${this.draco};`}
       >
-        <meta-scene-container
+        <dxr-scene-container
           session=${this.session}
           server=${this.server}
           adapter=${this.adapter}
           development=${this.development}
-        ></meta-scene-container>
+        ></dxr-scene-container>
       </a-scene>
     `;
   }

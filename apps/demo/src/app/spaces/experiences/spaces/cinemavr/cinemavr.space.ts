@@ -1,9 +1,9 @@
-import { html, inject, MetaElement } from '@digipair-xr/core';
+import { DXRElement, html, inject } from '@digipair-xr/core';
 import { routeElement } from '@digipair-xr/router';
 import { SessionProvider } from '../../../../session.provider';
 
 @routeElement('experiences-cinemavr-space')
-export class CinemaVrSpaceElement extends MetaElement {
+export class CinemaVrSpaceElement extends DXRElement {
   @inject()
   sessionProvider: SessionProvider;
 

@@ -1,12 +1,12 @@
 import { Component } from 'aframe';
-import { MetaProvider } from '../classes/meta-provider';
+import { DXRProvider } from '../classes/dxr-provider';
 import { providers } from '../stores/providers';
 
 const THREE = AFRAME.THREE;
 
 export const injectable =
   (_options?: { networked?: boolean }) =>
-  <T extends typeof MetaProvider>(ElementClass: T) => {
+  <T extends typeof DXRProvider>(ElementClass: T) => {
     const options = {
       networked: false,
       ..._options,
@@ -24,7 +24,7 @@ export const injectable =
     ElementClass.multiple = false;
     ElementClass.mappings = ElementClass.mappings || {};
 
-    const instances = new Map<Component, MetaProvider>();
+    const instances = new Map<Component, DXRProvider>();
 
     const getInstance = (aframeInstance: Component) => {
       let instance = instances.get(aframeInstance);
@@ -32,7 +32,7 @@ export const injectable =
       if (!instance) {
         instance = new ElementClass();
         (
-          aframeInstance as unknown as { __AFRAME_ELEMENT__: MetaProvider }
+          aframeInstance as unknown as { __AFRAME_ELEMENT__: DXRProvider }
         ).__AFRAME_ELEMENT__ = instance;
         instance.__AFRAME_INSTANCE__ = aframeInstance;
         instances.set(aframeInstance, instance);
@@ -66,11 +66,7 @@ export const injectable =
       tick: function (time: number, timeDelta: number): void {
         getInstance(this as Component).tick(time, timeDelta);
       },
-      tock: function (
-        time: number,
-        timeDelta: number,
-        camera: any
-      ): void {
+      tock: function (time: number, timeDelta: number, camera: any): void {
         getInstance(this as Component).tock(time, timeDelta, camera);
       },
       updateSchema: function (): void {
@@ -79,7 +75,7 @@ export const injectable =
       update: function (oldData: unknown): void {
         getInstance(this as Component).update(oldData);
         getInstance(this as Component).el.dispatchEvent(
-          new CustomEvent('__META_UPDATE__')
+          new CustomEvent('__META_UPDATE__'),
         );
       },
     };

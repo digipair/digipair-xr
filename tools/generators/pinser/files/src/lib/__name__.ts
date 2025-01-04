@@ -1,12 +1,12 @@
 import {
     customElement,
     html,
-    MetaElement,
+    DXRElement,
     TemplateResult
 } from '@digipair-xr/core';
 
-@customElement('meta-<%= name %>')
-export class <%= className %>Element extends MetaElement {
+@customElement('dxr-<%= name %>')
+export class <%= className %>Element extends DXRElement {
   override render(): TemplateResult {
     return html`<a-box></a-box>`;
   }

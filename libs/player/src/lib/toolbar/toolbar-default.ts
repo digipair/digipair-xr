@@ -1,14 +1,14 @@
 import {
-    customElement,
-    html,
-    inject,
-    MetaElement,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  inject,
+  TemplateResult,
 } from '@digipair-xr/core';
 import { PlayerProvider } from '../player/player.provider';
 
-@customElement('meta-player-toolbar-default')
-export class PlayerToolbarDefaultElement extends MetaElement {
+@customElement('dxr-player-toolbar-default')
+export class PlayerToolbarDefaultElement extends DXRElement {
   @inject()
   playerProvider!: PlayerProvider;
 
@@ -63,7 +63,7 @@ export class PlayerToolbarDefaultElement extends MetaElement {
             animation__mouseleave="property: scale; to: 0.02 0.02 0.02; startEvents: mouseleave; dur: 500; easing: easeOutElastic"
             animation__mouseclick="property: scale; to: 0.02 0.02 0.02; startEvents: click; dur: 500; easing: easeOutElastic"
           >
-            <meta-logo></meta-logo>
+            <dxr-logo></dxr-logo>
           </a-box>
         `;
   }

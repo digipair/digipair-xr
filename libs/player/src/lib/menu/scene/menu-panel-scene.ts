@@ -1,16 +1,16 @@
 import {
-    customElement,
-    Entity,
-    html,
-    inject,
-    MetaElement,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  Entity,
+  html,
+  inject,
+  TemplateResult,
 } from '@digipair-xr/core';
 import '@digipair-xr/design-system';
 import { PlayerProvider } from '../../player/player.provider';
 
-@customElement('meta-player-menu-planel-scene')
-export class MenuPanelSceneElement extends MetaElement {
+@customElement('dxr-player-menu-planel-scene')
+export class MenuPanelSceneElement extends DXRElement {
   @inject()
   private playerProvider!: PlayerProvider;
 
@@ -20,7 +20,7 @@ export class MenuPanelSceneElement extends MetaElement {
   }
 
   private getPinsNameFromElement(el: Entity) {
-    const component = el.components['meta-element'] as any;
+    const component = el.components['dxr-element'] as any;
     const options = JSON.parse(
       decodeURIComponent(atob(component.data.options)),
     );
@@ -31,12 +31,12 @@ export class MenuPanelSceneElement extends MetaElement {
   override render(): TemplateResult {
     const pins = [
       ...(this.el.sceneEl?.querySelectorAll(
-        ':scope > [meta-element][editable]',
+        ':scope > [dxr-element][editable]',
       ) as any),
     ];
 
     return html`
-      <meta-menu-panel icon="engineering" title="Scene">
+      <dxr-menu-panel icon="engineering" title="Scene">
         ${pins.length <= 0
           ? html`<a-text
               value="no pin's available"
@@ -61,15 +61,15 @@ export class MenuPanelSceneElement extends MetaElement {
                     width="0.4"
                     position="0.054 0.025 0.001"
                   ></a-text>
-                  <meta-menu-button
+                  <dxr-menu-button
                     icon="delete"
                     position="0.72 0.025 0"
                     @click=${() => this.removePins(el)}
-                  ></meta-menu-button>
+                  ></dxr-menu-button>
                 </a-rounded>
               `,
             )}
-      </meta-menu-panel>
+      </dxr-menu-panel>
     `;
   }
 }

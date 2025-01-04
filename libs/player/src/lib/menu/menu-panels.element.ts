@@ -1,28 +1,28 @@
 import {
-    customElement,
-    html,
-    inject,
-    MetaElement,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  inject,
+  TemplateResult,
 } from '@digipair-xr/core';
 import '@digipair-xr/design-system';
 import { MenuProvider } from './menu.provider';
 import './pins/menu-panel-pins';
 import './scene/menu-panel-scene';
 
-@customElement('meta-player-menu-panels')
-export class MenuSideElement extends MetaElement {
+@customElement('dxr-player-menu-panels')
+export class MenuSideElement extends DXRElement {
   @inject()
   private menuProvider!: MenuProvider;
 
   override render(): TemplateResult {
     const panels: { [key: string]: TemplateResult } = {
       pins: html`
-        <meta-player-menu-planel-pins
+        <dxr-player-menu-planel-pins
           repository="https://assets.pinser-metaverse.com/pins/list.json"
-        ></meta-player-menu-planel-pins>
+        ></dxr-player-menu-planel-pins>
       `,
-      scene: html`<meta-player-menu-planel-scene></meta-player-menu-planel-scene>`,
+      scene: html`<dxr-player-menu-planel-scene></dxr-player-menu-planel-scene>`,
     };
 
     return panels[this.menuProvider.panel];

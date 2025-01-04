@@ -1,14 +1,14 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    property,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  property,
+  TemplateResult,
 } from '@digipair-xr/core';
 import './bubble.element';
 
-@customElement('meta-dialog')
-export class DialogElement extends MetaElement {
+@customElement('dxr-dialog')
+export class DialogElement extends DXRElement {
   @property({ default: '#0062ff' })
   color!: string;
 
@@ -42,11 +42,11 @@ export class DialogElement extends MetaElement {
         >
         </a-rounded>
 
-        <meta-bubble
+        <dxr-bubble
           color=${this.color}
           icon=${this.icon}
           position="${this.width / 2} ${this.height} 0.002"
-        ></meta-bubble>
+        ></dxr-bubble>
       </a-rounded>
     `;
   }

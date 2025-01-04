@@ -1,7 +1,7 @@
 import { customElement, property } from '@digipair-xr/core';
 import { MeshCommon } from './mesh.common';
 
-@customElement('meta-mesh')
+@customElement('dxr-mesh')
 export class MeshElement extends MeshCommon {
   @property()
   object!: string;

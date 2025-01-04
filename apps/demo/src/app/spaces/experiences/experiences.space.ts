@@ -1,4 +1,4 @@
-import { html, inject, MetaElement } from '@digipair-xr/core';
+import { DXRElement, html, inject } from '@digipair-xr/core';
 import { routeElement, RouterProvider } from '@digipair-xr/router';
 import { SessionProvider } from '../../session.provider';
 import { routes } from './experiences.routes';
@@ -6,7 +6,7 @@ import { routes } from './experiences.routes';
 @routeElement('experiences-space', {
   providers: [RouterProvider],
 })
-export class ExperiencesSpaceElement extends MetaElement {
+export class ExperiencesSpaceElement extends DXRElement {
   @inject()
   routerProvider: RouterProvider;
 
@@ -61,35 +61,35 @@ export class ExperiencesSpaceElement extends MetaElement {
 
   override render() {
     return html`
-      <meta-logo
+      <dxr-logo
         position="-0.38 1.683 -1"
         rotation="22.5 -45 -22.5"
         scale="0.1 0.1 0.1"
-      ></meta-logo>
+      ></dxr-logo>
 
-      <meta-menu-button-image
+      <dxr-menu-button-image
         position="-0.39 1.52 -1"
         image="https://agency-experiences.onrender.com/assets/spaces/experiences/back-arrow-small.png"
         title="Home"
         @click=${() => this.go('/home/')}
-      ></meta-menu-button-image>
+      ></dxr-menu-button-image>
 
       <a-entity position="-0.3 1.3 -1">
         ${this.experiences.map(
           (experience, index) => html`
-            <meta-menu-button-image
+            <dxr-menu-button-image
               position=${`${0.11 + (index % 3) * 0.18} ${
                 0.4 - Math.floor(index / 3) * 0.18
               } 0`}
               image=${experience.image}
               title=${experience.title}
               @click=${() => this.go(experience.route)}
-            ></meta-menu-button-image>
+            ></dxr-menu-button-image>
           `,
         )}
       </a-entity>
 
-      <meta-router-outlet></meta-router-outlet>
+      <dxr-router-outlet></dxr-router-outlet>
     `;
   }
 }

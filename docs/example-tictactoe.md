@@ -43,10 +43,10 @@ To add a provider in your new Pin's, create a new file `tictactoe.provider.ts` i
 Place the foillowing code in this file:
 
 ```typescript
-import { injectable, MetaProvider, state } from '@digipair-xr/core';
+import { injectable, DXRProvider, state } from '@digipair-xr/core';
 
 @injectable()
-export class TictactoeProvider extends MetaProvider {
+export class TictactoeProvider extends DXRProvider {
   @state()
   player = 'X';
 
@@ -79,7 +79,7 @@ export class TictactoeProvider extends MetaProvider {
 }
 ```
 
-- Decorator `@injactable` and class `MetaProvider` required to be injectable
+- Decorator `@injactable` and class `DXRProvider` required to be injectable
 - Decorator `state` used to execute a new render in all components who use it
 - Variable `player` used to save the next player to play
 - Variable `pawns` used to save the game state
@@ -96,11 +96,11 @@ Create a new file `tictactoe-pawn.element.ts` in the directory `libs/game/tictac
 Place the foillowing code in your file:
 
 ```typescript
-import { customElement, html, inject, MetaElement, property, state, TemplateResult } from '@digipair-xr/core';
+import { customElement, html, inject, DXRElement, property, state, TemplateResult } from '@digipair-xr/core';
 import { TictactoeProvider } from './tictactoe.provider';
 
 @customElement('game-tictactoe-pawn')
-export class TictactoePawnElement extends MetaElement {
+export class TictactoePawnElement extends DXRElement {
   @inject()
   private tictactoeProvider!: TictactoeProvider;
 
@@ -146,14 +146,14 @@ Update `tictactoe` element to display pawns and a button `reset`
 Replace file `libs/game/tictactoe/src/lib/tictactoe.element.ts` content by:
 
 ```typescript
-import { customElement, html, inject, MetaElement, TemplateResult } from '@digipair-xr/core';
+import { customElement, html, inject, DXRElement, TemplateResult } from '@digipair-xr/core';
 import { TictactoeProvider } from './tictactoe.provider';
 import './tictactoe-pawn.element';
 
 @customElement('game-tictactoe', {
   providers: [TictactoeProvider],
 })
-export class TictactoeElement extends MetaElement {
+export class TictactoeElement extends DXRElement {
   @inject()
   private tictactoeProvider!: TictactoeProvider;
 
@@ -191,13 +191,13 @@ Now, your pin's `game-tictactoe` is ready to be used. Next step is to place the 
 Replace `apps/metaverse/src/lib/metaverse.space.ts` content with:
 
 ```typescript
-import { customElement, html, inject, MetaElement } from '@digipair-xr/core';
+import { customElement, html, inject, DXRElement } from '@digipair-xr/core';
 import { PlayerProvider } from '@digipair-xr/player';
 import '@digipair-xr/teleport';
 import '@metaverse-bootstrap/game/tictactoe';
 
 @customElement('metaverse-bootstrap-space')
-export class MetaverseBootstrapSpaceElement extends MetaElement {
+export class MetaverseBootstrapSpaceElement extends DXRElement {
   @inject()
   playerProvider: PlayerProvider;
 
@@ -215,10 +215,10 @@ export class MetaverseBootstrapSpaceElement extends MetaElement {
 
       <!-- Game panel -->
       <game-tictactoe position="0 1.4 -1"></game-tictactoe>
-      <meta-teleport position="0 0.001 0"></meta-teleport>
+      <dxr-teleport position="0 0.001 0"></dxr-teleport>
 
       <!-- ground -->
-      <meta-teleportable hide-on-enter-ar width="22.9" height="16.92" color="#d99f20"></meta-teleportable>`;
+      <dxr-teleportable hide-on-enter-ar width="22.9" height="16.92" color="#d99f20"></dxr-teleportable>`;
   }
 }
 ```
@@ -235,14 +235,14 @@ So, you will add network feature to your metaverse to add a collaborative side.
 Like seen in the [Get Started](get-started#add-a-network-session) section, to see the other connected users, you must create a network session:
 
 1. open the file `apps/metaverse/src/metaverse.html`
-2. add an attribute session to the html element meta-scene with a unique uuid as value
+2. add an attribute session to the html element dxr-scene with a unique uuid as value
 
 > The uuid can be generated from [uuidgenerator.net](https://www.uuidgenerator.net/) for example
 
 ```html
-<meta-scene session="cc3c1000-c18e-438e-9de4-0200a073cb1e">
+<dxr-scene session="cc3c1000-c18e-438e-9de4-0200a073cb1e">
   <!-- ... -->
-</meta-scene>
+</dxr-scene>
 ```
 
 ### Share the game state
@@ -257,7 +257,7 @@ To share this state, nothing is easier:
 @injectable({
   networked: true,
 })
-export class TictactoeProvider extends MetaProvider {
+export class TictactoeProvider extends DXRProvider {
   // ...
 }
 ```
@@ -276,7 +276,7 @@ Technically, we must share the pawn background color.
 @customElement('game-tictactoe-pawn', {
   networked: true,
 })
-export class TictactoePawnElement extends MetaElement {
+export class TictactoePawnElement extends DXRElement {
   // ...
 }
 ```

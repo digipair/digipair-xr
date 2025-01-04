@@ -1,0 +1,88 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "@digipair/skill-web-dxr",
+    "summary": "Affichage de page XR",
+    "description": "Affichage de page XR",
+    "version": "0.1.0",
+    "x-icon": "🏗"
+  },
+  "paths": {
+    "/digipair-editor": {
+      "post": {
+        "tags": ["web"],
+        "summary": "Editeur de raisonnements",
+        "description": "Editeur no-code de raisonnements IA",
+        "parameters": [
+          {
+            "name": "digipair",
+            "summary": "Digipair",
+            "required": true,
+            "description": "Informations du digipair propriétaire du raisonnement",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "name": "reasoning",
+            "summary": "Raisonnement",
+            "required": true,
+            "description": "Informations du raisonnement à éditer",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "name": "schemas",
+            "summary": "Schemas",
+            "required": false,
+            "description": "Liste des schemas des compétences privées",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "name": "menuColor",
+            "summary": "Couleur de texte du menu",
+            "required": false,
+            "description": "Couleur de texte du menu",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "menuBackgroundColor",
+            "summary": "Couleur de fond du menu",
+            "required": false,
+            "description": "Couleur de fond du menu",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "contentStyle",
+            "summary": "Style personnalisé du conteneur",
+            "required": false,
+            "description": "Style personnalisé du conteneur",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "summary": "Langue",
+            "required": false,
+            "description": "Langue de l'éditeur",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

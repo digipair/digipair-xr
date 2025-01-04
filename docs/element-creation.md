@@ -62,7 +62,7 @@ To create a [digipair-xr](https://opensource.digipair.ai) element, you can use t
 
 ```typescript
 @customElement(element: string, options: {
-  providers: MetaProvider[],
+  providers: DXRProvider[],
   networked: boolean
 })
 ```
@@ -73,10 +73,10 @@ To create a [digipair-xr](https://opensource.digipair.ai) element, you can use t
 Example:
 
 ```typescript
-import { customElement, html, MetaElement, TemplateResult } from '@digipair-xr/core';
+import { customElement, html, DXRElement, TemplateResult } from '@digipair-xr/core';
 
 @customElement('example-hello-world')
-export class HelloWorldElement extends MetaElement {
+export class HelloWorldElement extends DXRElement {
   override render(): TemplateResult {
     return html`<a-box></a-box>`;
   }
@@ -88,10 +88,10 @@ export class HelloWorldElement extends MetaElement {
 [digipair-xr](https://opensource.digipair.ai) use [lit-html](https://lit.dev) to menage the template. Your can read more information on [lit documentation](https://lit.dev/docs/templates/overview/).
 
 ```typescript
-import { customElement, html, MetaElement, TemplateResult } from '@digipair-xr/core';
+import { customElement, html, DXRElement, TemplateResult } from '@digipair-xr/core';
 
 @customElement('example-hello-world')
-export class HelloWorldElement extends MetaElement {
+export class HelloWorldElement extends DXRElement {
   override render(): TemplateResult {
     const text = 'Hello world !';
     return html`<a-entity text="value: ${text};"></a-entity>`;
@@ -104,10 +104,10 @@ export class HelloWorldElement extends MetaElement {
 [digipair-xr](https://opensource.digipair.ai) use [lit-html](https://lit.dev) to menage the template. Your can read more information on [lit documentation](https://lit.dev/docs/templates/overview/).
 
 ```typescript
-import { customElement, html, MetaElement, TemplateResult } from '@digipair-xr/core';
+import { customElement, html, DXRElement, TemplateResult } from '@digipair-xr/core';
 
 @customElement('example-selectable-box')
-export class HelloWorldElement extends MetaElement {
+export class HelloWorldElement extends DXRElement {
   override render(): TemplateResult {
     return html`<a-box selectable @click=${() => console.log('box clicked')}> </a-box>`;
   }
@@ -122,10 +122,10 @@ export class HelloWorldElement extends MetaElement {
 All the hooks [AFrame](https://aframe.io/docs/1.4.0/core/component.html#overview-of-methods) are usable with [digipair-xr](https://opensource.digipair.ai).
 
 ```typescript
-import { customElement, html, MetaElement, TemplateResult } from '@digipair-xr/core';
+import { customElement, html, DXRElement, TemplateResult } from '@digipair-xr/core';
 
 @customElement('example-hello-world')
-export class HelloWorldElement extends MetaElement {
+export class HelloWorldElement extends DXRElement {
   override init(): void {
     console.log('example-hello-world element is initialized');
   }
@@ -152,10 +152,10 @@ To read an attribute from the HTML element, you can use the decorator `@property
 Example:
 
 ```typescript
-import { customElement, html, MetaElement, TemplateResult } from '@digipair-xr/core';
+import { customElement, html, DXRElement, TemplateResult } from '@digipair-xr/core';
 
 @customElement('example-hello-world')
-export class HelloWorldElement extends MetaElement {
+export class HelloWorldElement extends DXRElement {
   @property()
   text: string;
 
@@ -166,11 +166,11 @@ export class HelloWorldElement extends MetaElement {
 ```
 
 ```html
-<meta-scene>
+<dxr-scene>
   <template slot="scene">
     <example-hello-world text="Hello World"></example-hello-world>
   </template>
-</meta-scene>
+</dxr-scene>
 ```
 
 ### @state decorator
@@ -186,10 +186,10 @@ The value is synchronized on the networked if the networked attribute of the `cu
 Example:
 
 ```typescript
-import { customElement, html, MetaElement, TemplateResult } from '@digipair-xr/core';
+import { customElement, html, DXRElement, TemplateResult } from '@digipair-xr/core';
 
 @customElement('example-color-box')
-export class HelloWorldElement extends MetaElement {
+export class HelloWorldElement extends DXRElement {
   @state()
   color = 'green';
 
@@ -212,7 +212,7 @@ Example:
 
 ```typescript
 @customElement('game-tictactoe-pawn')
-export class TictactoePawnElement extends MetaElement {
+export class TictactoePawnElement extends DXRElement {
   @inject()
   private tictactoeProvider!: TictactoeProvider;
 
@@ -240,7 +240,7 @@ Example:
 
 ```typescript
 @injectable()
-export class TictactoeProvider extends MetaProvider {
+export class TictactoeProvider extends DXRProvider {
   // ...
 }
 ```
