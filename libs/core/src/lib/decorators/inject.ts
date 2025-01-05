@@ -27,11 +27,11 @@ export const inject = () => (target: DXRProvider, property: string) => {
         const listener = () => {
           this.requestUpdate();
         };
-        provider.el.addEventListener('__META_UPDATE__', listener);
+        provider.el.addEventListener('__DXR_UPDATE__', listener);
         this.__SUBSCRIPTIONS__ = this.__SUBSCRIPTIONS__ || [];
         this.__SUBSCRIPTIONS__.push({
           el: provider.el,
-          type: '__META_UPDATE__',
+          type: '__DXR_UPDATE__',
           listener,
         });
 

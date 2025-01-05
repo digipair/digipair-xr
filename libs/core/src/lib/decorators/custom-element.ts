@@ -39,7 +39,7 @@ export const customElement =
     };
 
     const aFrameElementDefinition = {
-      __META_INITIALIZED__: false,
+      __DXR_INITIALIZED__: false,
       get schema() {
         return ElementClass.schema;
       },
@@ -53,7 +53,7 @@ export const customElement =
         // defer init for providers
         setTimeout(() => {
           getInstance(this as unknown as Component).init();
-          this.__META_INITIALIZED__ = true;
+          this.__DXR_INITIALIZED__ = true;
           getInstance(this as unknown as Component).requestUpdate();
         }, 1);
       },
@@ -84,7 +84,7 @@ export const customElement =
       update: function (oldData: unknown): void {
         getInstance(this as unknown as Component).update(oldData);
 
-        if (this.__META_INITIALIZED__) {
+        if (this.__DXR_INITIALIZED__) {
           getInstance(this as unknown as Component).requestUpdate();
         }
       },

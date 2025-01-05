@@ -13,7 +13,7 @@ export const injectHtml = () => (target: Element, property: string) => {
 
       if (!provider) {
         const el = this.closest(`[meta-html-container]`)
-          .__META_ELEMENT_INSTANCE__.el as any;
+          .__DXR_ELEMENT_INSTANCE__.el as any;
         const name = providers.get(type);
         provider = (
           el.closest(`[${name}]`) ||
@@ -29,11 +29,11 @@ export const injectHtml = () => (target: Element, property: string) => {
         const listener = () => {
           this.requestUpdate();
         };
-        provider.el.addEventListener('__META_UPDATE__', listener);
+        provider.el.addEventListener('__DXR_UPDATE__', listener);
         this.__SUBSCRIPTIONS__ = this.__SUBSCRIPTIONS__ || [];
         this.__SUBSCRIPTIONS__.push({
           el: provider.el,
-          type: '__META_UPDATE__',
+          type: '__DXR_UPDATE__',
           listener,
         });
 

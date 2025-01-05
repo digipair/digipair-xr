@@ -27,7 +27,7 @@ export class HtmlElement extends DXRElement {
       `filter: opacity(0); z-index: -1; position: absolute; top: 0; left: 0; width:${this.width}; ${this.style}`,
     );
     container.innerHTML = template;
-    container.__META_ELEMENT_INSTANCE__ = this;
+    container.__DXR_ELEMENT_INSTANCE__ = this;
     document.body.appendChild(container);
 
     setTimeout(() => {
