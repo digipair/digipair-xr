@@ -1,5 +1,4 @@
 import '@digipair-xr/camrender';
-import '@digipair-xr/core';
 import '@digipair-xr/design-system';
 import '@digipair-xr/exporter';
 import '@digipair-xr/html';

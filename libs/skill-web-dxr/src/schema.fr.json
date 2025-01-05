@@ -10,7 +10,7 @@
   "paths": {
     "/xr-camrender-camera": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins"],
         "summary": "Camera",
         "description": "Affichage d'une camera",
         "parameters": [
@@ -49,6 +49,33 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "x-events": []
@@ -56,7 +83,7 @@
     },
     "/xr-camrender-screen": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins"],
         "summary": "Ecran de camera",
         "description": "Affichage d'un écran de camera",
         "parameters": [
@@ -86,6 +113,33 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "x-events": []
@@ -93,7 +147,7 @@
     },
     "/dxr-html": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins", "requirePins"],
         "summary": "Container HTML",
         "description": "Affichage d'un container html",
         "parameters": [
@@ -114,6 +168,33 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "x-events": []
@@ -121,7 +202,7 @@
     },
     "/dxr-info": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins"],
         "summary": "Information",
         "description": "Affichage d'un container d'information",
         "parameters": [
@@ -160,6 +241,33 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "x-events": []
@@ -167,7 +275,7 @@
     },
     "/dxr-mesh": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins"],
         "summary": "Mesh",
         "description": "Gestion d'un mesh d'un object 3D",
         "parameters": [
@@ -195,7 +303,7 @@
     },
     "/dxr-mesh-animation-mixer": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins"],
         "summary": "Mesh animé",
         "description": "Gestion d'un mesh animé",
         "parameters": [
@@ -243,6 +351,33 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "x-events": []
@@ -250,7 +385,7 @@
     },
     "/dxr-ready-player-me": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins"],
         "summary": "Utilisateur ReadyPlayerMe",
         "description": "Affichage d'un utilisateur ReadyPlayerMe",
         "parameters": [
@@ -262,6 +397,33 @@
             "schema": {
               "type": "object"
             }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "x-events": []
@@ -269,7 +431,7 @@
     },
     "/dxr-scene": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins", "requirePins"],
         "summary": "Scene XR",
         "description": "Affichage d'une scène XR",
         "parameters": [
@@ -317,6 +479,33 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "x-events": []
@@ -324,7 +513,7 @@
     },
     "/dxr-screen-shared": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins"],
         "summary": "Ecran de partage",
         "description": "Affichage d'un écran de partage d'écran oui de caméra",
         "parameters": [
@@ -345,6 +534,33 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "x-events": []
@@ -352,7 +568,7 @@
     },
     "/dxr-teleport": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins"],
         "summary": "Zone de téléportation",
         "description": "Affichage d'une zone de téléportation",
         "parameters": [
@@ -390,6 +606,33 @@
             "description": "Hauteur",
             "schema": {
               "type": "number"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
             }
           }
         ],
