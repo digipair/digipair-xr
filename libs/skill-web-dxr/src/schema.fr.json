@@ -712,6 +712,33 @@
             "schema": {
               "type": "object"
             }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "x-events": []
@@ -719,7 +746,7 @@
     },
     "/dxr-scene": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins", "requirePins"],
         "summary": "Scene XR",
         "description": "Affichage d'une scène XR",
         "parameters": [
@@ -1110,7 +1137,7 @@
     },
     "/dxr-teleport": {
       "post": {
-        "tags": ["web", "spatial"],
+        "tags": ["web", "spatial", "needPins"],
         "summary": "Zone de téléportation",
         "description": "Affichage d'une zone de téléportation",
         "parameters": [
@@ -1148,6 +1175,33 @@
             "description": "Hauteur",
             "schema": {
               "type": "number"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
             }
           }
         ],
