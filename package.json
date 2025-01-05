@@ -25,6 +25,7 @@
     "jest-canvas-mock": "^2.5.2",
     "md5": "^2.3.0",
     "networked-aframe": "^0.12.3",
+    "quickjs-emscripten": "^0.31.0",
     "reflect-metadata": "^0.2.2",
     "regenerator-runtime": "0.14.1",
     "super-hands": "3.0.4",
