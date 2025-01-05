@@ -9,9 +9,9 @@ export {
   state as stateHtml,
 } from 'lit/decorators.js';
 export { unsafeHTML } from 'lit/directives/unsafe-html.js';
-export { DXRElement } from './src/lib/classes/meta-element';
-export { DXRHtmlElement } from './src/lib/classes/meta-html-element';
-export { DXRProvider } from './src/lib/classes/meta-provider';
+export { DXRElement } from './src/lib/classes/dxr-element';
+export { DXRHtmlElement } from './src/lib/classes/dxr-html-element';
+export { DXRProvider } from './src/lib/classes/dxr-provider';
 export { customElement } from './src/lib/decorators/custom-element';
 export { inject } from './src/lib/decorators/inject';
 export { injectHtml } from './src/lib/decorators/inject-html';

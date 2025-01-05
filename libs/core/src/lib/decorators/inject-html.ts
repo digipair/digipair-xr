@@ -12,12 +12,12 @@ export const injectHtml = () => (target: Element, property: string) => {
       let provider = providersByElement.get(this);
 
       if (!provider) {
-        const el = this.closest(`[meta-html-container]`)
-          .__DXR_ELEMENT_INSTANCE__.el as any;
+        const el = this.closest(`[dxr-html-container]`).__DXR_ELEMENT_INSTANCE__
+          .el as any;
         const name = providers.get(type);
         provider = (
           el.closest(`[${name}]`) ||
-          el.sceneEl.querySelector(`meta-scene-container[${name}]`)
+          el.sceneEl.querySelector(`dxr-scene-container[${name}]`)
         )?.components[name].__AFRAME_ELEMENT__;
 
         if (!provider) {

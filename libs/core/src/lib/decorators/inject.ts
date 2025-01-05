@@ -15,7 +15,7 @@ export const inject = () => (target: DXRProvider, property: string) => {
         const name = providers.get(type);
         provider = (
           this.el.closest(`[${name}]`) ||
-          this.el.sceneEl.querySelector(`meta-scene-container[${name}]`)
+          this.el.sceneEl.querySelector(`dxr-scene-container[${name}]`)
         )?.components[name].__AFRAME_ELEMENT__;
 
         if (!provider) {

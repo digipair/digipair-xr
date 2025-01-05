@@ -2074,10 +2074,10 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
-"@splinetool/loader@^1.9.46":
-  version "1.9.51"
-  resolved "https://registry.yarnpkg.com/@splinetool/loader/-/loader-1.9.51.tgz#96fc00441fd106195e34d44525d2b10265b65c5f"
-  integrity sha512-H/uN6ScPcg5nI2AKAOmzPWX1LOvu7RXXtE0V1IXy8WneoLHkoL1HB554VYlaXHRJLUg0JzFA9yPho1K3uFlHtg==
+"@splinetool/loader@^1.9.54":
+  version "1.9.56"
+  resolved "https://registry.yarnpkg.com/@splinetool/loader/-/loader-1.9.56.tgz#080511d80b3451cb4d80c45ad7f16726cafe6539"
+  integrity sha512-7yFwKMnQHdGsgkILGaE0t/7A+8K9naLMOySXmvv844TfG4lcH5GWvLLNUjN7xFjn2JCItrTu0Vp2WBRwHtFXyA==
   dependencies:
     semver-compare "^1.0.0"
 
