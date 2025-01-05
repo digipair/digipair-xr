@@ -5,7 +5,7 @@ const path = require('path');
 
 function getRollupOptions(options) {
   const extraGlobals = {};
-  const externals = [];
+  const externals = ['aframe'];
 
   const value = {
     ...options,
@@ -18,8 +18,10 @@ function getRollupOptions(options) {
         entries: Object.getOwnPropertyNames(tsconfig.compilerOptions.paths).map(
           (property) => ({
             find: property,
-            replacement: path.resolve(tsconfig.compilerOptions.paths[property][0]),
-          })
+            replacement: path.resolve(
+              tsconfig.compilerOptions.paths[property][0],
+            ),
+          }),
         ),
       }),
     ],

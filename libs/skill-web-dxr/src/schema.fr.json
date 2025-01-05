@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "@digipair/skill-web-dxr",
+    "title": "@digipair-xr/skill-web-dxr",
     "summary": "Affichage de page XR",
     "description": "Affichage de page XR",
     "version": "0.1.0",
