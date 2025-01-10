@@ -16,6 +16,51 @@
         "description": "The box primitive creates shapes such as boxes, cubes, or walls.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -352,6 +397,51 @@
         "description": "The camera primitive determines what the user sees. We can change the viewport\nby modifying the camera entity’s position and rotation.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -480,6 +570,51 @@
         "summary": "a-circle",
         "description": "The circle primitive creates circles surfaces using the geometry\ncomponent with the type set to circle.",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",
@@ -816,6 +951,51 @@
         "summary": "a-cone",
         "description": "The cone primitive creates a cone shape.",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",
@@ -1180,6 +1360,51 @@
         "description": "The cubemap primitive is used to create a CubeTexture environment map from 6 square images.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -1254,6 +1479,51 @@
         "summary": "a-cursor",
         "description": "The cursor primitive is a reticle that allows for clicking and basic\ninteractivity with a scene on devices that do not have a hand controller. The\ndefault appearance is a ring geometry. The cursor is usually placed as a child\nof the camera.",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",
@@ -1374,6 +1644,51 @@
         "summary": "a-curvedimage",
         "description": "The curved image primitive creates images that bend around the user. Curved\nimages arranged around the camera can be pleasing for legibility since each\npixel sits at the same distance from the user. They can be a better choice than\nangled flat planes for complex layouts because they ensure a smooth surface\nrather than a series of awkward seams between planes.",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",
@@ -1593,6 +1908,51 @@
         "summary": "a-cylinder",
         "description": "The cylinder primitive is used to create tubes and curved surfaces.",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",
@@ -1947,6 +2307,51 @@
         "summary": "a-dodecahedron",
         "description": null,
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",
@@ -2311,6 +2716,51 @@
         "description": "The glTF model primitive displays a 3D glTF model created from a 3D\nmodeling program or downloaded from the web.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -2332,6 +2782,15 @@
             "name": "scale",
             "summary": "Scale",
             "description": "Element scale",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "src",
+            "summary": "Source",
+            "description": "GLTF file URL",
             "required": false,
             "schema": {
               "type": "string"
@@ -2385,6 +2844,51 @@
         "summary": "a-icosahedron",
         "description": null,
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",
@@ -2704,6 +3208,51 @@
         "description": "The image primitive shows an image on a flat plane.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -2896,6 +3445,51 @@
         "description": "A light changes the lighting and shading of the scene.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -3061,6 +3655,51 @@
         "description": "The link primitive provides a compact API to define links that resembles\nthe traditional \u003Ca\u003E tag.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -3163,6 +3802,51 @@
         "description": "The .OBJ model primitive displays a 3D Wavefront model.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -3184,6 +3868,15 @@
             "name": "scale",
             "summary": "Scale",
             "description": "Element scale",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "src",
+            "summary": "Source",
+            "description": "GLTF file URL",
             "required": false,
             "schema": {
               "type": "string"
@@ -3237,6 +3930,51 @@
         "summary": "a-octahedron",
         "description": null,
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",
@@ -3556,6 +4294,51 @@
         "description": "The plane primitive creates flat surfaces using the geometry\ncomponent with the type set to plane.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -3873,6 +4656,51 @@
         "summary": "a-ring",
         "description": "The ring primitive creates a ring or disc shape.",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",
@@ -4228,6 +5056,51 @@
         "description": "The sky primitive adds a background color or 360° image to a scene.  A sky\nis a large sphere with a color or texture mapped to the inside.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -4447,6 +5320,51 @@
         "description": "The sound primitive wraps the sound component.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -4566,6 +5484,51 @@
         "summary": "a-sphere",
         "description": "The sphere primitive creates a spherical or polyhedron shapes. It wraps an entity that prescribes the geometry component with its geometric primitive set to sphere.",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",
@@ -4930,6 +5893,51 @@
         "description": null,
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -5248,6 +6256,51 @@
         "description": "Wraps the text component.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -5511,6 +6564,51 @@
         "summary": "a-torus-knot",
         "description": "The torus knot primitive creates pretzel shapes using the geometry\ncomponent with the type set to torusKnot.",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",
@@ -5866,6 +6964,51 @@
         "description": "The torus primitive creates donut or tube shapes using the geometry\ncomponent with the type set to torus.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -6211,6 +7354,51 @@
         "description": "The triangle primitive creates triangle surfaces using the geometry\ncomponent with the type set to triangle.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -6538,6 +7726,51 @@
         "description": "The video primitive plays a video as a texture on a flat plane.",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "position",
             "summary": "Position",
             "description": "Element position",
@@ -6729,6 +7962,51 @@
         "summary": "a-videosphere",
         "description": "The videosphere primitive plays 360° videos in the background of the scene.\nVideospheres are a large sphere with the video texture mapped to the inside.",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "position",
             "summary": "Position",

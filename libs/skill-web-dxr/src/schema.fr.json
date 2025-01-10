@@ -15,6 +15,51 @@
         "description": "Affichage d'une camera",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "fps",
             "summary": "Frames par seconde",
             "required": false,
@@ -88,6 +133,51 @@
         "description": "Affichage d'un écran de camera",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "cid",
             "summary": "Identifiant",
             "required": false,
@@ -152,6 +242,51 @@
         "description": "Affichage d'un container html",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "width",
             "summary": "Largeur",
             "required": false,
@@ -206,6 +341,51 @@
         "summary": "Information",
         "description": "Affichage d'un container d'information",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "color",
             "summary": "Couleur",
@@ -280,6 +460,51 @@
         "description": "Gestion d'un mesh d'un object 3D",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "object",
             "summary": "Objet à mapper",
             "required": true,
@@ -307,6 +532,51 @@
         "summary": "Mesh animé",
         "description": "Gestion d'un mesh animé",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "object",
             "summary": "Objet à mapper",
@@ -390,6 +660,51 @@
         "description": "Affichage d'un utilisateur ReadyPlayerMe",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "playerinfo",
             "summary": "Informations",
             "required": true,
@@ -435,6 +750,51 @@
         "summary": "Scene XR",
         "description": "Affichage d'une scène XR",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "server",
             "summary": "Serveur réseau",
@@ -518,6 +878,51 @@
         "description": "Affichage d'un écran de partage d'écran oui de caméra",
         "parameters": [
           {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "color",
             "summary": "Couleur",
             "required": false,
@@ -572,6 +977,51 @@
         "summary": "Zone de téléportation",
         "description": "Affichage d'une zone de téléportation",
         "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "color",
             "summary": "Couleur",
