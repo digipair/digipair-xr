@@ -2,7 +2,7 @@
   {
     "name": "Screen",
     "image": "https://assets.pinser-metaverse.com/pins/images/screen-shared.jpg",
-    "component": "meta-screen-shared",
+    "component": "dxr-screen-shared",
     "import": "@digipair-xr/screen-shared",
     "dynamic": false,
     "placeholder": {
@@ -15,7 +15,7 @@
   {
     "name": "Screen curved",
     "image": "https://assets.pinser-metaverse.com/pins/images/screen-shared-curved.jpg",
-    "component": "meta-screen-shared",
+    "component": "dxr-screen-shared",
     "import": "@digipair-xr/screen-shared",
     "dynamic": false,
     "placeholder": {

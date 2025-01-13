@@ -1,14 +1,14 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    property,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  property,
+  TemplateResult,
 } from '@digipair-xr/core';
 import '../common/icon.element';
 
-@customElement('meta-menu-button-image')
-export class MenuButtonImage extends MetaElement {
+@customElement('dxr-menu-button-image')
+export class MenuButtonImage extends DXRElement {
   @property()
   image!: string;
 

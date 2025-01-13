@@ -1,17 +1,17 @@
 import { Component, SinglePropertySchema } from 'aframe';
-import { MetaElement } from '../classes/meta-element';
-import { MetaProvider } from '../classes/meta-provider';
+import { DXRElement } from '../classes/dxr-element';
+import { DXRProvider } from '../classes/dxr-provider';
 import '../components/networked-element';
 import { subscription } from '../interfaces/subscription';
 import { providers } from '../stores/providers';
 
 export const customElement =
-  <P extends typeof MetaProvider>(
+  <P extends typeof DXRProvider>(
     elementName: string,
-    _options?: { networked?: boolean; providers?: P[] }
+    _options?: { networked?: boolean; providers?: P[] },
   ) =>
-  <E extends typeof MetaElement>(ElementClass: E) => {
-    const instances = new Map<Component, MetaElement>();
+  <E extends typeof DXRElement>(ElementClass: E) => {
+    const instances = new Map<Component, DXRElement>();
     const options = {
       networked: false,
       providers: [],
@@ -39,7 +39,7 @@ export const customElement =
     };
 
     const aFrameElementDefinition = {
-      __META_INITIALIZED__: false,
+      __DXR_INITIALIZED__: false,
       get schema() {
         return ElementClass.schema;
       },
@@ -53,7 +53,7 @@ export const customElement =
         // defer init for providers
         setTimeout(() => {
           getInstance(this as unknown as Component).init();
-          this.__META_INITIALIZED__ = true;
+          this.__DXR_INITIALIZED__ = true;
           getInstance(this as unknown as Component).requestUpdate();
         }, 1);
       },
@@ -75,11 +75,7 @@ export const customElement =
       tick: function (time: number, timeDelta: number): void {
         getInstance(this as unknown as Component).tick(time, timeDelta);
       },
-      tock: function (
-        time: number,
-        timeDelta: number,
-        camera: any
-      ): void {
+      tock: function (time: number, timeDelta: number, camera: any): void {
         getInstance(this as unknown as Component).tock(time, timeDelta, camera);
       },
       updateSchema: function (): void {
@@ -88,7 +84,7 @@ export const customElement =
       update: function (oldData: unknown): void {
         getInstance(this as unknown as Component).update(oldData);
 
-        if (this.__META_INITIALIZED__) {
+        if (this.__DXR_INITIALIZED__) {
           getInstance(this as unknown as Component).requestUpdate();
         }
       },
@@ -106,7 +102,7 @@ export const customElement =
               key.schema as {
                 [key: string]: SinglePropertySchema<unknown>;
               }
-            )[property].default
+            )[property].default,
         ),
       }));
 
@@ -123,7 +119,7 @@ export const customElement =
                     (property: string) => ({
                       component: elementName,
                       property,
-                    })
+                    }),
                   )),
               ...options.providers
                 .filter((provider) => provider.__NETWORKED__)
@@ -140,7 +136,7 @@ export const customElement =
             {},
             ...Object.keys(ElementClass.schema).map((key) => ({
               [`${key}`]: `${elementName}.${key}`,
-            }))
+            })),
           );
         },
       });
@@ -149,7 +145,7 @@ export const customElement =
         defaultComponents: {
           [elementName]: {},
           ...Object.fromEntries(
-            options.providers.map((key) => [providers.get(key), {}])
+            options.providers.map((key) => [providers.get(key), {}]),
           ),
         },
         get mappings() {
@@ -157,7 +153,7 @@ export const customElement =
             {},
             ...Object.keys(ElementClass.schema).map((key) => ({
               [`${key}`]: `${elementName}.${key}`,
-            }))
+            })),
           );
         },
       });

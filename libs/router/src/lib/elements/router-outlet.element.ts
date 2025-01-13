@@ -1,19 +1,19 @@
 import {
-    customElement,
-    Entity,
-    html,
-    inject,
-    MetaElement,
-    property,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  Entity,
+  html,
+  inject,
+  property,
+  TemplateResult,
 } from '@digipair-xr/core';
 import { RouteProvider } from '../providers/route.provider';
 import { RouterProvider } from '../providers/router.provider';
 
-@customElement('meta-router-outlet', {
+@customElement('dxr-router-outlet', {
   providers: [RouteProvider],
 })
-export class RouterOutletElement extends MetaElement {
+export class RouterOutletElement extends DXRElement {
   @property({
     default: 'default',
   })

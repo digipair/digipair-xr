@@ -1,11 +1,11 @@
 import 'reflect-metadata';
-import { MetaElement } from '../classes/meta-element';
-import { MetaProvider } from '../classes/meta-provider';
+import { DXRElement } from '../classes/dxr-element';
+import { DXRProvider } from '../classes/dxr-provider';
 import { providers } from '../stores/providers';
 
-export const inject = () => (target: MetaProvider, property: string) => {
+export const inject = () => (target: DXRProvider, property: string) => {
   const type = Reflect.getMetadata('design:type', target, property);
-  const providersByElement = new Map<MetaElement, MetaProvider>();
+  const providersByElement = new Map<DXRElement, DXRProvider>();
 
   Object.defineProperty(target, property, {
     get() {
@@ -15,23 +15,23 @@ export const inject = () => (target: MetaProvider, property: string) => {
         const name = providers.get(type);
         provider = (
           this.el.closest(`[${name}]`) ||
-          this.el.sceneEl.querySelector(`meta-scene-container[${name}]`)
+          this.el.sceneEl.querySelector(`dxr-scene-container[${name}]`)
         )?.components[name].__AFRAME_ELEMENT__;
 
         if (!provider) {
           throw new Error(
-            `${name} cannot be injected. May be it is not correctly provided ?`
+            `${name} cannot be injected. May be it is not correctly provided ?`,
           );
         }
 
         const listener = () => {
           this.requestUpdate();
         };
-        provider.el.addEventListener('__META_UPDATE__', listener);
+        provider.el.addEventListener('__DXR_UPDATE__', listener);
         this.__SUBSCRIPTIONS__ = this.__SUBSCRIPTIONS__ || [];
         this.__SUBSCRIPTIONS__.push({
           el: provider.el,
-          type: '__META_UPDATE__',
+          type: '__DXR_UPDATE__',
           listener,
         });
 

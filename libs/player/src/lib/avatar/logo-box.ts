@@ -1,13 +1,13 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    property,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  property,
+  TemplateResult,
 } from '@digipair-xr/core';
 
-@customElement('meta-logo-box')
-export class BoxElement extends MetaElement {
+@customElement('dxr-logo-box')
+export class BoxElement extends DXRElement {
   @property({ default: '#fe78a9' })
   color1!: string;
 

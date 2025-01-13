@@ -37,7 +37,7 @@ AFRAME.registerComponent('selectable', {
     const el = this.el;
     const worldPosition = this.worldPosition;
     const position =
-      el.tagName === 'META-MESH'
+      el.tagName === 'dxr-MESH'
         ? el.object3D.children[0]?.position
         : el.object3D.position;
 

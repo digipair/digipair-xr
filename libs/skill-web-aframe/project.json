@@ -1,0 +1,31 @@
+{
+  "name": "skill-web-aframe",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/skill-web-aframe/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/skill-web-aframe",
+        "main": "libs/skill-web-aframe/src/index.ts",
+        "tsConfig": "libs/skill-web-aframe/tsconfig.lib.json",
+        "assets": [
+          "libs/skill-web-aframe/src/index.d.ts",
+          "libs/skill-web-aframe/src/schema.json",
+          "libs/skill-web-aframe/src/schema.fr.json"
+        ],
+        "rollupConfig": ["libs/skill-web-aframe/rollup.build.cjs"],
+        "project": "libs/skill-web-aframe/package.json",
+        "compiler": "swc",
+        "format": ["cjs", "esm"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs skill-web-aframe {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    }
+  },
+  "tags": []
+}

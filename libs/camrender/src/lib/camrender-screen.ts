@@ -1,26 +1,26 @@
 import {
   customElement,
+  DXRElement,
   Entity,
   html,
-  MetaElement,
   property,
   TemplateResult,
 } from '@digipair-xr/core';
 
-@customElement('meta-camrender-screen')
-export class CamrenderScreenElement extends MetaElement {
+@customElement('xr-camrender-screen')
+export class CamrenderScreenElement extends DXRElement {
   @property({ default: 1.2 })
   width!: number;
 
   @property({ default: 0.9 })
   height!: number;
 
-  @property({ default: 'meta-camrender' })
+  @property({ default: 'dxr-camrender' })
   cid!: string;
 
   override tick(): void {
     const el = this.el.querySelector(
-      ':scope > [data-meta-camrender-screen]',
+      ':scope > [data-dxr-camrender-screen]',
     ) as Entity | null;
     if (!el) {
       return;
@@ -36,7 +36,7 @@ export class CamrenderScreenElement extends MetaElement {
   override render(): TemplateResult {
     return html`
       <a-plane
-        data-meta-camrender-screen
+        data-dxr-camrender-screen
         width=${this.width}
         height=${this.height}
         material="src: #${this.cid}; shader: flat;"

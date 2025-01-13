@@ -1,8 +1,8 @@
-import { customElement, MetaElement, property } from '@digipair-xr/core';
+import { customElement, DXRElement, property } from '@digipair-xr/core';
 import SplineLoader from '@splinetool/loader';
 
-@customElement('meta-spline')
-export class SplineElement extends MetaElement {
+@customElement('dxr-spline')
+export class SplineElement extends DXRElement {
   @property()
   scene!: string;
 

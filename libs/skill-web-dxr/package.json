@@ -1,0 +1,7 @@
+{
+  "name": "@digipair-xr/skill-web-dxr",
+  "version": "0.0.1",
+  "dependencies": {},
+  "main": "./index.cjs.js",
+  "module": "./index.esm.js"
+}

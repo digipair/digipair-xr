@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { SinglePropertySchema } from 'aframe';
 import 'reflect-metadata';
-import { MetaElement } from '../classes/meta-element';
+import { DXRElement } from '../classes/dxr-element';
 
 export const property =
   (options?: { default: any }) =>
-  <T extends MetaElement>(target: T, property: string) => {
+  <T extends DXRElement>(target: T, property: string) => {
     const type = Reflect.getMetadata('design:type', target, property);
 
-    if (!(target.constructor as typeof MetaElement).schema) {
-      (target.constructor as typeof MetaElement).schema = {};
+    if (!(target.constructor as typeof DXRElement).schema) {
+      (target.constructor as typeof DXRElement).schema = {};
     }
     (
-      (target.constructor as typeof MetaElement).schema as {
+      (target.constructor as typeof DXRElement).schema as {
         [key: string]: SinglePropertySchema<unknown>;
       }
     )[property] = {
@@ -31,8 +31,8 @@ export const property =
           type === String || !value
             ? value
             : type === Number || type === Boolean
-            ? JSON.parse(value)
-            : JSON.parse(decodeURIComponent(atob(value)));
+              ? JSON.parse(value)
+              : JSON.parse(decodeURIComponent(atob(value)));
 
         return result;
       },

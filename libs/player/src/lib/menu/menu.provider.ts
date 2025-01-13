@@ -1,7 +1,7 @@
-import { injectable, MetaProvider, state } from '@digipair-xr/core';
+import { DXRProvider, injectable, state } from '@digipair-xr/core';
 
 @injectable()
-export class MenuProvider extends MetaProvider {
+export class MenuProvider extends DXRProvider {
   @state()
   panel = 'pins';
 }

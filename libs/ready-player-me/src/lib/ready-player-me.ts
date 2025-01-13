@@ -1,14 +1,14 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    property,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  property,
+  TemplateResult,
 } from '@digipair-xr/core';
 import '@digipair-xr/mesh';
 
-@customElement('meta-ready-player-me')
-export class ReadyPlayerMeElement extends MetaElement {
+@customElement('dxr-ready-player-me')
+export class ReadyPlayerMeElement extends DXRElement {
   @property()
   playerinfo: any;
 
@@ -40,8 +40,8 @@ export class ReadyPlayerMeElement extends MetaElement {
         </a-rounded>
 
         <a-gltf-model src=${this.playerinfo.avatar} position="0 0 -0.04">
-          <meta-mesh object="LeftHand" scale="0 0 0"></meta-mesh>
-          <meta-mesh object="RightHand" scale="0 0 0"></meta-mesh>
+          <dxr-mesh object="LeftHand" scale="0 0 0"></dxr-mesh>
+          <dxr-mesh object="RightHand" scale="0 0 0"></dxr-mesh>
         </a-gltf-model>
       </a-entity>
     `;

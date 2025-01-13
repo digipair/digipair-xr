@@ -1,0 +1,1096 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "@digipair-xr/skill-web-dxr",
+    "summary": "Affichage de page XR",
+    "description": "Affichage de page XR",
+    "version": "0.1.0",
+    "x-icon": "🏗"
+  },
+  "paths": {
+    "/xr-camrender-camera": {
+      "post": {
+        "tags": ["web", "spatial", "needPins"],
+        "summary": "Camera",
+        "description": "Affichage d'une camera",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fps",
+            "summary": "Frames par seconde",
+            "required": false,
+            "description": "Frames par seconde",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "cid",
+            "summary": "Identifiant",
+            "required": false,
+            "description": "Identifiant de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "width",
+            "summary": "Largeur",
+            "required": false,
+            "description": "Largeur de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "summary": "Hauteur",
+            "required": false,
+            "description": "Hauteur de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/xr-camrender-screen": {
+      "post": {
+        "tags": ["web", "spatial", "needPins"],
+        "summary": "Ecran de camera",
+        "description": "Affichage d'un écran de camera",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cid",
+            "summary": "Identifiant",
+            "required": false,
+            "description": "Identifiant de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "width",
+            "summary": "Largeur",
+            "required": false,
+            "description": "Largeur de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "summary": "Hauteur",
+            "required": false,
+            "description": "Hauteur de la caméra",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-html": {
+      "post": {
+        "tags": ["web", "spatial", "needPins", "requirePins"],
+        "summary": "Container HTML",
+        "description": "Affichage d'un container html",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "width",
+            "summary": "Largeur",
+            "required": false,
+            "description": "Largeur du container",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "style",
+            "summary": "Style",
+            "required": false,
+            "description": "Style du container",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-info": {
+      "post": {
+        "tags": ["web", "spatial", "needPins"],
+        "summary": "Information",
+        "description": "Affichage d'un container d'information",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "color",
+            "summary": "Couleur",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "width",
+            "summary": "Largeur",
+            "required": false,
+            "description": "Largeur du container",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "style",
+            "summary": "Style",
+            "required": false,
+            "description": "Style du container",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "icon",
+            "summary": "Icone",
+            "required": false,
+            "description": "Icone",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-mesh": {
+      "post": {
+        "tags": ["web", "spatial", "needPins"],
+        "summary": "Mesh",
+        "description": "Gestion d'un mesh d'un object 3D",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "object",
+            "summary": "Objet à mapper",
+            "required": true,
+            "description": "Objet à mapper",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shared",
+            "summary": "Partagé",
+            "required": false,
+            "description": "Partagé",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-mesh-animation-mixer": {
+      "post": {
+        "tags": ["web", "spatial", "needPins"],
+        "summary": "Mesh animé",
+        "description": "Gestion d'un mesh animé",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "object",
+            "summary": "Objet à mapper",
+            "required": true,
+            "description": "Objet à mapper",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shared",
+            "summary": "Partagé",
+            "required": false,
+            "description": "Partagé",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "url",
+            "summary": "Url de l'animation",
+            "required": true,
+            "description": "Url de l'animation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mixer",
+            "summary": "Mixer",
+            "required": true,
+            "description": "Mixer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orgin",
+            "summary": "Origin",
+            "required": false,
+            "description": "Origin",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-ready-player-me": {
+      "post": {
+        "tags": ["web", "spatial", "needPins"],
+        "summary": "Utilisateur ReadyPlayerMe",
+        "description": "Affichage d'un utilisateur ReadyPlayerMe",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "playerinfo",
+            "summary": "Informations",
+            "required": true,
+            "description": "Informations de l'utilisateur",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-scene": {
+      "post": {
+        "tags": ["web", "spatial", "needPins", "requirePins"],
+        "summary": "Scene XR",
+        "description": "Affichage d'une scène XR",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "server",
+            "summary": "Serveur réseau",
+            "required": false,
+            "description": "Serveur réseau",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "draco",
+            "summary": "URL draco",
+            "required": false,
+            "description": "Url vers draco",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "adapter",
+            "summary": "Adapteur réseau",
+            "required": false,
+            "description": "Adapteur réseau",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "development",
+            "summary": "Développement",
+            "required": false,
+            "description": "Mode development",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "debugphysics",
+            "summary": "Debug de la physique",
+            "required": false,
+            "description": "Mode debug de la physique",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-screen-shared": {
+      "post": {
+        "tags": ["web", "spatial", "needPins"],
+        "summary": "Ecran de partage",
+        "description": "Affichage d'un écran de partage d'écran oui de caméra",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "color",
+            "summary": "Couleur",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "curved",
+            "summary": "Incurvé",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    },
+    "/dxr-teleport": {
+      "post": {
+        "tags": ["web", "spatial", "needPins"],
+        "summary": "Zone de téléportation",
+        "description": "Affichage d'une zone de téléportation",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "color",
+            "summary": "Couleur",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotationx",
+            "summary": "Rotation X",
+            "required": false,
+            "description": "Rotation X de l'arrivée",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "rotationy",
+            "summary": "Rotation Y",
+            "required": false,
+            "description": "Rotation Y de l'arrivée",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "summary": "Hauteur",
+            "required": false,
+            "description": "Hauteur",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

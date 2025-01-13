@@ -61,7 +61,7 @@ Open http://localhost:3000/ in your browser to see the result
 To see the other connected users, you must create a network session:
 
 1. open the file `apps/metaverse/src/metaverse.html`
-2. add an attribute `session` to the html element `meta-scene` with a unique uuid as value
+2. add an attribute `session` to the html element `dxr-scene` with a unique uuid as value
 
 > The uuid can be generated from [uuidgenerator.net](https://www.uuidgenerator.net) for example
 

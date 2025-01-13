@@ -1,13 +1,13 @@
 import {
-    customElement,
-    html,
-    MetaElement,
-    property,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  property,
+  TemplateResult,
 } from '@digipair-xr/core';
 
-@customElement('meta-menu-panel')
-export class MenuPanelElement extends MetaElement {
+@customElement('dxr-menu-panel')
+export class MenuPanelElement extends DXRElement {
   @property()
   icon!: string;
 
@@ -16,11 +16,11 @@ export class MenuPanelElement extends MetaElement {
 
   override render(): TemplateResult {
     return html`
-      <meta-icon
+      <dxr-icon
         position="0.025 0.525 0.001"
         width="1.5"
         icon=${this.icon}
-      ></meta-icon>
+      ></dxr-icon>
       <a-text
         value=${this.title}
         position="0.075 0.525 0.001"

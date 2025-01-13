@@ -1,19 +1,19 @@
 import {
-    customElement,
-    html,
-    inject,
-    MetaElement,
-    property,
-    state,
-    TemplateResult,
+  customElement,
+  DXRElement,
+  html,
+  inject,
+  property,
+  state,
+  TemplateResult,
 } from '@digipair-xr/core';
 import '@digipair-xr/design-system';
 import '../../pins/add-pins-cursor';
 import { MetaPins } from '../../pins/pins.interface';
 import { PlayerProvider } from '../../player/player.provider';
 
-@customElement('meta-player-menu-planel-pins')
-export class MenuPanelPinsElement extends MetaElement {
+@customElement('dxr-player-menu-planel-pins')
+export class MenuPanelPinsElement extends DXRElement {
   @property()
   repository!: string;
 
@@ -26,7 +26,7 @@ export class MenuPanelPinsElement extends MetaElement {
   private add(pins: MetaPins): void {
     this.playerProvider.toggleMenu();
     this.playerProvider.startCursor({
-      component: 'meta-player-menu-add-pins-cursor',
+      component: 'dxr-player-menu-add-pins-cursor',
       data: { editable: true, ...pins },
     });
   }
@@ -42,20 +42,20 @@ export class MenuPanelPinsElement extends MetaElement {
 
   override render(): TemplateResult {
     return html`
-      <meta-menu-panel icon="widgets" title="Pin's">
+      <dxr-menu-panel icon="widgets" title="Pin's">
         ${this.pins.map(
           (pin, index) => html`
-            <meta-menu-button-image
+            <dxr-menu-button-image
               position=${`${0.11 + (index % 4) * 0.18} ${
                 0.4 - Math.floor(index / 4) * 0.18
               } 0.001`}
               image=${pin.image}
               title=${pin.name}
               @click=${() => this.add(pin)}
-            ></meta-menu-button-image>
+            ></dxr-menu-button-image>
           `,
         )}
-      </meta-menu-panel>
+      </dxr-menu-panel>
     `;
   }
 }

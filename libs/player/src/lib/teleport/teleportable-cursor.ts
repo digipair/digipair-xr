@@ -1,18 +1,18 @@
 import {
-    customElement,
-    Entity,
-    html,
-    inject,
-    MetaElement,
-    nothing,
-    property,
-    state,
-    THREE,
+  customElement,
+  DXRElement,
+  Entity,
+  html,
+  inject,
+  nothing,
+  property,
+  state,
+  THREE,
 } from '@digipair-xr/core';
 import { PlayerProvider } from '../player/player.provider';
 
-@customElement('meta-teleportable-cursor')
-export class TeleportableCursorElement extends MetaElement {
+@customElement('dxr-teleportable-cursor')
+export class TeleportableCursorElement extends DXRElement {
   @property()
   vrmode!: boolean;
 

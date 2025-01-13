@@ -4,7 +4,7 @@ import { Component, Entity, Schema, System } from 'aframe';
 import { render, TemplateResult } from 'lit';
 import { subscription } from '../interfaces/subscription';
 
-export class MetaElement {
+export class DXRElement {
   static __NETWORKED__: boolean;
   static __ELEMENT_NAME__: string;
   static __INTERNAL_PROPERTIES__: string[];

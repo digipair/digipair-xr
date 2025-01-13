@@ -1,5 +1,5 @@
 import { SinglePropertySchema } from 'aframe';
-import { MetaElement } from '../classes/meta-element';
+import { DXRElement } from '../classes/dxr-element';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const NAF: any;
@@ -8,21 +8,21 @@ interface Action {
   timer: number;
   properties: { [key: string]: string };
 }
-const actions = new Map<MetaElement, Action>();
+const actions = new Map<DXRElement, Action>();
 
-export const state = () => (target: MetaElement, property: string) => {
-  if (!(target.constructor as typeof MetaElement).__INTERNAL_PROPERTIES__) {
-    (target.constructor as typeof MetaElement).__INTERNAL_PROPERTIES__ = [];
+export const state = () => (target: DXRElement, property: string) => {
+  if (!(target.constructor as typeof DXRElement).__INTERNAL_PROPERTIES__) {
+    (target.constructor as typeof DXRElement).__INTERNAL_PROPERTIES__ = [];
   }
-  (target.constructor as typeof MetaElement).__INTERNAL_PROPERTIES__.push(
-    property
+  (target.constructor as typeof DXRElement).__INTERNAL_PROPERTIES__.push(
+    property,
   );
 
-  if (!(target.constructor as typeof MetaElement).schema) {
-    (target.constructor as typeof MetaElement).schema = {};
+  if (!(target.constructor as typeof DXRElement).schema) {
+    (target.constructor as typeof DXRElement).schema = {};
   }
   (
-    (target.constructor as typeof MetaElement).schema as {
+    (target.constructor as typeof DXRElement).schema as {
       [key: string]: SinglePropertySchema<unknown>;
     }
   )[property] = {
@@ -36,7 +36,7 @@ export const state = () => (target: MetaElement, property: string) => {
     set(value: unknown) {
       if (!this.constructor.schema[property].default) {
         this.constructor.schema[property].default = btoa(
-          encodeURIComponent(JSON.stringify(value))
+          encodeURIComponent(JSON.stringify(value)),
         );
       }
 
@@ -54,12 +54,12 @@ export const state = () => (target: MetaElement, property: string) => {
       }
 
       (action.properties as any)[property] = btoa(
-        encodeURIComponent(JSON.stringify(value))
+        encodeURIComponent(JSON.stringify(value)),
       );
       action.timer = setTimeout(() => {
         this.el.setAttribute(
           this.constructor.__ELEMENT_NAME__,
-          action.properties
+          action.properties,
         );
         actions.delete(this);
       }, 100) as unknown as number;

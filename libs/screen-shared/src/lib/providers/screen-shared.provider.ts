@@ -1,10 +1,10 @@
 import {
-    Entity,
-    inject,
-    injectable,
-    MetaProvider,
-    state,
-    THREE,
+  DXRProvider,
+  Entity,
+  inject,
+  injectable,
+  state,
+  THREE,
 } from '@digipair-xr/core';
 import { PlayerProvider } from '@digipair-xr/player';
 import * as md5 from 'md5';
@@ -37,7 +37,7 @@ function getPathTo(element: Element, root: Element): string {
 @injectable({
   networked: true,
 })
-export class ScreenSharedProvider extends MetaProvider {
+export class ScreenSharedProvider extends DXRProvider {
   @state()
   menuVisible = false;
 
@@ -78,7 +78,7 @@ export class ScreenSharedProvider extends MetaProvider {
     this.menuVisible = false;
     this.streamId = THREE.MathUtils.generateUUID();
     const screenEl = this.playerProvider.addNetworkedElement(
-      'meta-screen-shared-desktop',
+      'dxr-screen-shared-desktop',
       {
         screenid: `${this.elementid}`,
         streamid: this.streamId,
@@ -96,7 +96,7 @@ export class ScreenSharedProvider extends MetaProvider {
   async openWebcam(options: { curved?: boolean }): Promise<void> {
     this.menuVisible = false;
     const screenEl = this.playerProvider.addNetworkedElement(
-      'meta-screen-shared-webcam',
+      'dxr-screen-shared-webcam',
       {
         screenid: `${this.elementid}`,
         curved: options.curved,

@@ -1,18 +1,18 @@
 import {
-    customElement,
-    Entity,
-    html,
-    inject,
-    MetaElement,
-    nothing,
-    property,
-    state,
-    THREE,
+  customElement,
+  DXRElement,
+  Entity,
+  html,
+  inject,
+  nothing,
+  property,
+  state,
+  THREE,
 } from '@digipair-xr/core';
 import { PlayerProvider } from '../player/player.provider';
 
-@customElement('meta-player-menu-add-pins-cursor')
-export class AddPinsCursorElement extends MetaElement {
+@customElement('dxr-player-menu-add-pins-cursor')
+export class AddPinsCursorElement extends DXRElement {
   @property()
   vrmode!: boolean;
 

@@ -1,17 +1,17 @@
 import {
-    customElement,
-    html,
-    inject,
-    MetaElement,
-    property,
-    state,
-    TemplateResult,
-    THREE,
+  customElement,
+  DXRElement,
+  html,
+  inject,
+  property,
+  state,
+  TemplateResult,
+  THREE,
 } from '@digipair-xr/core';
 import { PlayerProvider } from '@digipair-xr/player';
 
-@customElement('meta-teleport')
-export class TeleportElement extends MetaElement {
+@customElement('dxr-teleport')
+export class TeleportElement extends DXRElement {
   @property({ default: '#FFFFFF' })
   color!: string;
 

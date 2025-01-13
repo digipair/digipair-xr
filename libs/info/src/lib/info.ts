@@ -1,18 +1,18 @@
 import {
-    customElement,
-    Entity,
-    html,
-    MetaElement,
-    nothing,
-    property,
-    state,
-    TemplateResult,
-    unsafeHTML,
+  customElement,
+  DXRElement,
+  Entity,
+  html,
+  nothing,
+  property,
+  state,
+  TemplateResult,
+  unsafeHTML,
 } from '@digipair-xr/core';
 import '@digipair-xr/design-system';
 
-@customElement('meta-info')
-export class InfoElement extends MetaElement {
+@customElement('dxr-info')
+export class InfoElement extends DXRElement {
   @property({ default: '#0062ff' })
   color!: string;
 
@@ -48,16 +48,16 @@ export class InfoElement extends MetaElement {
       ${this.displayed
         ? nothing
         : html`
-            <meta-bubble
+            <dxr-bubble
               color=${this.color}
               icon="info"
               position=${`0 ${this.height / 2} 0`}
-            ></meta-bubble>
+            ></dxr-bubble>
           `}
       ${!this.displayed
         ? nothing
         : html`
-            <meta-dialog
+            <dxr-dialog
               position=${`-${this.width / 2} 0 0`}
               width=${this.width}
               height=${this.height}
@@ -65,7 +65,7 @@ export class InfoElement extends MetaElement {
               icon=${this.icon}
             >
               ${this.content()}
-            </meta-dialog>
+            </dxr-dialog>
           `}
 
       <a-box

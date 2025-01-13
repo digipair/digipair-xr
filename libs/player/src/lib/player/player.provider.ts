@@ -1,16 +1,16 @@
 import {
-    Entity,
-    injectable,
-    MetaProvider,
-    state,
-    THREE,
+  DXRProvider,
+  Entity,
+  injectable,
+  state,
+  THREE,
 } from '@digipair-xr/core';
 import { MetaCursor } from './cursor.interface';
 
 declare const NAF: any;
 
 @injectable()
-export class PlayerProvider extends MetaProvider {
+export class PlayerProvider extends DXRProvider {
   @state()
   playersound = true;
 
@@ -47,20 +47,20 @@ export class PlayerProvider extends MetaProvider {
     const template = document.createElement('template');
     template.setAttribute('id', 'element-template');
     template.innerHTML = `
-      <a-entity meta-element></a-entity>
+      <a-entity dxr-element></a-entity>
     `;
     assets?.appendChild(template);
 
     NAF?.schemas.add({
       template: `#element-template`,
-      components: ['position', 'rotation', 'scale', 'meta-element'],
+      components: ['position', 'rotation', 'scale', 'dxr-element'],
     });
   }
 
   setAudio(config: any = {}): void {
     (
       this.el.sceneEl?.querySelector(
-        'meta-player [meta-avatar][networked-audio-source]',
+        'dxr-player [dxr-avatar][networked-audio-source]',
       ) as Entity
     )?.setAttribute('networked-audio-source', config);
   }
@@ -77,9 +77,9 @@ export class PlayerProvider extends MetaProvider {
 
   setInfo(data: any): void {
     (
-      this.el.sceneEl?.querySelector('meta-player [meta-avatar]') as Entity
+      this.el.sceneEl?.querySelector('dxr-player [dxr-avatar]') as Entity
     )?.setAttribute(
-      'meta-avatar',
+      'dxr-avatar',
       `playerinfo: ${btoa(encodeURIComponent(JSON.stringify(data)))}`,
     );
   }
@@ -102,10 +102,10 @@ export class PlayerProvider extends MetaProvider {
     }
 
     const playerEl = this.el.sceneEl?.querySelector(
-      'meta-player > [networked]',
+      'dxr-player > [networked]',
     ) as Entity;
     const cameraEl = this.el.sceneEl?.querySelector(
-      'meta-player [meta-avatar]',
+      'dxr-player [dxr-avatar]',
     ) as Entity;
     const position = new THREE.Vector3();
     cameraEl.object3D.getWorldPosition(position);
@@ -136,7 +136,7 @@ export class PlayerProvider extends MetaProvider {
 
     el.setAttribute('networked', 'template: #element-template');
     el.setAttribute(
-      'meta-element',
+      'dxr-element',
       `element: ${btoa(
         encodeURIComponent(JSON.stringify(element)),
       )}; attributes: ${btoa(
@@ -253,7 +253,7 @@ export class PlayerProvider extends MetaProvider {
     });
 
     sceneEl
-      .querySelectorAll(':scope > meta-scene-container [networked]')
+      .querySelectorAll(':scope > dxr-scene-container [networked]')
       .forEach((el) => {
         this.takeOwnership(el);
       });
@@ -261,9 +261,7 @@ export class PlayerProvider extends MetaProvider {
     sceneEl.removeAttribute('networked-scene');
 
     sceneEl
-      .querySelectorAll(
-        ':scope > meta-scene-container > meta-player [networked]',
-      )
+      .querySelectorAll(':scope > dxr-scene-container > dxr-player [networked]')
       .forEach((el) => {
         const { template } = el.getAttribute('networked') as any;
         el.removeAttribute('networked');
