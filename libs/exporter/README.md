@@ -47,8 +47,7 @@ Follow the section [Get started](get-started)
 
 ### Try it now
 
-[![Open in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://githubbox.com/pinser-metaverse/metaverse-boostrap/blob/master/apps/metaverse/src/lib/metaverse.space.ts)
-
+[![Open in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://githubbox.com/pinser-metaverse/metaverse-boostrap/blob/master/apps/metaverse/src/lib/metaverse.space.ts) [![Open in Codeanywhere](https://codeanywhere.com/img/open-in-codeanywhere-btn.svg)](https://app.codeanywhere.com/#https://github.com/pinser-metaverse/metaverse-boostrap/tree/master)
 ### Join us
 
 [![Join us on Discord](./docs/assets/discord.png)](https://discord.gg/kCqF8xaMHJ)
@@ -60,4 +59,4 @@ Follow the section [Get started](get-started)
 [![stackoverflow](./docs/assets/stackoverflow.png)](https://stackoverflow.com/questions/tagged/pinser)
 
 > Don't hesitate to improve this documentation, any help will be amazing !  
-> [![Open in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://githubbox.com/digipair/digipair-xr/blob/master/docs/README.md)
+> [![Open in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://githubbox.com/digipair/digipair-xr/blob/master/docs/README.md) [![Open in Codeanywhere](https://codeanywhere.com/img/open-in-codeanywhere-btn.svg)](https://app.codeanywhere.com/#https://github.com/pinser-metaverse/metaverse-boostrap/tree/master)
