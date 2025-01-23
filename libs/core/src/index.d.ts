@@ -8,16 +8,8 @@ export {
   property as propertyHtml,
   state as stateHtml,
 } from 'lit/decorators.js';
-export { unsafeHTML } from 'lit/directives/unsafe-html.js';
-export { DXRElement } from './src/lib/classes/dxr-element';
-export { DXRHtmlElement } from './src/lib/classes/dxr-html-element';
-export { DXRProvider } from './src/lib/classes/dxr-provider';
-export { customElement } from './src/lib/decorators/custom-element';
-export { inject } from './src/lib/decorators/inject';
-export { injectHtml } from './src/lib/decorators/inject-html';
-export { injectable } from './src/lib/decorators/injectable';
-export { property } from './src/lib/decorators/property';
-export { state } from './src/lib/decorators/state';
+export* from 'lit/directives/unsafe-html.js';
+export { DXRElement } from './libs/core/src';
 export type TemplateResult = _TemplateResult;
 export type Entity = _Entity;
 export type Scene = _Scene;

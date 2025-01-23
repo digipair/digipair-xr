@@ -1,1 +1,3 @@
-// noting to do here
+export class SkillWebAframeService {
+  constructor() {}
+}

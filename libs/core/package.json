@@ -2,7 +2,6 @@
   "name": "@digipair-xr/core",
   "version": "0.0.0",
   "dependencies": {},
-  "typings": "./index.d.ts",
-  "main": "./index.cjs.js",
+  "main": "./index.js",
   "module": "./index.esm.js"
 }
