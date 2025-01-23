@@ -32,9 +32,7 @@
       "@digipair-xr/skill-web-dxr": ["libs/skill-web-dxr/src/index.ts"],
       "@digipair-xr/spline": ["libs/spline/src/index.ts"],
       "@digipair-xr/teleport": ["libs/teleport/src/index.ts"],
-      "@digipair/skill-web-talkinghead": [
-        "libs/skill-web-talkinghead/src/index.ts"
-      ]
+      "@digipair-xr/talkinghead": ["libs/talkinghead/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

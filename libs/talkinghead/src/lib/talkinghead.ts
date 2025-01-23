@@ -2,6 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2024 Mika Suominen
+ * adapted by Marc Buils for digipair-xr
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +23,32 @@
  * SOFTWARE.
  */
 
-import { THREE } from '@digipair/core';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import Stats from 'three/addons/libs/stats.module.js';
-import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import * as lipsync from './lipsync-fi.mjs';
+import { THREE } from '@digipair-xr/core';
+import * as lipsyncEn from './lipsync-en.js';
+import * as lipsyncFi from './lipsync-fi.js';
 
-import { DynamicBones } from './dynamicbones.mjs';
+import { Bone, Object3DEventMap, Quaternion } from 'three';
+import { DynamicBones } from './dynamicbones.js';
+
+const FBXLoader = (THREE as any).FBXLoader;
 
 // Temporary objects for animation loop
 const q = new THREE.Quaternion();
 const e = new THREE.Euler();
 const v = new THREE.Vector3();
 const w = new THREE.Vector3();
+const avatarPosition = new THREE.Vector3();
 const box = new THREE.Box3();
 const axisx = new THREE.Vector3(1, 0, 0);
 
 class TalkingHead {
+  [key: string]: any;
+
   /**
    * Avatar.
    * @typedef {Object} Avatar
-   * @property {string} url URL for the GLB file
    * @property {string} [body] Body form 'M' or 'F'
    * @property {string} [lipsyncLang] Lip-sync language, e.g. 'fi', 'en'
-   * @property {string} [ttsLang] Text-to-speech language, e.g. "fi-FI"
-   * @property {voice} [ttsVoice] Voice name.
-   * @property {numeric} [ttsRate] Voice rate.
-   * @property {numeric} [ttsPitch] Voice pitch.
-   * @property {numeric} [ttsVolume] Voice volume.
    * @property {string} [avatarMood] Initial mood.
    * @property {boolean} [avatarMute] If true, muted.
    * @property {numeric} [avatarIdleEyeContact] Eye contact while idle [0,1]
@@ -59,16 +56,6 @@ class TalkingHead {
    * @property {numeric} [avatarSpeakingEyeContact] Eye contact while speaking [0,1]
    * @property {numeric} [avatarSpeakingHeadMove] Eye contact while speaking [0,1]
    * @property {Object[]} [modelDynamicBones] Config for Dynamic Bones feature
-   */
-
-  /**
-   * Loading progress.
-   * @callback progressfn
-   * @param {string} url URL of the resource
-   * @param {Object} event Progress event
-   * @param {boolean} event.lengthComputable If false, total is not known
-   * @param {number} event.loaded Number of loaded items
-   * @param {number} event.total Number of total items
    */
 
   /**
@@ -109,9 +96,8 @@ class TalkingHead {
    * @param {Object} node DOM element of the avatar
    * @param {Object} [opt=null] Global/default options
    */
-  constructor(node, opt = null) {
-    this.nodeAvatar = node;
-    this.opt = {
+  constructor(opt: any = null) {
+    this['opt'] = {
       jwtGet: null, // Function to get JSON Web Token
       ttsEndpoint: null,
       ttsApikey: null,
@@ -164,24 +150,16 @@ class TalkingHead {
       listeningActiveThresholdLevel: 75,
       listeningActiveThresholdMs: 300,
       listeningActiveDurationMax: 240000,
-      statsNode: null,
-      statsStyle: null,
     };
-    Object.assign(this.opt, opt || {});
-
-    // Statistics
-    if (this.opt.statsNode) {
-      this.stats = new Stats();
-      if (this.opt.statsStyle) {
-        this.stats.dom.style.cssText = this.opt.statsStyle;
-      }
-      this.opt.statsNode.appendChild(this.stats.dom);
-    }
+    Object.assign(this['opt'], opt || {});
 
     // Pose templates
     // NOTE: The body weight on each pose should be on left foot
     // for most natural result.
-    this.poseTemplates = {
+    // Pose templates
+    // NOTE: The body weight on each pose should be on left foot
+    // for most natural result.
+    this['poseTemplates'] = {
       side: {
         standing: true,
         props: {
@@ -778,7 +756,9 @@ class TalkingHead {
 
     // Gestures
     // NOTE: For one hand gestures, use left left
-    this.gestureTemplates = {
+    // Gestures
+    // NOTE: For one hand gestures, use left left
+    this['gestureTemplates'] = {
       handup: {
         'LeftShoulder.rotation': {
           x: [1.5, 2, 1, 2],
@@ -1036,7 +1016,10 @@ class TalkingHead {
     // Pose deltas
     // NOTE: In this object (x,y,z) are always Euler rotations despite the name!!
     // NOTE: This object should include all the used delta properties.
-    this.poseDelta = {
+    // Pose deltas
+    // NOTE: In this object (x,y,z) are always Euler rotations despite the name!!
+    // NOTE: This object should include all the used delta properties.
+    this['poseDelta'] = {
       props: {
         'Hips.quaternion': { x: 0, y: 0, z: 0 },
         'Spine.quaternion': { x: 0, y: 0, z: 0 },
@@ -1052,44 +1035,59 @@ class TalkingHead {
     // Add legs, arms and hands
     ['Left', 'Right'].forEach((x) => {
       ['Leg', 'UpLeg', 'Arm', 'ForeArm', 'Hand'].forEach((y) => {
-        this.poseDelta.props[x + y + '.quaternion'] = { x: 0, y: 0, z: 0 };
+        this['poseDelta'].props[x + y + '.quaternion'] = { x: 0, y: 0, z: 0 };
       });
       ['HandThumb', 'HandIndex', 'HandMiddle', 'HandRing', 'HandPinky'].forEach(
         (y) => {
-          this.poseDelta.props[x + y + '1.quaternion'] = { x: 0, y: 0, z: 0 };
-          this.poseDelta.props[x + y + '2.quaternion'] = { x: 0, y: 0, z: 0 };
-          this.poseDelta.props[x + y + '3.quaternion'] = { x: 0, y: 0, z: 0 };
+          this['poseDelta'].props[x + y + '1.quaternion'] = {
+            x: 0,
+            y: 0,
+            z: 0,
+          };
+          this['poseDelta'].props[x + y + '2.quaternion'] = {
+            x: 0,
+            y: 0,
+            z: 0,
+          };
+          this['poseDelta'].props[x + y + '3.quaternion'] = {
+            x: 0,
+            y: 0,
+            z: 0,
+          };
         },
       );
     });
 
     // Dynamically pick up all the property names that we need in the code
     const names = new Set();
-    Object.values(this.poseTemplates).forEach((x) => {
+    Object.values(this['poseTemplates']).forEach((x: any) => {
       Object.keys(this.propsToThreeObjects(x.props)).forEach((y) =>
         names.add(y),
       );
     });
-    Object.keys(this.poseDelta.props).forEach((x) => {
+    Object.keys(this['poseDelta'].props).forEach((x) => {
       names.add(x);
     });
-    this.posePropNames = [...names];
+    this['posePropNames'] = [...names];
 
     // Use "side" as the first pose, weight on left leg
-    this.poseName = 'side'; // First pose
-    this.poseWeightOnLeft = true; // Initial weight on left leg
-    this.gesture = null; // Values that override pose properties
-    this.poseCurrentTemplate = this.poseTemplates[this.poseName];
-    this.poseBase = this.poseFactory(this.poseCurrentTemplate);
-    this.poseTarget = this.poseFactory(this.poseCurrentTemplate);
-    this.poseStraight = this.propsToThreeObjects(
-      this.poseTemplates['straight'].props,
+    // Use "side" as the first pose, weight on left leg
+    this['poseName'] = 'side'; // First pose
+    this['poseWeightOnLeft'] = true; // Initial weight on left leg
+    this['gesture'] = null; // Values that override pose properties
+    this['poseCurrentTemplate'] = this['poseTemplates'][this['poseName']];
+    this['poseBase'] = this.poseFactory(this['poseCurrentTemplate']);
+    this['poseTarget'] = this.poseFactory(this['poseCurrentTemplate']);
+    this['poseStraight'] = this.propsToThreeObjects(
+      this['poseTemplates']['straight'].props,
     ); // Straight pose used as a reference
-    this.poseAvatar = null; // Set when avatar has been loaded
+    this['poseAvatar'] = null; // Set when avatar has been loaded
 
     // Avatar height in meters
     // NOTE: The actual value is calculated based on the eye level on avatar load
-    this.avatarHeight = 1.7;
+    // Avatar height in meters
+    // NOTE: The actual value is calculated based on the eye level on avatar load
+    this['avatarHeight'] = 1.7;
 
     // Animation templates
     //
@@ -1111,22 +1109,41 @@ class TalkingHead {
     // object  : delay, delta times dt and values vs.
     //
 
-    this.animTemplateEyes = {
+    // Animation templates
+    //
+    // baseline: Describes morph target baseline. Values can be either float or
+    //           an array [start,end,skew] describing a probability distribution.
+    // speech  : Describes voice rate, pitch and volume as deltas to the values
+    //           set as options.
+    // anims   : Animations for breathing, pose, etc. To be used animation
+    //           sequence is selected in the following order:
+    //           1. State (idle, speaking, listening)
+    //           2. Mood (moodX, moodY)
+    //           3. Pose (poseX, poseY)
+    //           5. View (full, upper, head)
+    //           6. Body form ('M','F')
+    //           7. Alt (sequence of objects with propabilities p. If p is not
+    //              specified, the remaining part is shared equivally among
+    //              the rest.)
+    //           8. Current object
+    // object  : delay, delta times dt and values vs.
+    //
+    this['animTemplateEyes'] = {
       name: 'eyes',
       idle: {
         alt: [
           {
             p: () =>
-              this.avatar?.hasOwnProperty('avatarIdleEyeContact')
-                ? this.avatar.avatarIdleEyeContact
-                : this.opt.avatarIdleEyeContact,
+              this['avatar']?.hasOwnProperty('avatarIdleEyeContact')
+                ? this['avatar'].avatarIdleEyeContact
+                : this['opt'].avatarIdleEyeContact,
             delay: [200, 5000],
             dt: [200, [2000, 5000], [3000, 10000, 1, 2]],
             vs: {
               headMove: [
-                this.avatar?.hasOwnProperty('avatarIdleHeadMove')
-                  ? this.avatar.avatarIdleHeadMove
-                  : this.opt.avatarIdleHeadMove,
+                this['avatar']?.hasOwnProperty('avatarIdleHeadMove')
+                  ? this['avatar'].avatarIdleHeadMove
+                  : this['opt'].avatarIdleHeadMove,
               ],
               eyesRotateY: [[-0.6, 0.6]],
               eyesRotateX: [[-0.2, 0.6]],
@@ -1138,9 +1155,9 @@ class TalkingHead {
             dt: [200, [2000, 5000, 1, 2]],
             vs: {
               headMove: [
-                this.avatar?.hasOwnProperty('avatarIdleHeadMove')
-                  ? this.avatar.avatarIdleHeadMove
-                  : this.opt.avatarIdleHeadMove,
+                this['avatar']?.hasOwnProperty('avatarIdleHeadMove')
+                  ? this['avatar'].avatarIdleHeadMove
+                  : this['opt'].avatarIdleHeadMove,
               ],
               eyesRotateY: [[-0.6, 0.6]],
               eyesRotateX: [[-0.2, 0.6]],
@@ -1152,18 +1169,18 @@ class TalkingHead {
         alt: [
           {
             p: () =>
-              this.avatar?.hasOwnProperty('avatarSpeakingEyeContact')
-                ? this.avatar.avatarSpeakingEyeContact
-                : this.opt.avatarSpeakingEyeContact,
+              this['avatar']?.hasOwnProperty('avatarSpeakingEyeContact')
+                ? this['avatar'].avatarSpeakingEyeContact
+                : this['opt'].avatarSpeakingEyeContact,
             delay: [200, 5000],
             dt: [0, [3000, 10000, 1, 2], [2000, 5000]],
             vs: {
               eyeContact: [1, null],
               headMove: [
                 null,
-                this.avatar?.hasOwnProperty('avatarSpeakingHeadMove')
-                  ? this.avatar.avatarSpeakingHeadMove
-                  : this.opt.avatarSpeakingHeadMove,
+                this['avatar']?.hasOwnProperty('avatarSpeakingHeadMove')
+                  ? this['avatar'].avatarSpeakingHeadMove
+                  : this['opt'].avatarSpeakingHeadMove,
                 null,
               ],
               eyesRotateY: [null, [-0.6, 0.6]],
@@ -1175,9 +1192,9 @@ class TalkingHead {
             dt: [200, [2000, 5000, 1, 2]],
             vs: {
               headMove: [
-                this.avatar?.hasOwnProperty('avatarSpeakingHeadMove')
-                  ? this.avatar.avatarSpeakingHeadMove
-                  : this.opt.avatarSpeakingHeadMove,
+                this['avatar']?.hasOwnProperty('avatarSpeakingHeadMove')
+                  ? this['avatar'].avatarSpeakingHeadMove
+                  : this['opt'].avatarSpeakingHeadMove,
                 null,
               ],
               eyesRotateY: [[-0.6, 0.6]],
@@ -1187,7 +1204,7 @@ class TalkingHead {
         ],
       },
     };
-    this.animTemplateBlink = {
+    this['animTemplateBlink'] = {
       name: 'blink',
       alt: [
         {
@@ -1207,7 +1224,7 @@ class TalkingHead {
       ],
     };
 
-    this.animMoods = {
+    this['animMoods'] = {
       neutral: {
         baseline: { eyesLookDown: 0.1 },
         speech: { deltaRate: 0, deltaPitch: 0, deltaVolume: 0 },
@@ -1251,8 +1268,8 @@ class TalkingHead {
               },
             },
           },
-          this.animTemplateEyes,
-          this.animTemplateBlink,
+          this['animTemplateEyes'],
+          this['animTemplateBlink'],
           {
             name: 'mouth',
             delay: [1000, 5000],
@@ -1342,8 +1359,8 @@ class TalkingHead {
               },
             },
           },
-          this.animTemplateEyes,
-          this.animTemplateBlink,
+          this['animTemplateEyes'],
+          this['animTemplateBlink'],
           {
             name: 'mouth',
             delay: [1000, 5000],
@@ -1432,8 +1449,8 @@ class TalkingHead {
               },
             },
           },
-          this.animTemplateEyes,
-          this.animTemplateBlink,
+          this['animTemplateEyes'],
+          this['animTemplateBlink'],
           {
             name: 'mouth',
             delay: [1000, 5000],
@@ -1524,8 +1541,8 @@ class TalkingHead {
               },
             },
           },
-          this.animTemplateEyes,
-          this.animTemplateBlink,
+          this['animTemplateEyes'],
+          this['animTemplateBlink'],
           {
             name: 'mouth',
             delay: [1000, 5000],
@@ -1611,8 +1628,8 @@ class TalkingHead {
               },
             },
           },
-          this.animTemplateEyes,
-          this.animTemplateBlink,
+          this['animTemplateEyes'],
+          this['animTemplateBlink'],
           {
             name: 'mouth',
             delay: [1000, 5000],
@@ -1696,8 +1713,8 @@ class TalkingHead {
               },
             },
           },
-          this.animTemplateEyes,
-          this.animTemplateBlink,
+          this['animTemplateEyes'],
+          this['animTemplateBlink'],
           {
             name: 'mouth',
             delay: [1000, 5000],
@@ -1814,10 +1831,13 @@ class TalkingHead {
               },
             },
           },
-          this.animTemplateEyes,
-          this.deepCopy(this.animTemplateBlink, (o) => {
-            o.alt[0].delay[0] = o.alt[1].delay[0] = 2000;
-          }),
+          this['animTemplateEyes'],
+          this.deepCopy(
+            this['animTemplateBlink'],
+            (o: { alt: { delay: number[] }[] }) => {
+              o.alt[0].delay[0] = o.alt[1].delay[0] = 2000;
+            },
+          ),
           {
             name: 'mouth',
             delay: [1000, 5000],
@@ -1882,15 +1902,16 @@ class TalkingHead {
         ],
       },
     };
-    this.moodName = this.opt.avatarMood || 'neutral';
-    this.mood = this.animMoods[this.moodName];
-    if (!this.mood) {
-      this.moodName = 'neutral';
-      this.mood = this.animMoods['neutral'];
+    this['moodName'] = this['opt'].avatarMood || 'neutral';
+    this['mood'] = this['animMoods'][this['moodName']];
+    if (!this['mood']) {
+      this['moodName'] = 'neutral';
+      this['mood'] = this['animMoods']['neutral'];
     }
 
     // Animation templates for emojis
-    this.animEmojis = {
+    // Animation templates for emojis
+    this['animEmojis'] = {
       '😐': {
         dt: [300, 2000],
         rescale: [0, 1],
@@ -2065,7 +2086,6 @@ class TalkingHead {
         },
       },
       '😋': { link: '😝' },
-      '😛': { link: '😝' },
       '😛': { link: '😝' },
       '😜': { link: '😝' },
       '🤪': { link: '😝' },
@@ -2508,8 +2528,9 @@ class TalkingHead {
     };
 
     // Morph targets
-    this.mtAvatar = {};
-    this.mtCustoms = [
+    // Morph targets
+    this['mtAvatar'] = {};
+    this['mtCustoms'] = [
       'handFistLeft',
       'handFistRight',
       'bodyRotateX',
@@ -2520,9 +2541,9 @@ class TalkingHead {
       'headRotateZ',
       'chestInhale',
     ];
-    this.mtEasingDefault = this.sigmoidFactory(5); // Morph target default ease in/out
-    this.mtAccDefault = 0.01; // Acceleration [rad / s^2]
-    this.mtAccExceptions = {
+    this['mtEasingDefault'] = this.sigmoidFactory(5); // Morph target default ease in/out
+    this['mtAccDefault'] = 0.01; // Acceleration [rad / s^2]
+    this['mtAccExceptions'] = {
       eyeBlinkLeft: 0.1,
       eyeBlinkRight: 0.1,
       eyeLookOutLeft: 0.1,
@@ -2530,15 +2551,15 @@ class TalkingHead {
       eyeLookOutRight: 0.1,
       eyeLookInRight: 0.1,
     };
-    this.mtMaxVDefault = 5; // Maximum velocity [rad / s]
-    this.mtMaxVExceptions = {
+    this['mtMaxVDefault'] = 5; // Maximum velocity [rad / s]
+    this['mtMaxVExceptions'] = {
       bodyRotateX: 1,
       bodyRotateY: 1,
       bodyRotateZ: 1,
       // headRotateX: 1, headRotateY: 1, headRotateZ: 1
     };
-    this.mtBaselineDefault = 0; // Default baseline value
-    this.mtBaselineExceptions = {
+    this['mtBaselineDefault'] = 0; // Default baseline value
+    this['mtBaselineExceptions'] = {
       bodyRotateX: null,
       bodyRotateY: null,
       bodyRotateZ: null,
@@ -2549,8 +2570,8 @@ class TalkingHead {
       eyesLookDown: null,
       eyesLookUp: null,
     };
-    this.mtMinDefault = 0;
-    this.mtMinExceptions = {
+    this['mtMinDefault'] = 0;
+    this['mtMinExceptions'] = {
       bodyRotateX: -1,
       bodyRotateY: -1,
       bodyRotateZ: -1,
@@ -2558,37 +2579,37 @@ class TalkingHead {
       headRotateY: -1,
       headRotateZ: -1,
     };
-    this.mtMaxDefault = 1;
-    this.mtMaxExceptions = {};
-    this.mtLimits = {
-      eyeBlinkLeft: (v) =>
+    this['mtMaxDefault'] = 1;
+    this['mtMaxExceptions'] = {};
+    this['mtLimits'] = {
+      eyeBlinkLeft: (v: number) =>
         Math.max(
           v,
-          (this.mtAvatar['eyesLookDown'].value +
-            this.mtAvatar['browDownLeft'].value) /
+          (this['mtAvatar']['eyesLookDown'].value +
+            this['mtAvatar']['browDownLeft'].value) /
             2,
         ),
-      eyeBlinkRight: (v) =>
+      eyeBlinkRight: (v: number) =>
         Math.max(
           v,
-          (this.mtAvatar['eyesLookDown'].value +
-            this.mtAvatar['browDownRight'].value) /
+          (this['mtAvatar']['eyesLookDown'].value +
+            this['mtAvatar']['browDownRight'].value) /
             2,
         ),
     };
-    this.mtOnchange = {
+    this['mtOnchange'] = {
       eyesLookDown: () => {
-        this.mtAvatar['eyeBlinkLeft'].needsUpdate = true;
-        this.mtAvatar['eyeBlinkRight'].needsUpdate = true;
+        this['mtAvatar']['eyeBlinkLeft'].needsUpdate = true;
+        this['mtAvatar']['eyeBlinkRight'].needsUpdate = true;
       },
       browDownLeft: () => {
-        this.mtAvatar['eyeBlinkLeft'].needsUpdate = true;
+        this['mtAvatar']['eyeBlinkLeft'].needsUpdate = true;
       },
       browDownRight: () => {
-        this.mtAvatar['eyeBlinkRight'].needsUpdate = true;
+        this['mtAvatar']['eyeBlinkRight'].needsUpdate = true;
       },
     };
-    this.mtRandomized = [
+    this['mtRandomized'] = [
       'mouthDimpleLeft',
       'mouthDimpleRight',
       'mouthLeft',
@@ -2612,22 +2633,26 @@ class TalkingHead {
     ];
 
     // Anim queues
-    this.animQueue = [];
-    this.animClips = [];
-    this.animPoses = [];
+    // Anim queues
+    this['animQueue'] = [];
+    this['animClips'] = [];
+    this['animPoses'] = [];
 
     // Clock
-    this.animFrameDur = 1000 / this.opt.modelFPS;
-    this.animClock = 0;
-    this.animSlowdownRate = 1;
-    this.animTimeLast = 0;
-    this.easing = this.sigmoidFactory(5); // Ease in and out
+    // Clock
+    this['animFrameDur'] = 1000 / this['opt'].modelFPS;
+    this['animClock'] = 0;
+    this['animSlowdownRate'] = 1;
+    this['animTimeLast'] = 0;
+    this['easing'] = this.sigmoidFactory(5); // Ease in and out
 
     // Lip-sync extensions, import dynamically
-    this.lipsync = {
-      fi: lipsync,
+    // Lip-sync extensions, import dynamically
+    this['lipsync'] = {
+      fi: new lipsyncFi.LipsyncFi(),
+      en: new lipsyncEn.LipsyncEn(),
     };
-    this.visemeNames = [
+    this['visemeNames'] = [
       'aa',
       'E',
       'I',
@@ -2646,135 +2671,78 @@ class TalkingHead {
     ];
 
     // Audio context and playlist
-    this.audioCtx = new AudioContext();
-    this.audioSpeechSource = this.audioCtx.createBufferSource();
-    this.audioBackgroundSource = this.audioCtx.createBufferSource();
-    this.audioBackgroundGainNode = this.audioCtx.createGain();
-    this.audioSpeechGainNode = this.audioCtx.createGain();
-    this.audioAnalyzerNode = this.audioCtx.createAnalyser();
-    this.audioAnalyzerNode.fftSize = 256;
-    this.audioAnalyzerNode.smoothingTimeConstant = 0.1;
-    this.audioAnalyzerNode.minDecibels = -70;
-    this.audioAnalyzerNode.maxDecibels = -10;
-    this.audioReverbNode = this.audioCtx.createConvolver();
+    // Audio context and playlist
+    this['audioCtx'] = new AudioContext();
+    this['audioSpeechSource'] = this['audioCtx'].createBufferSource();
+    this['audioBackgroundSource'] = this['audioCtx'].createBufferSource();
+    this['audioBackgroundGainNode'] = this['audioCtx'].createGain();
+    this['audioSpeechGainNode'] = this['audioCtx'].createGain();
+    this['audioAnalyzerNode'] = this['audioCtx'].createAnalyser();
+    this['audioAnalyzerNode'].fftSize = 256;
+    this['audioAnalyzerNode'].smoothingTimeConstant = 0.1;
+    this['audioAnalyzerNode'].minDecibels = -70;
+    this['audioAnalyzerNode'].maxDecibels = -10;
+    this['audioReverbNode'] = this['audioCtx'].createConvolver();
     this.setReverb(null); // Set dry impulse as default
-    this.audioBackgroundGainNode.connect(this.audioReverbNode);
-    this.audioAnalyzerNode.connect(this.audioSpeechGainNode);
-    this.audioSpeechGainNode.connect(this.audioReverbNode);
-    this.audioReverbNode.connect(this.audioCtx.destination);
-    this.setMixerGain(this.opt.mixerGainSpeech, this.opt.mixerGainBackground); // Volume
-    this.audioPlaylist = [];
+    this['audioBackgroundGainNode'].connect(this['audioReverbNode']);
+    this['audioAnalyzerNode'].connect(this['audioSpeechGainNode']);
+    this['audioSpeechGainNode'].connect(this['audioReverbNode']);
+    this['audioReverbNode'].connect(this['audioCtx'].destination);
+    this.setMixerGain(
+      this['opt'].mixerGainSpeech,
+      this['opt'].mixerGainBackground,
+    ); // Volume
+    this['audioPlaylist'] = [];
 
     // Volume based head movement
-    this.volumeFrequencyData = new Uint8Array(16);
-    this.volumeMax = 0;
-    this.volumeHeadBase = 0;
-    this.volumeHeadTarget = 0;
-    this.volumeHeadCurrent = 0;
-    this.volumeHeadVelocity = 0.15;
-    this.volumeHeadEasing = this.sigmoidFactory(3);
+    // Volume based head movement
+    this['volumeFrequencyData'] = new Uint8Array(16);
+    this['volumeMax'] = 0;
+    this['volumeHeadBase'] = 0;
+    this['volumeHeadTarget'] = 0;
+    this['volumeHeadCurrent'] = 0;
+    this['volumeHeadVelocity'] = 0.15;
+    this['volumeHeadEasing'] = this.sigmoidFactory(3);
 
     // Listening
-    this.isListening = false;
-    this.listeningAnalyzer = null;
-    this.listeningActive = false;
-    this.listeningVolume = 0;
-    this.listeningSilenceThresholdLevel =
-      this.opt.listeningSilenceThresholdLevel;
-    this.listeningSilenceThresholdMs = this.opt.listeningSilenceThresholdMs;
-    this.listeningSilenceDurationMax = this.opt.listeningSilenceDurationMax;
-    this.listeningActiveThresholdLevel = this.opt.listeningActiveThresholdLevel;
-    this.listeningActiveThresholdMs = this.opt.listeningActiveThresholdMs;
-    this.listeningActiveDurationMax = this.opt.listeningActiveDurationMax;
-    this.listeningTimer = 0;
-    this.listeningTimerTotal = 0;
+    // Listening
+    this['isListening'] = false;
+    this['listeningAnalyzer'] = null;
+    this['listeningActive'] = false;
+    this['listeningVolume'] = 0;
+    this['listeningSilenceThresholdLevel'] =
+      this['opt'].listeningSilenceThresholdLevel;
+    this['listeningSilenceThresholdMs'] =
+      this['opt'].listeningSilenceThresholdMs;
+    this['listeningSilenceDurationMax'] =
+      this['opt'].listeningSilenceDurationMax;
+    this['listeningActiveThresholdLevel'] =
+      this['opt'].listeningActiveThresholdLevel;
+    this['listeningActiveThresholdMs'] = this['opt'].listeningActiveThresholdMs;
+    this['listeningActiveDurationMax'] = this['opt'].listeningActiveDurationMax;
+    this['listeningTimer'] = 0;
+    this['listeningTimerTotal'] = 0;
 
     // Create a lookup table for base64 decoding
     const b64Chars =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-    this.b64Lookup =
+    this['b64Lookup'] =
       typeof Uint8Array === 'undefined' ? [] : new Uint8Array(256);
     for (let i = 0; i < b64Chars.length; i++)
-      this.b64Lookup[b64Chars.charCodeAt(i)] = i;
+      this['b64Lookup'][b64Chars.charCodeAt(i)] = i;
 
     // Speech queue
-    this.stateName = 'idle';
-    this.speechQueue = [];
-    this.isSpeaking = false;
-    this.isListening = false;
+    // Speech queue
+    this['stateName'] = 'idle';
+    this['speechQueue'] = [];
+    this['isSpeaking'] = false;
+    this['isListening'] = false;
 
-    // Setup Google text-to-speech
-    if (this.opt.ttsEndpoint) {
-      let audio = new Audio();
-      if (audio.canPlayType('audio/ogg')) {
-        this.ttsAudioEncoding = 'OGG-OPUS';
-      } else if (audio.canPlayType('audio/mp3')) {
-        this.ttsAudioEncoding = 'MP3';
-      } else {
-        throw new Error('There was no support for either OGG or MP3 audio.');
-      }
-    } else {
-      throw new Error(
-        'You must provide some Google-compliant Text-To-Speech Endpoint.',
-      );
-    }
-
-    // Setup 3D Animation
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    this.renderer.setPixelRatio(
-      this.opt.modelPixelRatio * window.devicePixelRatio,
-    );
-    this.renderer.setSize(
-      this.nodeAvatar.clientWidth,
-      this.nodeAvatar.clientHeight,
-    );
-    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.shadowMap.enabled = false;
-    this.nodeAvatar.appendChild(this.renderer.domElement);
-    this.camera = new THREE.PerspectiveCamera(
-      10,
-      this.nodeAvatar.clientWidth / this.nodeAvatar.clientHeight,
-      0.1,
-      2000,
-    );
-    this.scene = new THREE.Scene();
-    this.lightAmbient = new THREE.AmbientLight(
-      new THREE.Color(this.opt.lightAmbientColor),
-      this.opt.lightAmbientIntensity,
-    );
-    this.lightDirect = new THREE.DirectionalLight(
-      new THREE.Color(this.opt.lightDirectColor),
-      this.opt.lightDirectIntensity,
-    );
-    this.lightSpot = new THREE.SpotLight(
-      new THREE.Color(this.opt.lightSpotColor),
-      this.opt.lightSpotIntensity,
-      0,
-      this.opt.lightSpotDispersion,
-    );
-    this.setLighting(this.opt);
-    const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
-    pmremGenerator.compileEquirectangularShader();
-    this.scene.environment = pmremGenerator.fromScene(
-      new RoomEnvironment(),
-    ).texture;
-    this.resizeobserver = new ResizeObserver(this.onResize.bind(this));
-    this.resizeobserver.observe(this.nodeAvatar);
-
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enableZoom = this.opt.cameraZoomEnable;
-    this.controls.enableRotate = this.opt.cameraRotateEnable;
-    this.controls.enablePan = this.opt.cameraPanEnable;
-    this.controls.minDistance = 2;
-    this.controls.maxDistance = 2000;
-    this.controls.autoRotateSpeed = 0;
-    this.controls.autoRotate = false;
-    this.controls.update();
-    this.cameraClock = null;
+    this['camera'] =
+      document.querySelector('[camera]').components.camera.camera;
 
     // IK Mesh
-    this.ikMesh = new THREE.SkinnedMesh();
+    this['ikMesh'] = new THREE.SkinnedMesh();
     const ikSetup = {
       LeftShoulder: null,
       LeftArm: 'LeftShoulder',
@@ -2787,21 +2755,22 @@ class TalkingHead {
       RightHand: 'RightForeArm',
       RightHandMiddle1: 'RightHand',
     };
-    const ikBones = [];
+    const ikBones: Bone<Object3DEventMap>[] | undefined = [];
     Object.entries(ikSetup).forEach((x, i) => {
       const bone = new THREE.Bone();
       bone.name = x[0];
       if (x[1]) {
-        this.ikMesh.getObjectByName(x[1]).add(bone);
+        this['ikMesh'].getObjectByName(x[1]).add(bone);
       } else {
-        this.ikMesh.add(bone);
+        this['ikMesh'].add(bone);
       }
       ikBones.push(bone);
     });
-    this.ikMesh.bind(new THREE.Skeleton(ikBones));
+    this['ikMesh'].bind(new THREE.Skeleton(ikBones));
 
     // Dynamic Bones
-    this.dynamicbones = new DynamicBones();
+    // Dynamic Bones
+    this['dynamicbones'] = new DynamicBones();
   }
 
   /**
@@ -2809,7 +2778,7 @@ class TalkingHead {
    * @param {Any} x Parameter
    * @return {Any} Value
    */
-  valueFn(x) {
+  valueFn(x: () => any) {
     return typeof x === 'function' ? x() : x;
   }
 
@@ -2819,7 +2788,7 @@ class TalkingHead {
    * @param {function} [editFn=null] Callback function for editing the new object
    * @return {Object} Deep copy of the object.
    */
-  deepCopy(x, editFn = null) {
+  deepCopy(x: any, editFn: any = null) {
     const o = JSON.parse(JSON.stringify(x));
     if (editFn && typeof editFn === 'function') editFn(o);
     return o;
@@ -2830,7 +2799,7 @@ class TalkingHead {
    * @param {string} chunk Base64 encoded chunk
    * @return {ArrayBuffer} ArrayBuffer
    */
-  b64ToArrayBuffer(chunk) {
+  b64ToArrayBuffer(chunk: string | string[]) {
     // Calculate the needed total buffer length
     let bufLen = (3 * chunk.length) / 4;
     if (chunk[chunk.length - 1] === '=') {
@@ -2852,10 +2821,10 @@ class TalkingHead {
 
     // Populate the buffer
     for (i = 0; i < chunk.length; i += 4) {
-      c1 = this.b64Lookup[chunk.charCodeAt(i)];
-      c2 = this.b64Lookup[chunk.charCodeAt(i + 1)];
-      c3 = this.b64Lookup[chunk.charCodeAt(i + 2)];
-      c4 = this.b64Lookup[chunk.charCodeAt(i + 3)];
+      c1 = this['b64Lookup'][(chunk as string).charCodeAt(i)];
+      c2 = this['b64Lookup'][(chunk as string).charCodeAt(i + 1)];
+      c3 = this['b64Lookup'][(chunk as string).charCodeAt(i + 2)];
+      c4 = this['b64Lookup'][(chunk as string).charCodeAt(i + 3)];
       arr[p++] = (c1 << 2) | (c2 >> 4);
       arr[p++] = ((c2 & 15) << 4) | (c3 >> 2);
       arr[p++] = ((c3 & 3) << 6) | (c4 & 63);
@@ -2869,7 +2838,7 @@ class TalkingHead {
    * @param {ArrayBuffer[]} bufs Array of ArrayBuffers
    * @return {ArrayBuffer} Concatenated ArrayBuffer
    */
-  concatArrayBuffers(bufs) {
+  concatArrayBuffers(bufs: string | any[]) {
     if (bufs.length === 1) return bufs[0];
     let len = 0;
     for (let i = 0; i < bufs.length; i++) {
@@ -2891,17 +2860,17 @@ class TalkingHead {
    * @param {ArrayBuffer} buf PCM buffer
    * @return {AudioBuffer} AudioBuffer
    */
-  pcmToAudioBuffer(buf) {
+  pcmToAudioBuffer(buf: any) {
     const arr = new Int16Array(buf);
     const floats = new Float32Array(arr.length);
     for (let i = 0; i < arr.length; i++) {
       floats[i] =
         arr[i] >= 0x8000 ? -(0x10000 - arr[i]) / 0x8000 : arr[i] / 0x7fff;
     }
-    const audio = this.audioCtx.createBuffer(
+    const audio = this['audioCtx'].createBuffer(
       1,
       floats.length,
-      this.opt.pcmSampleRate,
+      this['opt'].pcmSampleRate,
     );
     audio.copyToChannel(floats, 0, 0);
     return audio;
@@ -2913,9 +2882,9 @@ class TalkingHead {
    * @param {Object} p Pose
    * @return {Object} A new pose object.
    */
-  propsToThreeObjects(p) {
-    const r = {};
-    for (let [key, val] of Object.entries(p)) {
+  propsToThreeObjects(p: ArrayLike<unknown> | { [s: string]: unknown }) {
+    const r = {} as any;
+    for (let [key, val] of Object.entries(p) as any) {
       const ids = key.split('.');
       let x = Array.isArray(val.x) ? this.gaussianRandom(...val.x) : val.x;
       let y = Array.isArray(val.y) ? this.gaussianRandom(...val.y) : val.y;
@@ -2940,7 +2909,12 @@ class TalkingHead {
    * Clear 3D object.
    * @param {Object} obj Object
    */
-  clearThree(obj) {
+  clearThree(obj: {
+    children: string | any[];
+    remove: (arg0: any) => void;
+    geometry: { dispose: () => void };
+    material: { [x: string]: { dispose: () => void }; dispose?: any };
+  }) {
     while (obj.children.length) {
       this.clearThree(obj.children[0]);
       obj.remove(obj.children[0]);
@@ -2966,68 +2940,68 @@ class TalkingHead {
    * @param {string} avatar Avatar object with 'url' property to GLTF/GLB file.
    * @param {progressfn} [onprogress=null] Callback for progress
    */
-  async showAvatar(avatar, onprogress = null) {
-    // Checkt the avatar parameter
-    if (!avatar || !avatar.hasOwnProperty('url')) {
-      throw new Error(
-        "Invalid parameter. The avatar must have at least 'url' specified.",
-      );
-    }
-
-    // Loader
-    const loader = new GLTFLoader();
-    let gltf = await loader.loadAsync(avatar.url, onprogress);
-
+  async showAvatar(element: any, gltf: any, avatar: any) {
     // Check the gltf
-    const required = [this.opt.modelRoot];
-    this.posePropNames.forEach((x) => required.push(x.split('.')[0]));
+    const required = [this['opt'].modelRoot];
+    this['posePropNames'].forEach((x: string) =>
+      required.push(x.split('.')[0]),
+    );
     required.forEach((x) => {
-      if (!gltf.scene.getObjectByName(x)) {
+      if (!gltf.object3D.getObjectByName(x)) {
         throw new Error('Avatar object ' + x + ' not found');
       }
     });
 
     this.stop();
-    this.avatar = avatar;
+    this['el'] = element;
+    this['nodeAvatar'] = gltf;
+    this['avatar'] = avatar;
 
     // Dispose Dynamic Bones
-    this.dynamicbones.dispose();
+    // Dispose Dynamic Bones
+    this['dynamicbones'].dispose();
 
     // Clear previous scene, if avatar was previously loaded
-    this.mixer = null;
-    if (this.armature) {
-      this.clearThree(this.scene);
-    }
+    // Clear previous scene, if avatar was previously loaded
+    this['mixer'] = null;
 
     // Avatar full-body
-    this.armature = gltf.scene.getObjectByName(this.opt.modelRoot);
-    this.armature.scale.setScalar(1);
+    // Avatar full-body
+    this['armature'] = gltf.object3D.getObjectByName(this['opt'].modelRoot);
+    this['armature'].scale.setScalar(1);
 
     // Morph targets
-    this.morphs = [];
-    this.armature.traverse((x) => {
-      if (
-        x.morphTargetInfluences &&
-        x.morphTargetInfluences.length &&
-        x.morphTargetDictionary
-      ) {
-        this.morphs.push(x);
-      }
+    // Morph targets
+    this['morphs'] = [];
+    this['armature'].traverse(
+      (x: {
+        morphTargetInfluences: string | any[];
+        morphTargetDictionary: any;
+        frustumCulled: boolean;
+      }) => {
+        if (
+          x.morphTargetInfluences &&
+          x.morphTargetInfluences.length &&
+          x.morphTargetDictionary
+        ) {
+          this['morphs'].push(x);
+        }
 
-      // Workaround for #40, hands culled from the rendering process
-      x.frustumCulled = false;
-    });
-    if (this.morphs.length === 0) {
+        // Workaround for #40, hands culled from the rendering process
+        x.frustumCulled = false;
+      },
+    );
+    if (this['morphs'].length === 0) {
       throw new Error('Blend shapes not found');
     }
 
     // Morph target keys and values
-    const keys = new Set(this.mtCustoms);
-    this.morphs.forEach((x) => {
+    const keys = new Set(this['mtCustoms']);
+    this['morphs'].forEach((x: { morphTargetDictionary: {} }) => {
       Object.keys(x.morphTargetDictionary).forEach((y) => keys.add(y));
     });
-    const mtTemp = {};
-    keys.forEach((x) => {
+    const mtTemp = {} as any;
+    keys.forEach((x: any) => {
       // Morph target data structure
       mtTemp[x] = {
         fixed: null,
@@ -3035,31 +3009,33 @@ class TalkingHead {
         systemd: null,
         newvalue: null,
         ref: null,
-        min: this.mtMinExceptions.hasOwnProperty(x)
-          ? this.mtMinExceptions[x]
-          : this.mtMinDefault,
-        max: this.mtMaxExceptions.hasOwnProperty(x)
-          ? this.mtMaxExceptions[x]
-          : this.mtMaxDefault,
-        easing: this.mtEasingDefault,
+        min: this['mtMinExceptions'].hasOwnProperty(x)
+          ? this['mtMinExceptions'][x]
+          : this['mtMinDefault'],
+        max: this['mtMaxExceptions'].hasOwnProperty(x)
+          ? this['mtMaxExceptions'][x]
+          : this['mtMaxDefault'],
+        easing: this['mtEasingDefault'],
         base: null,
         v: 0,
         needsUpdate: true,
         acc:
-          (this.mtAccExceptions.hasOwnProperty(x)
-            ? this.mtAccExceptions[x]
-            : this.mtAccDefault) / 1000,
+          (this['mtAccExceptions'].hasOwnProperty(x)
+            ? this['mtAccExceptions'][x]
+            : this['mtAccDefault']) / 1000,
         maxv:
-          (this.mtMaxVExceptions.hasOwnProperty(x)
-            ? this.mtMaxVExceptions[x]
-            : this.mtMaxVDefault) / 1000,
-        limit: this.mtLimits.hasOwnProperty(x) ? this.mtLimits[x] : null,
-        onchange: this.mtOnchange.hasOwnProperty(x) ? this.mtOnchange[x] : null,
-        baseline: this.avatar.baseline?.hasOwnProperty(x)
-          ? this.avatar.baseline[x]
-          : this.mtBaselineExceptions.hasOwnProperty(x)
-            ? this.mtBaselineExceptions[x]
-            : this.mtBaselineDefault,
+          (this['mtMaxVExceptions'].hasOwnProperty(x)
+            ? this['mtMaxVExceptions'][x]
+            : this['mtMaxVDefault']) / 1000,
+        limit: this['mtLimits'].hasOwnProperty(x) ? this['mtLimits'][x] : null,
+        onchange: this['mtOnchange'].hasOwnProperty(x)
+          ? this['mtOnchange'][x]
+          : null,
+        baseline: this['avatar'].baseline?.hasOwnProperty(x)
+          ? this['avatar'].baseline[x]
+          : this['mtBaselineExceptions'].hasOwnProperty(x)
+            ? this['mtBaselineExceptions'][x]
+            : this['mtBaselineDefault'],
         ms: [],
         is: [],
       };
@@ -3067,7 +3043,7 @@ class TalkingHead {
       mtTemp[x].applied = mtTemp[x].baseline;
 
       // Copy previous values
-      const y = this.mtAvatar[x];
+      const y = this['mtAvatar'][x];
       if (y) {
         ['fixed', 'system', 'systemd', 'base', 'v', 'value', 'applied'].forEach(
           (z) => {
@@ -3077,64 +3053,70 @@ class TalkingHead {
       }
 
       // Find relevant meshes
-      this.morphs.forEach((y) => {
-        const ndx = y.morphTargetDictionary[x];
-        if (ndx !== undefined) {
-          mtTemp[x].ms.push(y.morphTargetInfluences);
-          mtTemp[x].is.push(ndx);
-          y.morphTargetInfluences[ndx] = mtTemp[x].applied;
-        }
-      });
+      // Find relevant meshes
+      this['morphs'].forEach(
+        (y: {
+          morphTargetDictionary: { [x: string]: any };
+          morphTargetInfluences: { [x: string]: any };
+        }) => {
+          const ndx = y.morphTargetDictionary[x];
+          if (ndx !== undefined) {
+            mtTemp[x].ms.push(y.morphTargetInfluences);
+            mtTemp[x].is.push(ndx);
+            y.morphTargetInfluences[ndx] = mtTemp[x].applied;
+          }
+        },
+      );
     });
-    this.mtAvatar = mtTemp;
+    this['mtAvatar'] = mtTemp;
 
     // Objects for needed properties
-    this.poseAvatar = { props: {} };
-    this.posePropNames.forEach((x) => {
+    // Objects for needed properties
+    this['poseAvatar'] = { props: {} };
+    this['posePropNames'].forEach((x: string) => {
       const ids = x.split('.');
-      const o = this.armature.getObjectByName(ids[0]);
-      this.poseAvatar.props[x] = o[ids[1]];
-      if (this.poseBase.props.hasOwnProperty(x)) {
-        this.poseAvatar.props[x].copy(this.poseBase.props[x]);
+      const o = this['armature'].getObjectByName(ids[0]);
+      this['poseAvatar'].props[x] = o[ids[1]];
+      if (this['poseBase'].props.hasOwnProperty(x)) {
+        this['poseAvatar'].props[x].copy(this['poseBase'].props[x]);
       } else {
-        this.poseBase.props[x] = this.poseAvatar.props[x].clone();
+        this['poseBase'].props[x] = this['poseAvatar'].props[x].clone();
       }
 
       // Make sure the target has the delta properties, because we need it as a basis
       if (
-        this.poseDelta.props.hasOwnProperty(x) &&
-        !this.poseTarget.props.hasOwnProperty(x)
+        this['poseDelta'].props.hasOwnProperty(x) &&
+        !this['poseTarget'].props.hasOwnProperty(x)
       ) {
-        this.poseTarget.props[x] = this.poseAvatar.props[x].clone();
+        this['poseTarget'].props[x] = this['poseAvatar'].props[x].clone();
       }
 
       // Take target pose
-      this.poseTarget.props[x].t = this.animClock;
-      this.poseTarget.props[x].d = 2000;
+      // Take target pose
+      this['poseTarget'].props[x].t = this['animClock'];
+      this['poseTarget'].props[x].d = 2000;
     });
 
     // Reset IK bone positions
-    this.ikMesh.traverse((x) => {
-      if (x.isBone) {
-        x.position.copy(this.armature.getObjectByName(x.name).position);
-      }
-    });
-
-    // Add avatar to scene
-    this.scene.add(gltf.scene);
-
-    // Add lights
-    this.scene.add(this.lightAmbient);
-    this.scene.add(this.lightDirect);
-    this.scene.add(this.lightSpot);
-    this.lightSpot.target = this.armature.getObjectByName('Head');
+    // Reset IK bone positions
+    this['ikMesh'].traverse(
+      (x: {
+        isBone: any;
+        position: { copy: (arg0: any) => void };
+        name: any;
+      }) => {
+        if (x.isBone) {
+          x.position.copy(this['armature'].getObjectByName(x.name).position);
+        }
+      },
+    );
 
     // Setup Dynamic Bones
     if (avatar.hasOwnProperty('modelDynamicBones')) {
       try {
-        this.dynamicbones.setup(
-          this.scene,
-          this.armature,
+        this['dynamicbones'].setup(
+          gltf.sceneEl.object3D,
+          this['armature'],
           avatar.modelDynamicBones,
         );
       } catch (error) {
@@ -3143,25 +3125,27 @@ class TalkingHead {
     }
 
     // Find objects that we need in the animate function
-    this.objectLeftToeBase = this.armature.getObjectByName('LeftToeBase');
-    this.objectRightToeBase = this.armature.getObjectByName('RightToeBase');
-    this.objectLeftEye = this.armature.getObjectByName('LeftEye');
-    this.objectRightEye = this.armature.getObjectByName('RightEye');
-    this.objectLeftArm = this.armature.getObjectByName('LeftArm');
-    this.objectRightArm = this.armature.getObjectByName('RightArm');
-    this.objectHips = this.armature.getObjectByName('Hips');
-    this.objectHead = this.armature.getObjectByName('Head');
-    this.objectNeck = this.armature.getObjectByName('Neck');
+    // Find objects that we need in the animate function
+    this['objectLeftToeBase'] = this['armature'].getObjectByName('LeftToeBase');
+    this['objectRightToeBase'] =
+      this['armature'].getObjectByName('RightToeBase');
+    this['objectLeftEye'] = this['armature'].getObjectByName('LeftEye');
+    this['objectRightEye'] = this['armature'].getObjectByName('RightEye');
+    this['objectLeftArm'] = this['armature'].getObjectByName('LeftArm');
+    this['objectRightArm'] = this['armature'].getObjectByName('RightArm');
+    this['objectHips'] = this['armature'].getObjectByName('Hips');
+    this['objectHead'] = this['armature'].getObjectByName('Head');
+    this['objectNeck'] = this['armature'].getObjectByName('Neck');
 
     // Estimate avatar height based on eye level
     const plEye = new THREE.Vector3();
-    this.objectLeftEye.getWorldPosition(plEye);
-    this.avatarHeight = plEye.y + 0.2;
+    this['objectLeftEye'].getWorldPosition(plEye);
+    this['avatarHeight'] = plEye.y + 0.2;
 
     // Set pose, view and start animation
-    if (!this.viewName) this.setView(this.opt.cameraView);
+    if (!this['viewName']) this.setView(this['opt'].cameraView);
     this.setMood(
-      this.avatar.avatarMood || this.moodName || this.opt.avatarMood,
+      this['avatar'].avatarMood || this['moodName'] || this['opt'].avatarMood,
     );
     this.start();
   }
@@ -3179,7 +3163,7 @@ class TalkingHead {
    * @return {string} View name.
    */
   getView() {
-    return this.viewName;
+    return this['viewName'];
   }
 
   /**
@@ -3187,7 +3171,7 @@ class TalkingHead {
    * @param {string} [view=null] Camera view. If null, reset current view
    * @param {Object} [opt=null] Options
    */
-  setView(view, opt = null) {
+  setView(view: string, opt: any = null) {
     if (
       view !== 'full' &&
       view !== 'upper' &&
@@ -3195,31 +3179,31 @@ class TalkingHead {
       view !== 'mid'
     )
       return;
-    if (!this.armature) {
-      this.opt.cameraView = view;
+    if (!this['armature']) {
+      this['opt'].cameraView = view;
       return;
     }
 
-    this.viewName = view || this.viewName;
+    this['viewName'] = view || this['viewName'];
     opt = opt || {};
 
-    const fov = this.camera.fov * (Math.PI / 180);
-    let x = -(opt.cameraX || this.opt.cameraX) * Math.tan(fov / 2);
-    let y = (1 - (opt.cameraY || this.opt.cameraY)) * Math.tan(fov / 2);
-    let z = opt.cameraDistance || this.opt.cameraDistance;
+    const fov = this['camera'].fov * (Math.PI / 180);
+    let x = -(opt.cameraX || this['opt'].cameraX) * Math.tan(fov / 2);
+    let y = (1 - (opt.cameraY || this['opt'].cameraY)) * Math.tan(fov / 2);
+    let z = opt.cameraDistance || this['opt'].cameraDistance;
 
-    switch (this.viewName) {
+    switch (this['viewName']) {
       case 'head':
         z += 2;
-        y = y * z + (4 * this.avatarHeight) / 5;
+        y = y * z + (4 * this['avatarHeight']) / 5;
         break;
       case 'upper':
         z += 4.5;
-        y = y * z + (2 * this.avatarHeight) / 3;
+        y = y * z + (2 * this['avatarHeight']) / 3;
         break;
       case 'mid':
         z += 8;
-        y = y * z + this.avatarHeight / 3;
+        y = y * z + this['avatarHeight'] / 3;
         break;
       default:
         z += 12;
@@ -3228,123 +3212,41 @@ class TalkingHead {
 
     x = x * z;
 
-    this.controlsEnd = new THREE.Vector3(x, y, 0);
-    this.cameraEnd = new THREE.Vector3(x, y, z).applyEuler(
+    this['cameraEnd'] = new THREE.Vector3(x, y, z).applyEuler(
       new THREE.Euler(
         opt.cameraRotateX || opt.cameraRotateX,
-        opt.cameraRotateY || this.opt.cameraRotateY,
+        opt.cameraRotateY || this['opt'].cameraRotateY,
         0,
       ),
     );
 
-    if (this.cameraClock === null) {
-      this.controls.target.copy(this.controlsEnd);
-      this.camera.position.copy(this.cameraEnd);
+    if (this['cameraClock'] === null) {
+      this['camera'].position.copy(this['cameraEnd']);
     }
-    this.controlsStart = this.controls.target.clone();
-    this.cameraStart = this.camera.position.clone();
-    this.cameraClock = 0;
-  }
-
-  /**
-   * Change light colors and intensities.
-   * @param {Object} opt Options
-   */
-  setLighting(opt) {
-    opt = opt || {};
-
-    // Ambient light
-    if (opt.hasOwnProperty('lightAmbientColor')) {
-      this.lightAmbient.color.set(new THREE.Color(opt.lightAmbientColor));
-    }
-    if (opt.hasOwnProperty('lightAmbientIntensity')) {
-      this.lightAmbient.intensity = opt.lightAmbientIntensity;
-      this.lightAmbient.visible = opt.lightAmbientIntensity !== 0;
-    }
-
-    // Directional light
-    if (opt.hasOwnProperty('lightDirectColor')) {
-      this.lightDirect.color.set(new THREE.Color(opt.lightDirectColor));
-    }
-    if (opt.hasOwnProperty('lightDirectIntensity')) {
-      this.lightDirect.intensity = opt.lightDirectIntensity;
-      this.lightDirect.visible = opt.lightDirectIntensity !== 0;
-    }
-    if (
-      opt.hasOwnProperty('lightDirectPhi') &&
-      opt.hasOwnProperty('lightDirectTheta')
-    ) {
-      this.lightDirect.position.setFromSphericalCoords(
-        2,
-        opt.lightDirectPhi,
-        opt.lightDirectTheta,
-      );
-    }
-
-    // Spot light
-    if (opt.hasOwnProperty('lightSpotColor')) {
-      this.lightSpot.color.set(new THREE.Color(opt.lightSpotColor));
-    }
-    if (opt.hasOwnProperty('lightSpotIntensity')) {
-      this.lightSpot.intensity = opt.lightSpotIntensity;
-      this.lightSpot.visible = opt.lightSpotIntensity !== 0;
-    }
-    if (
-      opt.hasOwnProperty('lightSpotPhi') &&
-      opt.hasOwnProperty('lightSpotTheta')
-    ) {
-      this.lightSpot.position.setFromSphericalCoords(
-        2,
-        opt.lightSpotPhi,
-        opt.lightSpotTheta,
-      );
-      this.lightSpot.position.add(new THREE.Vector3(0, 1.5, 0));
-    }
-    if (opt.hasOwnProperty('lightSpotDispersion')) {
-      this.lightSpot.angle = opt.lightSpotDispersion;
-    }
-  }
-
-  /**
-   * Render scene.
-   */
-  render() {
-    if (this.isRunning) {
-      this.renderer.render(this.scene, this.camera);
-    }
-  }
-
-  /**
-   * Resize avatar.
-   */
-  onResize() {
-    this.camera.aspect =
-      this.nodeAvatar.clientWidth / this.nodeAvatar.clientHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(
-      this.nodeAvatar.clientWidth,
-      this.nodeAvatar.clientHeight,
-    );
-    this.controls.update();
-    this.render();
+    this['cameraStart'] = this['camera'].position.clone();
+    this['cameraClock'] = 0;
   }
 
   /**
    * Update avatar pose.
    * @param {number} t High precision timestamp in ms.
    */
-  updatePoseBase(t) {
-    for (const [key, val] of Object.entries(this.poseTarget.props)) {
-      const o = this.poseAvatar.props[key];
+  updatePoseBase(t: number) {
+    for (const [key, val] of Object.entries(this['poseTarget'].props) as any) {
+      const o = this['poseAvatar'].props[key];
       if (o) {
         let alpha = (t - val.t) / val.d;
-        if (alpha > 1 || !this.poseBase.props.hasOwnProperty(key)) {
+        if (alpha > 1 || !this['poseBase'].props.hasOwnProperty(key)) {
           o.copy(val);
         } else {
           if (o.isQuaternion) {
-            o.copy(this.poseBase.props[key].slerp(val, this.easing(alpha)));
+            o.copy(
+              this['poseBase'].props[key].slerp(val, this['easing'](alpha)),
+            );
           } else if (o.isVector3) {
-            o.copy(this.poseBase.props[key].lerp(val, this.easing(alpha)));
+            o.copy(
+              this['poseBase'].props[key].lerp(val, this['easing'](alpha)),
+            );
           }
         }
       }
@@ -3355,10 +3257,10 @@ class TalkingHead {
    * Update avatar pose deltas
    */
   updatePoseDelta() {
-    for (const [key, d] of Object.entries(this.poseDelta.props)) {
+    for (const [key, d] of Object.entries(this['poseDelta'].props) as any) {
       if (d.x === 0 && d.y === 0 && d.z === 0) continue;
       e.set(d.x, d.y, d.z);
-      const o = this.poseAvatar.props[key];
+      const o = this['poseAvatar'].props[key];
       if (o.isQuaternion) {
         q.setFromEuler(e);
         o.multiply(q);
@@ -3372,8 +3274,8 @@ class TalkingHead {
    * Update morph target values.
    * @param {number} dt Delta time in ms.
    */
-  updateMorphTargets(dt) {
-    for (let [mt, o] of Object.entries(this.mtAvatar)) {
+  updateMorphTargets(dt: number) {
+    for (let [mt, o] of Object.entries(this['mtAvatar']) as any) {
       if (!o.needsUpdate) continue;
 
       // Alternative target (priority order):
@@ -3491,46 +3393,46 @@ class TalkingHead {
       // Apply value
       switch (mt) {
         case 'headRotateX':
-          this.poseDelta.props['Head.quaternion'].x =
-            newvalue + this.mtAvatar['bodyRotateX'].applied;
+          this['poseDelta'].props['Head.quaternion'].x =
+            newvalue + this['mtAvatar']['bodyRotateX'].applied;
           break;
 
         case 'headRotateY':
-          this.poseDelta.props['Head.quaternion'].y =
-            newvalue + this.mtAvatar['bodyRotateY'].applied;
+          this['poseDelta'].props['Head.quaternion'].y =
+            newvalue + this['mtAvatar']['bodyRotateY'].applied;
           break;
 
         case 'headRotateZ':
-          this.poseDelta.props['Head.quaternion'].z =
-            newvalue + this.mtAvatar['bodyRotateZ'].applied;
+          this['poseDelta'].props['Head.quaternion'].z =
+            newvalue + this['mtAvatar']['bodyRotateZ'].applied;
           break;
 
         case 'bodyRotateX':
-          this.poseDelta.props['Head.quaternion'].x =
-            newvalue + this.mtAvatar['headRotateX'].applied;
-          this.poseDelta.props['Spine1.quaternion'].x = newvalue / 2;
-          this.poseDelta.props['Spine.quaternion'].x = newvalue / 8;
-          this.poseDelta.props['Hips.quaternion'].x = newvalue / 24;
+          this['poseDelta'].props['Head.quaternion'].x =
+            newvalue + this['mtAvatar']['headRotateX'].applied;
+          this['poseDelta'].props['Spine1.quaternion'].x = newvalue / 2;
+          this['poseDelta'].props['Spine.quaternion'].x = newvalue / 8;
+          this['poseDelta'].props['Hips.quaternion'].x = newvalue / 24;
           break;
 
         case 'bodyRotateY':
-          this.poseDelta.props['Head.quaternion'].y =
-            newvalue + this.mtAvatar['headRotateY'].applied;
-          this.poseDelta.props['Spine1.quaternion'].y = newvalue / 2;
-          this.poseDelta.props['Spine.quaternion'].y = newvalue / 2;
-          this.poseDelta.props['Hips.quaternion'].y = newvalue / 4;
-          this.poseDelta.props['LeftUpLeg.quaternion'].y = newvalue / 2;
-          this.poseDelta.props['RightUpLeg.quaternion'].y = newvalue / 2;
-          this.poseDelta.props['LeftLeg.quaternion'].y = newvalue / 4;
-          this.poseDelta.props['RightLeg.quaternion'].y = newvalue / 4;
+          this['poseDelta'].props['Head.quaternion'].y =
+            newvalue + this['mtAvatar']['headRotateY'].applied;
+          this['poseDelta'].props['Spine1.quaternion'].y = newvalue / 2;
+          this['poseDelta'].props['Spine.quaternion'].y = newvalue / 2;
+          this['poseDelta'].props['Hips.quaternion'].y = newvalue / 4;
+          this['poseDelta'].props['LeftUpLeg.quaternion'].y = newvalue / 2;
+          this['poseDelta'].props['RightUpLeg.quaternion'].y = newvalue / 2;
+          this['poseDelta'].props['LeftLeg.quaternion'].y = newvalue / 4;
+          this['poseDelta'].props['RightLeg.quaternion'].y = newvalue / 4;
           break;
 
         case 'bodyRotateZ':
-          this.poseDelta.props['Head.quaternion'].z =
-            newvalue + this.mtAvatar['headRotateZ'].applied;
-          this.poseDelta.props['Spine1.quaternion'].z = newvalue / 12;
-          this.poseDelta.props['Spine.quaternion'].z = newvalue / 12;
-          this.poseDelta.props['Hips.quaternion'].z = newvalue / 24;
+          this['poseDelta'].props['Head.quaternion'].z =
+            newvalue + this['mtAvatar']['headRotateZ'].applied;
+          this['poseDelta'].props['Spine1.quaternion'].z = newvalue / 12;
+          this['poseDelta'].props['Spine.quaternion'].z = newvalue / 12;
+          this['poseDelta'].props['Hips.quaternion'].z = newvalue / 24;
           break;
 
         case 'handFistLeft':
@@ -3544,16 +3446,16 @@ class TalkingHead {
             'HandPinky',
           ].forEach((x, i) => {
             if (i === 0) {
-              this.poseDelta.props[side + x + '1.quaternion'].x = 0;
-              this.poseDelta.props[side + x + '2.quaternion'].z =
+              this['poseDelta'].props[side + x + '1.quaternion'].x = 0;
+              this['poseDelta'].props[side + x + '2.quaternion'].z =
                 (side === 'Left' ? -1 : 1) * newvalue;
-              this.poseDelta.props[side + x + '3.quaternion'].z =
+              this['poseDelta'].props[side + x + '3.quaternion'].z =
                 (side === 'Left' ? -1 : 1) * newvalue;
             } else {
-              this.poseDelta.props[side + x + '1.quaternion'].x = newvalue;
-              this.poseDelta.props[side + x + '2.quaternion'].x =
+              this['poseDelta'].props[side + x + '1.quaternion'].x = newvalue;
+              this['poseDelta'].props[side + x + '2.quaternion'].x =
                 1.5 * newvalue;
-              this.poseDelta.props[side + x + '3.quaternion'].x =
+              this['poseDelta'].props[side + x + '3.quaternion'].x =
                 1.5 * newvalue;
             }
           });
@@ -3567,10 +3469,10 @@ class TalkingHead {
             y: 1 / (1 + scale / 2) - 1,
             z: 1 / (1 + 3 * scale) - 1,
           };
-          this.poseDelta.props['Spine1.scale'] = d;
-          this.poseDelta.props['Neck.scale'] = dneg;
-          this.poseDelta.props['LeftArm.scale'] = dneg;
-          this.poseDelta.props['RightArm.scale'] = dneg;
+          this['poseDelta'].props['Spine1.scale'] = d;
+          this['poseDelta'].props['Neck.scale'] = dneg;
+          this['poseDelta'].props['LeftArm.scale'] = dneg;
+          this['poseDelta'].props['RightArm.scale'] = dneg;
           break;
 
         default:
@@ -3587,9 +3489,12 @@ class TalkingHead {
    * @param {number} [prec=1000] Precision used in values
    * @return {string} Pose as a string
    */
-  getPoseString(pose, prec = 1000) {
+  getPoseString(
+    pose: ArrayLike<unknown> | { [s: string]: unknown },
+    prec = 1000,
+  ) {
     let s = '{';
-    Object.entries(pose).forEach((x, i) => {
+    Object.entries(pose).forEach((x: any, i) => {
       const ids = x[0].split('.');
       if (
         ids[1] === 'position' ||
@@ -3616,16 +3521,16 @@ class TalkingHead {
    * @param {string} key Property key
    * @return {Quaternion|Vector3} Position or rotation
    */
-  getPoseTemplateProp(key) {
+  getPoseTemplateProp(key: string) {
     const ids = key.split('.');
     let target = ids[0] + '.' + (ids[1] === 'rotation' ? 'quaternion' : ids[1]);
 
-    if (this.gesture && this.gesture.hasOwnProperty(target)) {
-      return this.gesture[target].clone();
+    if (this['gesture'] && this['gesture'].hasOwnProperty(target)) {
+      return this['gesture'][target].clone();
     } else {
       let source =
         ids[0] + '.' + (ids[1] === 'quaternion' ? 'rotation' : ids[1]);
-      if (!this.poseWeightOnLeft) {
+      if (!this['poseWeightOnLeft']) {
         if (source.startsWith('Left')) {
           source = 'Right' + source.substring(4);
           target = 'Right' + target.substring(4);
@@ -3637,18 +3542,18 @@ class TalkingHead {
 
       // Get value
       let val;
-      if (this.poseTarget.template.props.hasOwnProperty(target)) {
-        const o = {};
-        o[target] = this.poseTarget.template.props[target];
+      if (this['poseTarget'].template.props.hasOwnProperty(target)) {
+        const o = {} as any;
+        o[target] = this['poseTarget'].template.props[target];
         val = this.propsToThreeObjects(o)[target];
-      } else if (this.poseTarget.template.props.hasOwnProperty(source)) {
-        const o = {};
-        o[source] = this.poseTarget.template.props[source];
+      } else if (this['poseTarget'].template.props.hasOwnProperty(source)) {
+        const o = {} as any;
+        o[source] = this['poseTarget'].template.props[source];
         val = this.propsToThreeObjects(o)[target];
       }
 
       // Mirror
-      if (val && !this.poseWeightOnLeft && val.isQuaternion) {
+      if (val && !this['poseWeightOnLeft'] && val.isQuaternion) {
         val.x *= -1;
         val.w *= -1;
       }
@@ -3662,9 +3567,9 @@ class TalkingHead {
    * @param {Object} p Pose properties
    * @return {Object} Mirrored pose.
    */
-  mirrorPose(p) {
-    const r = {};
-    for (let [key, val] of Object.entries(p)) {
+  mirrorPose(p: ArrayLike<unknown> | { [s: string]: unknown }) {
+    const r = {} as any;
+    for (let [key, val] of Object.entries(p) as any) {
       // Create a mirror image
       if (val.isQuaternion) {
         if (key.startsWith('Left')) {
@@ -3691,17 +3596,17 @@ class TalkingHead {
    * @param {numeric} [ms=2000] Transition duration in ms
    * @return {Object} A new pose object.
    */
-  poseFactory(template, ms = 2000) {
+  poseFactory(template: { props: any; standing: any }, ms = 2000) {
     // Pose object
     const o = {
       template: template,
       props: this.propsToThreeObjects(template.props),
     };
 
-    for (const [p, val] of Object.entries(o.props)) {
+    for (const [p, val] of Object.entries(o.props) as any) {
       // Restrain movement when standing
       if (
-        this.opt.modelMovementFactor < 1 &&
+        this['opt'].modelMovementFactor < 1 &&
         template.standing &&
         (p === 'Hips.quaternion' ||
           p === 'Spine.quaternion' ||
@@ -3713,13 +3618,13 @@ class TalkingHead {
           p === 'RightUpLeg.quaternion' ||
           p === 'RightLeg.quaternion')
       ) {
-        const ref = this.poseStraight[p];
+        const ref = this['poseStraight'][p];
         const angle = val.angleTo(ref);
-        val.rotateTowards(ref, (1 - this.opt.modelMovementFactor) * angle);
+        val.rotateTowards(ref, (1 - this['opt'].modelMovementFactor) * angle);
       }
 
       // Custom properties
-      val.t = this.animClock; // timestamp
+      val.t = this['animClock']; // timestamp
       val.d = ms; // Transition duration
     }
     return o;
@@ -3730,58 +3635,65 @@ class TalkingHead {
    * @param {Object} template Pose template, if null update current pose
    * @param {number} [ms=2000] Transition time in milliseconds
    */
-  setPoseFromTemplate(template, ms = 2000) {
+  setPoseFromTemplate(
+    template: { lying: any; standing: any } | null,
+    ms = 2000,
+  ) {
     // Special cases
     const isIntermediate =
       template &&
-      this.poseTarget &&
-      this.poseTarget.template &&
-      ((this.poseTarget.template.standing && template.lying) ||
-        (this.poseTarget.template.lying && template.standing));
-    const isSameTemplate = template && template === this.poseCurrentTemplate;
-    const isWeightOnLeft = this.poseWeightOnLeft;
+      this['poseTarget'] &&
+      this['poseTarget'].template &&
+      ((this['poseTarget'].template.standing && template.lying) ||
+        (this['poseTarget'].template.lying && template.standing));
+    const isSameTemplate = template && template === this['poseCurrentTemplate'];
+    const isWeightOnLeft = this['poseWeightOnLeft'];
     let duration = isIntermediate ? 1000 : ms;
 
     // New pose template
     if (isIntermediate) {
-      this.poseCurrentTemplate = this.poseTemplates['oneknee'];
+      this['poseCurrentTemplate'] = this['poseTemplates']['oneknee'];
       setTimeout(() => {
         this.setPoseFromTemplate(template, ms);
       }, duration);
     } else {
-      this.poseCurrentTemplate = template || this.poseCurrentTemplate;
+      this['poseCurrentTemplate'] = template || this['poseCurrentTemplate'];
     }
 
     // Set target
-    this.poseTarget = this.poseFactory(this.poseCurrentTemplate, duration);
-    this.poseWeightOnLeft = true;
+    // Set target
+    this['poseTarget'] = this.poseFactory(
+      this['poseCurrentTemplate'],
+      duration,
+    );
+    this['poseWeightOnLeft'] = true;
 
     // Mirror properties, if necessary
     if (
       (!isSameTemplate && !isWeightOnLeft) ||
       (isSameTemplate && isWeightOnLeft)
     ) {
-      this.poseTarget.props = this.mirrorPose(this.poseTarget.props);
-      this.poseWeightOnLeft = !this.poseWeightOnLeft;
+      this['poseTarget'].props = this.mirrorPose(this['poseTarget'].props);
+      this['poseWeightOnLeft'] = !this['poseWeightOnLeft'];
     }
 
     // Gestures
-    if (this.gesture) {
-      for (let [p, val] of Object.entries(this.gesture)) {
-        if (this.poseTarget.props.hasOwnProperty(p)) {
-          this.poseTarget.props[p].copy(val);
-          this.poseTarget.props[p].t = val.t;
-          this.poseTarget.props[p].d = val.d;
+    if (this['gesture']) {
+      for (let [p, val] of Object.entries(this['gesture']) as any) {
+        if (this['poseTarget'].props.hasOwnProperty(p)) {
+          this['poseTarget'].props[p].copy(val);
+          this['poseTarget'].props[p].t = val.t;
+          this['poseTarget'].props[p].d = val.d;
         }
       }
     }
 
     // Make sure deltas are included in the target
-    Object.keys(this.poseDelta.props).forEach((key) => {
-      if (!this.poseTarget.props.hasOwnProperty(key)) {
-        this.poseTarget.props[key] = this.poseBase.props[key].clone();
-        this.poseTarget.props[key].t = this.animClock;
-        this.poseTarget.props[key].d = duration;
+    Object.keys(this['poseDelta'].props).forEach((key) => {
+      if (!this['poseTarget'].props.hasOwnProperty(key)) {
+        this['poseTarget'].props[key] = this['poseBase'].props[key].clone();
+        this['poseTarget'].props[key].t = this['animClock'];
+        this['poseTarget'].props[key].d = duration;
       }
     });
   }
@@ -3791,8 +3703,8 @@ class TalkingHead {
    * @param {string} mt Morph target
    * @return {number} Value
    */
-  getValue(mt) {
-    return this.mtAvatar[mt]?.value;
+  getValue(mt: string | number) {
+    return this['mtAvatar'][mt]?.value;
   }
 
   /**
@@ -3801,9 +3713,9 @@ class TalkingHead {
    * @param {number} val Value
    * @param {number} [ms=null] Transition time in milliseconds.
    */
-  setValue(mt, val, ms = null) {
-    if (this.mtAvatar.hasOwnProperty(mt)) {
-      Object.assign(this.mtAvatar[mt], {
+  setValue(mt: string, val: number, ms = null) {
+    if (this['mtAvatar'].hasOwnProperty(mt)) {
+      Object.assign(this['mtAvatar'][mt], {
         system: val,
         systemd: ms,
         needsUpdate: true,
@@ -3816,7 +3728,7 @@ class TalkingHead {
    * @return {string[]} Mood names.
    */
   getMoodNames() {
-    return Object.keys(this.animMoods);
+    return Object.keys(this['animMoods']);
   }
 
   /**
@@ -3824,39 +3736,42 @@ class TalkingHead {
    * @return {string[]} Mood name.
    */
   getMood() {
-    return this.opt.avatarMood;
+    return this['opt'].avatarMood;
   }
 
   /**
    * Set mood.
    * @param {string} s Mood name.
    */
-  setMood(s) {
+  setMood(s: any) {
     s = (s || '').trim().toLowerCase();
-    if (!this.animMoods.hasOwnProperty(s)) throw new Error('Unknown mood.');
-    this.moodName = s;
-    this.mood = this.animMoods[this.moodName];
+    if (!this['animMoods'].hasOwnProperty(s)) throw new Error('Unknown mood.');
+    this['moodName'] = s;
+    this['mood'] = this['animMoods'][this['moodName']];
 
     // Reset morph target baseline
-    for (let mt of Object.keys(this.mtAvatar)) {
-      let val = this.mtBaselineExceptions.hasOwnProperty(mt)
-        ? this.mtBaselineExceptions[mt]
-        : this.mtBaselineDefault;
-      if (this.mood.baseline.hasOwnProperty(mt)) {
-        val = this.mood.baseline[mt];
-      } else if (this.avatar.baseline?.hasOwnProperty(mt)) {
-        val = this.avatar.baseline[mt];
+    for (let mt of Object.keys(this['mtAvatar'])) {
+      let val = this['mtBaselineExceptions'].hasOwnProperty(mt)
+        ? this['mtBaselineExceptions'][mt]
+        : this['mtBaselineDefault'];
+      if (this['mood'].baseline.hasOwnProperty(mt)) {
+        val = this['mood'].baseline[mt];
+      } else if (this['avatar'].baseline?.hasOwnProperty(mt)) {
+        val = this['avatar'].baseline[mt];
       }
       this.setBaselineValue(mt, val);
     }
 
     // Set/replace animations
-    this.mood.anims.forEach((x) => {
-      let i = this.animQueue.findIndex((y) => y.template.name === x.name);
+    // Set/replace animations
+    this['mood'].anims.forEach((x: { name: any }) => {
+      let i = this['animQueue'].findIndex(
+        (y: { template: { name: any } }) => y.template.name === x.name,
+      );
       if (i !== -1) {
-        this.animQueue.splice(i, 1);
+        this['animQueue'].splice(i, 1);
       }
-      this.animQueue.push(this.animFactory(x, -1));
+      this['animQueue'].push(this.animFactory(x, -1));
     });
   }
 
@@ -3865,7 +3780,11 @@ class TalkingHead {
    * @return {string[]} Morph target names.
    */
   getMorphTargetNames() {
-    return ['eyesRotateX', 'eyesRotateY', ...Object.keys(this.mtAvatar)].sort();
+    return [
+      'eyesRotateX',
+      'eyesRotateY',
+      ...Object.keys(this['mtAvatar']),
+    ].sort();
   }
 
   /**
@@ -3873,7 +3792,7 @@ class TalkingHead {
    * @param {string} mt Morph target name
    * @return {number} Value, null if not in baseline
    */
-  getBaselineValue(mt) {
+  getBaselineValue(mt: string): any {
     if (mt === 'eyesRotateY') {
       const ll = this.getBaselineValue('eyeLookOutLeft');
       if (ll === undefined) return undefined;
@@ -3891,7 +3810,7 @@ class TalkingHead {
       if (u === undefined) return undefined;
       return d - u;
     } else {
-      return this.mtAvatar[mt]?.baseline;
+      return this['mtAvatar'][mt]?.baseline;
     }
   }
 
@@ -3900,7 +3819,7 @@ class TalkingHead {
    * @param {string} mt Morph target name
    * @param {number} val Value, null if to be removed from baseline
    */
-  setBaselineValue(mt, val) {
+  setBaselineValue(mt: string, val: number | null) {
     if (mt === 'eyesRotateY') {
       this.setBaselineValue(
         'eyeLookOutLeft',
@@ -3928,8 +3847,8 @@ class TalkingHead {
         val === null ? null : val > 0 ? 0 : -val,
       );
     } else {
-      if (this.mtAvatar.hasOwnProperty(mt)) {
-        Object.assign(this.mtAvatar[mt], {
+      if (this['mtAvatar'].hasOwnProperty(mt)) {
+        Object.assign(this['mtAvatar'][mt], {
           base: null,
           baseline: val,
           needsUpdate: true,
@@ -3943,7 +3862,7 @@ class TalkingHead {
    * @param {string} mt Morph target name
    * @return {number} Value, null if not fixed
    */
-  getFixedValue(mt) {
+  getFixedValue(mt: string): any {
     if (mt === 'eyesRotateY') {
       const ll = this.getFixedValue('eyeLookOutLeft');
       if (ll === null) return null;
@@ -3961,7 +3880,7 @@ class TalkingHead {
       if (u === null) return null;
       return d - u;
     } else {
-      return this.mtAvatar[mt]?.fixed;
+      return this['mtAvatar'][mt]?.fixed;
     }
   }
 
@@ -3970,7 +3889,7 @@ class TalkingHead {
    * @param {string} mt Morph target name
    * @param {number} val Value, null if to be removed
    */
-  setFixedValue(mt, val, ms = null) {
+  setFixedValue(mt: string, val: number | null, ms = null) {
     if (mt === 'eyesRotateY') {
       this.setFixedValue(
         'eyeLookOutLeft',
@@ -4004,8 +3923,8 @@ class TalkingHead {
         ms,
       );
     } else {
-      if (this.mtAvatar.hasOwnProperty(mt)) {
-        Object.assign(this.mtAvatar[mt], { fixed: val, needsUpdate: true });
+      if (this['mtAvatar'].hasOwnProperty(mt)) {
+        Object.assign(this['mtAvatar'][mt], { fixed: val, needsUpdate: true });
       }
     }
   }
@@ -4018,22 +3937,80 @@ class TalkingHead {
    * @param {number} [scaleValue=1] Scale template values
    * @return {Object} New animation object.
    */
-  animFactory(t, loop = false, scaleTime = 1, scaleValue = 1) {
-    const o = { template: t, ts: [0], vs: {} };
+  animFactory(
+    t: {
+      name?: string;
+      dt?: any[] | number[] | any[] | number[][];
+      vs?:
+        | {
+            bodyRotateX: number[];
+            bodyRotateY: number[];
+            eyesRotateX: number[];
+            eyesRotateY: number[];
+            browInnerUp: number[][];
+            mouthLeft: number[][];
+            mouthRight: number[][];
+            eyeContact: number[];
+            headMove: number[];
+          }
+        | {
+            bodyRotateX: number[];
+            bodyRotateY: number[];
+            eyesRotateX: number[];
+            eyesRotateY: number[];
+            browInnerUp: number[][];
+            mouthLeft: number[][];
+            mouthRight: number[][];
+            eyeContact: number[];
+            headMove: number[];
+          }
+        | { headRotateY: number[]; headRotateX: any[]; headRotateZ: number[] }
+        | {
+            headRotateY: any[];
+            headRotateX: any[];
+            headRotateZ: (number | null)[];
+            eyeLookInLeft: (number | null)[];
+            eyeLookOutLeft: (number | null)[];
+            eyeLookInRight: (number | null)[];
+            eyeLookOutRight: (number | null)[];
+            eyeContact: number[];
+          }
+        | { eyeContact: number[] }
+        | {
+            moveto: (
+              | {
+                  duration: number;
+                  props: {
+                    'LeftHand.quaternion': Quaternion;
+                    'RightHand.quaternion': Quaternion;
+                  };
+                }
+              | { duration: number; props: {} }
+            )[];
+          };
+      delay?: number;
+      hasOwnProperty?: any;
+      mood?: any;
+    },
+    loop: any = false,
+    scaleTime = 1,
+    scaleValue = 1,
+  ) {
+    const o = { template: t, ts: [0], vs: {} } as any;
 
     // Follow the hierarchy of objects
-    let a = t;
+    let a = t as any;
     while (1) {
-      if (a.hasOwnProperty(this.stateName)) {
-        a = a[this.stateName];
-      } else if (a.hasOwnProperty(this.moodName)) {
-        a = a[this.moodName];
-      } else if (a.hasOwnProperty(this.poseName)) {
-        a = a[this.poseName];
-      } else if (a.hasOwnProperty(this.viewName)) {
-        a = a[this.viewName];
-      } else if (this.avatar.body && a.hasOwnProperty(this.avatar.body)) {
-        a = a[this.avatar.body];
+      if (a.hasOwnProperty(this['stateName'])) {
+        a = a[this['stateName']];
+      } else if (a.hasOwnProperty(this['moodName'])) {
+        a = a[this['moodName']];
+      } else if (a.hasOwnProperty(this['poseName'])) {
+        a = a[this['poseName']];
+      } else if (a.hasOwnProperty(this['viewName'])) {
+        a = a[this['viewName']];
+      } else if (this['avatar'].body && a.hasOwnProperty(this['avatar'].body)) {
+        a = a[this['avatar'].body];
       } else if (a.hasOwnProperty('alt')) {
         // Go through alternatives with probabilities
         let b = a.alt[0];
@@ -4062,7 +4039,7 @@ class TalkingHead {
       delay = this.gaussianRandom(...delay);
     }
     if (a.hasOwnProperty('dt')) {
-      a.dt.forEach((x, i) => {
+      a.dt.forEach((x: any, i: number) => {
         let val = this.valueFn(x);
         if (Array.isArray(val)) {
           val = this.gaussianRandom(...val);
@@ -4070,18 +4047,18 @@ class TalkingHead {
         o.ts[i + 1] = o.ts[i] + val;
       });
     } else {
-      let l = Object.values(a.vs).reduce(
-        (acc, val) => (val.length > acc ? val.length : acc),
+      let l: any = Object.values(a.vs).reduce(
+        (acc: any, val: any) => (val.length > acc ? val.length : acc),
         0,
       );
       o.ts = Array(l + 1).fill(0);
     }
-    o.ts = o.ts.map((x) => this.animClock + delay + x * scaleTime);
+    o.ts = o.ts.map((x: any) => this['animClock'] + delay + x * scaleTime);
 
     // Values
-    for (let [mt, vs] of Object.entries(a.vs)) {
+    for (let [mt, vs] of Object.entries(a.vs) as any) {
       const base = this.getBaselineValue(mt);
-      const vals = vs.map((x) => {
+      const vals = vs.map((x: any) => {
         x = this.valueFn(x);
         if (x === null) {
           return null;
@@ -4108,13 +4085,31 @@ class TalkingHead {
       });
 
       if (mt === 'eyesRotateY') {
-        o.vs['eyeLookOutLeft'] = [null, ...vals.map((x) => (x > 0 ? x : 0))];
-        o.vs['eyeLookInLeft'] = [null, ...vals.map((x) => (x > 0 ? 0 : -x))];
-        o.vs['eyeLookOutRight'] = [null, ...vals.map((x) => (x > 0 ? 0 : -x))];
-        o.vs['eyeLookInRight'] = [null, ...vals.map((x) => (x > 0 ? x : 0))];
+        o.vs['eyeLookOutLeft'] = [
+          null,
+          ...vals.map((x: number) => (x > 0 ? x : 0)),
+        ];
+        o.vs['eyeLookInLeft'] = [
+          null,
+          ...vals.map((x: number) => (x > 0 ? 0 : -x)),
+        ];
+        o.vs['eyeLookOutRight'] = [
+          null,
+          ...vals.map((x: number) => (x > 0 ? 0 : -x)),
+        ];
+        o.vs['eyeLookInRight'] = [
+          null,
+          ...vals.map((x: number) => (x > 0 ? x : 0)),
+        ];
       } else if (mt === 'eyesRotateX') {
-        o.vs['eyesLookDown'] = [null, ...vals.map((x) => (x > 0 ? x : 0))];
-        o.vs['eyesLookUp'] = [null, ...vals.map((x) => (x > 0 ? 0 : -x))];
+        o.vs['eyesLookDown'] = [
+          null,
+          ...vals.map((x: number) => (x > 0 ? x : 0)),
+        ];
+        o.vs['eyesLookUp'] = [
+          null,
+          ...vals.map((x: number) => (x > 0 ? 0 : -x)),
+        ];
       } else {
         o.vs[mt] = [null, ...vals];
       }
@@ -4143,7 +4138,14 @@ class TalkingHead {
    * @param {function} [fun=null] Ease in/out function, null = linear
    * @return {number} Value based on the given time.
    */
-  valueAnimationSeq(vstart, vend, tstart, tend, t, fun = null) {
+  valueAnimationSeq(
+    vstart: any,
+    vend: any,
+    tstart: number,
+    tend: number,
+    t: number,
+    fun: any = null,
+  ) {
     vstart = this.valueFn(vstart);
     vend = this.valueFn(vend);
     if (t < tstart) t = tstart;
@@ -4163,7 +4165,8 @@ class TalkingHead {
    * @param {number} [samples=5] Number of samples, 1 = uniform distribution.
    * @return {number} Gaussian random value.
    */
-  gaussianRandom(start, end, skew = 1, samples = 5) {
+  gaussianRandom(...args: any[]) {
+    const [start, end, skew = 1, samples = 5] = args;
     let r = 0;
     for (let i = 0; i < samples; i++) r += Math.random();
     return start + Math.pow(r / samples, skew) * (end - start);
@@ -4174,12 +4177,12 @@ class TalkingHead {
    * @param {number} k Sharpness of ease.
    * @return {function} Sigmoid function.
    */
-  sigmoidFactory(k) {
-    function base(t) {
+  sigmoidFactory(k: number) {
+    function base(t: number) {
       return 1 / (1 + Math.exp(-k * t)) - 0.5;
     }
     var corr = 0.5 / base(1);
-    return function (t) {
+    return function (t: number) {
       return corr * base(2 * Math.max(Math.min(t, 1), 0) - 1) + 0.5;
     };
   }
@@ -4191,7 +4194,7 @@ class TalkingHead {
    * @param {number[]} r2 Target range
    * @return {number} Scaled value
    */
-  convertRange(value, r1, r2) {
+  convertRange(value: number, r1: any[], r2: number[]) {
     return ((value - r1[0]) * (r2[1] - r2[0])) / (r1[1] - r1[0]) + r2[0];
   }
 
@@ -4199,17 +4202,17 @@ class TalkingHead {
    * Animate the avatar.
    * @param {number} t High precision timestamp in ms.
    */
-  animate(t) {
+  animate(t: number) {
     // Are we running?
-    if (!this.isRunning) return;
+    if (!this['isRunning']) return;
     requestAnimationFrame(this.animate.bind(this));
 
     // Delta time
-    let dt = t - this.animTimeLast;
-    if (dt < this.animFrameDur) return;
-    dt = dt / this.animSlowdownRate;
-    this.animClock += dt;
-    this.animTimeLast = t;
+    let dt = t - this['animTimeLast'];
+    if (dt < this['animFrameDur']) return;
+    dt = dt / this['animSlowdownRate'];
+    this['animClock'] += dt;
+    this['animTimeLast'] = t;
 
     let i,
       j,
@@ -4217,67 +4220,68 @@ class TalkingHead {
       k,
       vol = 0;
 
-    // Statistics start
-    if (this.stats) {
-      this.stats.begin();
-    }
-
     // Listening
-    if (this.isListening) {
+    if (this['isListening']) {
       // Get input max volume
-      this.listeningAnalyzer.getByteFrequencyData(this.volumeFrequencyData);
+      // Get input max volume
+      this['listeningAnalyzer'].getByteFrequencyData(
+        this['volumeFrequencyData'],
+      );
       for (i = 2, l = 10; i < l; i++) {
-        if (this.volumeFrequencyData[i] > vol) {
-          vol = this.volumeFrequencyData[i];
+        if (this['volumeFrequencyData'][i] > vol) {
+          vol = this['volumeFrequencyData'][i];
         }
       }
 
-      this.listeningVolume = (this.listeningVolume + vol) / 2;
-      if (this.listeningActive) {
-        this.listeningTimerTotal += dt;
-        if (this.listeningVolume < this.listeningSilenceThresholdLevel) {
-          this.listeningTimer += dt;
-          if (this.listeningTimer > this.listeningSilenceThresholdMs) {
-            if (this.listeningOnchange)
-              this.listeningOnchange('stop', this.listeningTimer);
-            this.listeningActive = false;
-            this.listeningTimer = 0;
-            this.listeningTimerTotal = 0;
+      this['listeningVolume'] = (this['listeningVolume'] + vol) / 2;
+      if (this['listeningActive']) {
+        this['listeningTimerTotal'] += dt;
+        if (this['listeningVolume'] < this['listeningSilenceThresholdLevel']) {
+          this['listeningTimer'] += dt;
+          if (this['listeningTimer'] > this['listeningSilenceThresholdMs']) {
+            if (this['listeningOnchange'])
+              this['listeningOnchange']('stop', this['listeningTimer']);
+            this['listeningActive'] = false;
+            this['listeningTimer'] = 0;
+            this['listeningTimerTotal'] = 0;
           }
         } else {
-          this.listeningTimer *= 0.5;
+          this['listeningTimer'] *= 0.5;
         }
-        if (this.listeningTimerTotal > this.listeningActiveDurationMax) {
-          if (this.listeningOnchange) this.listeningOnchange('maxactive');
-          this.listeningTimerTotal = 0;
+        if (this['listeningTimerTotal'] > this['listeningActiveDurationMax']) {
+          if (this['listeningOnchange']) this['listeningOnchange']('maxactive');
+          this['listeningTimerTotal'] = 0;
         }
       } else {
-        this.listeningTimerTotal += dt;
-        if (this.listeningVolume > this.listeningActiveThresholdLevel) {
-          this.listeningTimer += dt;
-          if (this.listeningTimer > this.listeningActiveThresholdMs) {
-            if (this.listeningOnchange) this.listeningOnchange('start');
-            this.listeningActive = true;
-            this.listeningTimer = 0;
-            this.listeningTimerTotal = 0;
+        this['listeningTimerTotal'] += dt;
+        if (this['listeningVolume'] > this['listeningActiveThresholdLevel']) {
+          this['listeningTimer'] += dt;
+          if (this['listeningTimer'] > this['listeningActiveThresholdMs']) {
+            if (this['listeningOnchange']) this['listeningOnchange']('start');
+            this['listeningActive'] = true;
+            this['listeningTimer'] = 0;
+            this['listeningTimerTotal'] = 0;
           }
         } else {
-          this.listeningTimer *= 0.5;
+          this['listeningTimer'] *= 0.5;
         }
-        if (this.listeningTimerTotal > this.listeningSilenceDurationMax) {
-          if (this.listeningOnchange) this.listeningOnchange('maxsilence');
-          this.listeningTimerTotal = 0;
+        if (this['listeningTimerTotal'] > this['listeningSilenceDurationMax']) {
+          if (this['listeningOnchange'])
+            this['listeningOnchange']('maxsilence');
+          this['listeningTimerTotal'] = 0;
         }
       }
     }
 
     // Speaking
-    if (this.isSpeaking) {
+    if (this['isSpeaking']) {
       vol = 0;
-      this.audioAnalyzerNode.getByteFrequencyData(this.volumeFrequencyData);
+      this['audioAnalyzerNode'].getByteFrequencyData(
+        this['volumeFrequencyData'],
+      );
       for (i = 2, l = 10; i < l; i++) {
-        if (this.volumeFrequencyData[i] > vol) {
-          vol = this.volumeFrequencyData[i];
+        if (this['volumeFrequencyData'][i] > vol) {
+          vol = this['volumeFrequencyData'][i];
         }
       }
     }
@@ -4286,19 +4290,19 @@ class TalkingHead {
     let isEyeContact = null;
     let isHeadMove = null;
     const tasks = [];
-    for (i = 0, l = this.animQueue.length; i < l; i++) {
-      const x = this.animQueue[i];
-      if (this.animClock < x.ts[0]) continue;
+    for (i = 0, l = this['animQueue'].length; i < l; i++) {
+      const x = this['animQueue'][i];
+      if (this['animClock'] < x.ts[0]) continue;
 
       for (j = x.ndx || 0, k = x.ts.length; j < k; j++) {
-        if (this.animClock < x.ts[j]) break;
+        if (this['animClock'] < x.ts[j]) break;
 
-        for (let [mt, vs] of Object.entries(x.vs)) {
-          if (this.mtAvatar.hasOwnProperty(mt)) {
+        for (let [mt, vs] of Object.entries(x.vs) as any) {
+          if (this['mtAvatar'].hasOwnProperty(mt)) {
             if (vs[j + 1] === null) continue; // Last or unknown target, skip
 
             // Start value and target
-            const m = this.mtAvatar[mt];
+            const m = this['mtAvatar'][mt];
             if (vs[j] === null) vs[j] = m.value; // Fill-in start value
             if (j === k - 1) {
               m.newvalue = vs[j];
@@ -4306,7 +4310,7 @@ class TalkingHead {
               m.newvalue = vs[j + 1];
               const tdiff = x.ts[j + 1] - x.ts[j];
               let alpha = 1;
-              if (tdiff > 0.0001) alpha = (this.animClock - x.ts[j]) / tdiff;
+              if (tdiff > 0.0001) alpha = (this['animClock'] - x.ts[j]) / tdiff;
               if (alpha < 1) {
                 if (m.easing) alpha = m.easing(alpha);
                 m.newvalue = (1 - alpha) * vs[j] + alpha * m.newvalue;
@@ -4359,18 +4363,18 @@ class TalkingHead {
         if (x.hasOwnProperty('mood')) this.setMood(x.mood);
         if (x.loop) {
           k =
-            this.isSpeaking &&
+            this['isSpeaking'] &&
             (x.template.name === 'head' || x.template.name === 'eyes')
               ? 4
               : 1; // Restrain
-          this.animQueue[i] = this.animFactory(
+          this['animQueue'][i] = this.animFactory(
             x.template,
             x.loop > 0 ? x.loop - 1 : x.loop,
             1,
             1 / k,
           );
         } else {
-          this.animQueue.splice(i--, 1);
+          this['animQueue'].splice(i--, 1);
           l--;
         }
       } else {
@@ -4388,14 +4392,17 @@ class TalkingHead {
           break;
 
         case 'subtitles':
-          if (this.onSubtitles && typeof this.onSubtitles === 'function') {
-            this.onSubtitles(j);
+          if (
+            this['onSubtitles'] &&
+            typeof this['onSubtitles'] === 'function'
+          ) {
+            this['onSubtitles'](j);
           }
           break;
 
         case 'pose':
-          this.poseName = j;
-          this.setPoseFromTemplate(this.poseTemplates[this.poseName]);
+          this['poseName'] = j;
+          this.setPoseFromTemplate(this['poseTemplates'][this['poseName']]);
           break;
 
         case 'gesture':
@@ -4409,14 +4416,16 @@ class TalkingHead {
           break;
 
         case 'moveto':
-          Object.entries(j.props).forEach((y) => {
+          Object.entries(j.props).forEach((y: any) => {
             if (y[1]) {
-              this.poseTarget.props[y[0]].copy(y[1]);
+              this['poseTarget'].props[y[0]].copy(y[1]);
             } else {
-              this.poseTarget.props[y[0]].copy(this.getPoseTemplateProp(y[0]));
+              this['poseTarget'].props[y[0]].copy(
+                this.getPoseTemplateProp(y[0]),
+              );
             }
-            this.poseTarget.props[y[0]].t = this.animClock;
-            this.poseTarget.props[y[0]].d =
+            this['poseTarget'].props[y[0]].t = this['animClock'];
+            this['poseTarget'].props[y[0]].d =
               y[1] && y[1].d ? y[1].d : y.duration || 2000;
           });
           break;
@@ -4457,7 +4466,7 @@ class TalkingHead {
                 },
               ],
             },
-            j.x ? new THREE.Vector3(j.x, j.y, j.z) : null,
+            j.x ? (new THREE.Vector3(j.x, j.y, j.z) as any) : null,
             true,
             j.d,
           );
@@ -4501,7 +4510,7 @@ class TalkingHead {
                 },
               ],
             },
-            j.x ? new THREE.Vector3(j.x, j.y, j.z) : null,
+            j.x ? (new THREE.Vector3(j.x, j.y, j.z) as any) : null,
             true,
             j.d,
           );
@@ -4512,41 +4521,41 @@ class TalkingHead {
     // Eye contact
     if (isEyeContact || isHeadMove) {
       // Get head position
-      e.setFromQuaternion(this.poseAvatar.props['Head.quaternion']);
+      e.setFromQuaternion(this['poseAvatar'].props['Head.quaternion']);
       e.x = Math.max(-0.9, Math.min(0.9, 2 * e.x - 0.5));
       e.y = Math.max(-0.9, Math.min(0.9, -2.5 * e.y));
 
       if (isEyeContact) {
-        Object.assign(this.mtAvatar['eyesLookDown'], {
+        Object.assign(this['mtAvatar']['eyesLookDown'], {
           system: e.x < 0 ? -e.x : 0,
           needsUpdate: true,
         });
-        Object.assign(this.mtAvatar['eyesLookUp'], {
+        Object.assign(this['mtAvatar']['eyesLookUp'], {
           system: e.x < 0 ? 0 : e.x,
           needsUpdate: true,
         });
-        Object.assign(this.mtAvatar['eyeLookInLeft'], {
+        Object.assign(this['mtAvatar']['eyeLookInLeft'], {
           system: e.y < 0 ? -e.y : 0,
           needsUpdate: true,
         });
-        Object.assign(this.mtAvatar['eyeLookOutLeft'], {
+        Object.assign(this['mtAvatar']['eyeLookOutLeft'], {
           system: e.y < 0 ? 0 : e.y,
           needsUpdate: true,
         });
-        Object.assign(this.mtAvatar['eyeLookInRight'], {
+        Object.assign(this['mtAvatar']['eyeLookInRight'], {
           system: e.y < 0 ? 0 : e.y,
           needsUpdate: true,
         });
-        Object.assign(this.mtAvatar['eyeLookOutRight'], {
+        Object.assign(this['mtAvatar']['eyeLookOutRight'], {
           system: e.y < 0 ? -e.y : 0,
           needsUpdate: true,
         });
 
         // Head move
         if (isHeadMove) {
-          i = -this.mtAvatar['bodyRotateY'].value;
+          i = -this['mtAvatar']['bodyRotateY'].value;
           j = this.gaussianRandom(-0.2, 0.2);
-          this.animQueue.push(
+          this['animQueue'].push(
             this.animFactory({
               name: 'headmove',
               dt: [
@@ -4565,10 +4574,10 @@ class TalkingHead {
         }
       } else {
         i =
-          this.mtAvatar['eyeLookInLeft'].value +
-          this.mtAvatar['eyeLookOutLeft'].value;
+          this['mtAvatar']['eyeLookInLeft'].value +
+          this['mtAvatar']['eyeLookOutLeft'].value;
         j = this.gaussianRandom(-0.2, 0.2);
-        this.animQueue.push(
+        this['animQueue'].push(
           this.animFactory({
             name: 'headmove',
             dt: [
@@ -4593,17 +4602,19 @@ class TalkingHead {
     }
 
     // Make sure we do not overshoot
-    if (dt > 2 * this.animFrameDur) dt = 2 * this.animFrameDur;
+    if (dt > 2 * this['animFrameDur']) dt = 2 * this['animFrameDur'];
 
     // Randomize facial expression by changing baseline
-    if (this.viewName !== 'full') {
+    if (this['viewName'] !== 'full') {
       i =
-        this.mtRandomized[Math.floor(Math.random() * this.mtRandomized.length)];
-      j = this.mtAvatar[i];
+        this['mtRandomized'][
+          Math.floor(Math.random() * this['mtRandomized'].length)
+        ];
+      j = this['mtAvatar'][i];
       if (!j.needsUpdate) {
         Object.assign(j, {
           base:
-            (this.mood.baseline[i] || 0) +
+            (this['mood'].baseline[i] || 0) +
             ((1 + vol / 255) * Math.random()) / 5,
           needsUpdate: true,
         });
@@ -4611,115 +4622,82 @@ class TalkingHead {
     }
 
     // Animate
-    this.updatePoseBase(this.animClock);
-    if (this.mixer) {
-      this.mixer.update((dt / 1000) * this.mixer.timeScale);
+    this.updatePoseBase(this['animClock']);
+    if (this['mixer']) {
+      this['mixer'].update((dt / 1000) * this['mixer'].timeScale);
     }
     this.updatePoseDelta();
 
     // Volume based head movement, set targets
-    if ((this.isSpeaking || this.isListening) && isEyeContact) {
-      if (vol > this.volumeMax) {
-        this.volumeHeadBase = 0.05;
+    if ((this['isSpeaking'] || this['isListening']) && isEyeContact) {
+      if (vol > this['volumeMax']) {
+        this['volumeHeadBase'] = 0.05;
         if (Math.random() > 0.6) {
-          this.volumeHeadTarget = -0.05 - Math.random() / 15;
+          this['volumeHeadTarget'] = -0.05 - Math.random() / 15;
         }
-        this.volumeMax = vol;
+        this['volumeMax'] = vol;
       } else {
-        this.volumeMax *= 0.92;
-        this.volumeHeadTarget =
-          this.volumeHeadBase -
-          0.9 * (this.volumeHeadBase - this.volumeHeadTarget);
+        this['volumeMax'] *= 0.92;
+        this['volumeHeadTarget'] =
+          this['volumeHeadBase'] -
+          0.9 * (this['volumeHeadBase'] - this['volumeHeadTarget']);
       }
     } else {
-      this.volumeHeadTarget = 0;
-      this.volumeMax = 0;
+      this['volumeHeadTarget'] = 0;
+      this['volumeMax'] = 0;
     }
-    i = this.volumeHeadTarget - this.volumeHeadCurrent;
+    i = this['volumeHeadTarget'] - this['volumeHeadCurrent'];
     j = Math.abs(i);
     if (j > 0.0001) {
       k =
         j *
-        (this.volumeHeadEasing(
-          Math.min(1, (this.volumeHeadVelocity * dt) / 1000 / j) / 2 + 0.5,
+        (this['volumeHeadEasing'](
+          Math.min(1, (this['volumeHeadVelocity'] * dt) / 1000 / j) / 2 + 0.5,
         ) -
           0.5);
-      this.volumeHeadCurrent += Math.sign(i) * Math.min(j, k);
+      this['volumeHeadCurrent'] += Math.sign(i) * Math.min(j, k);
     }
-    if (Math.abs(this.volumeHeadCurrent) > 0.0001) {
-      q.setFromAxisAngle(axisx, this.volumeHeadCurrent);
-      this.objectNeck.quaternion.multiply(q);
+    if (Math.abs(this['volumeHeadCurrent']) > 0.0001) {
+      q.setFromAxisAngle(axisx, this['volumeHeadCurrent']);
+      this['objectNeck'].quaternion.multiply(q);
     }
 
     // Hip-feet balance
-    box.setFromObject(this.armature);
-    this.objectLeftToeBase.getWorldPosition(v);
-    this.objectRightToeBase.getWorldPosition(w);
-    this.objectHips.position.y -= box.min.y / 2;
-    this.objectHips.position.x -= (v.x + w.x) / 4;
-    this.objectHips.position.z -= (v.z + w.z) / 2;
+    this['nodeAvatar'].object3D.getWorldPosition(avatarPosition);
+
+    box.setFromObject(this['armature']);
+    this['objectLeftToeBase'].getWorldPosition(v);
+    this['objectRightToeBase'].getWorldPosition(w);
+    this['objectHips'].position.y -= box.min.y / 2;
+    this['objectHips'].position.x -=
+      (v.x - avatarPosition.x + (w.x - avatarPosition.x)) / 4;
+    this['objectHips'].position.z -=
+      (v.z - avatarPosition.z + (w.z - avatarPosition.z)) / 2;
 
     // Update Dynamic Bones
-    this.dynamicbones.update(dt);
+    // Update Dynamic Bones
+    this['dynamicbones'].update(dt);
 
     // Update morph targets
     this.updateMorphTargets(dt);
-
-    // Camera
-    if (this.cameraClock !== null && this.cameraClock < 1000) {
-      this.cameraClock += dt;
-      if (this.cameraClock > 1000) this.cameraClock = 1000;
-      let s = new THREE.Spherical().setFromVector3(this.cameraStart);
-      let sEnd = new THREE.Spherical().setFromVector3(this.cameraEnd);
-      s.phi += this.easing(this.cameraClock / 1000) * (sEnd.phi - s.phi);
-      s.theta += this.easing(this.cameraClock / 1000) * (sEnd.theta - s.theta);
-      s.radius +=
-        this.easing(this.cameraClock / 1000) * (sEnd.radius - s.radius);
-      s.makeSafe();
-      this.camera.position.setFromSpherical(s);
-      if (this.controlsStart.x !== this.controlsEnd.x) {
-        this.controls.target.copy(
-          this.controlsStart.lerp(
-            this.controlsEnd,
-            this.easing(this.cameraClock / 1000),
-          ),
-        );
-      } else {
-        s.setFromVector3(this.controlsStart);
-        sEnd.setFromVector3(this.controlsEnd);
-        s.phi += this.easing(this.cameraClock / 1000) * (sEnd.phi - s.phi);
-        s.theta +=
-          this.easing(this.cameraClock / 1000) * (sEnd.theta - s.theta);
-        s.radius +=
-          this.easing(this.cameraClock / 1000) * (sEnd.radius - s.radius);
-        s.makeSafe();
-        this.controls.target.setFromSpherical(s);
-      }
-      this.controls.update();
-    }
-
-    // Autorotate
-    if (this.controls.autoRotate) this.controls.update();
-
-    // Statistics end
-    if (this.stats) {
-      this.stats.end();
-    }
-
-    this.render();
   }
 
   /**
    * Reset all the visemes
    */
   resetLips() {
-    this.visemeNames.forEach((x) => {
-      this.morphs.forEach((y) => {
-        const ndx = y.morphTargetDictionary['viseme_' + x];
-        if (ndx !== undefined) {
-          y.morphTargetInfluences[ndx] = 0;
-        }
-      });
+    this['visemeNames'].forEach((x: string) => {
+      this['morphs'].forEach(
+        (y: {
+          morphTargetDictionary: { [x: string]: any };
+          morphTargetInfluences: { [x: string]: number };
+        }) => {
+          const ndx = y.morphTargetDictionary['viseme_' + x];
+          if (ndx !== undefined) {
+            y.morphTargetInfluences[ndx] = 0;
+          }
+        },
+      );
     });
   }
 
@@ -4731,8 +4709,8 @@ class TalkingHead {
    * @param {string} lang Language
    * @return {string} Pre-processsed text.
    */
-  lipsyncPreProcessText(s, lang) {
-    const o = this.lipsync[lang] || Object.values(this.lipsync)[0];
+  lipsyncPreProcessText(s: string, lang: string | number) {
+    const o = this['lipsync'][lang] || Object.values(this['lipsync'])[0];
     return o.preProcessText(s);
   }
 
@@ -4742,8 +4720,8 @@ class TalkingHead {
    * @param {string} lang Language
    * @return {Lipsync} Lipsync object.
    */
-  lipsyncWordsToVisemes(word, lang) {
-    const o = this.lipsync[lang] || Object.values(this.lipsync)[0];
+  lipsyncWordsToVisemes(word: string, lang: string | number) {
+    const o = this['lipsync'][lang] || Object.values(this['lipsync'])[0];
     return o.wordsToVisemes(word);
   }
 
@@ -4754,7 +4732,7 @@ class TalkingHead {
    * @param {subtitlesfn} [onsubtitles=null] Callback when a subtitle is written
    * @param {number[][]} [excludes=null] Array of [start, end] index arrays to not speak
    */
-  speakText(s, opt = null, onsubtitles = null, excludes = null) {
+  speakText(s: any, opt: any = null, onsubtitles = null, excludes: any = null) {
     opt = opt || {};
 
     // Classifiers
@@ -4764,7 +4742,7 @@ class TalkingHead {
       /[\p{L}\p{N},\.\p{Quotation_Mark}!€\$\+\p{Dash_Punctuation}%&\?]/gu;
     const emojis = /[\p{Extended_Pictographic}]/gu;
     const lipsyncLang =
-      opt.lipsyncLang || this.avatar.lipsyncLang || this.opt.lipsyncLang;
+      opt.lipsyncLang || this['avatar'].lipsyncLang || this['opt'].lipsyncLang;
 
     let markdownWord = ''; // markdown word
     let textWord = ''; // text-to-speech word
@@ -4796,7 +4774,10 @@ class TalkingHead {
 
       // Add letter to spoken word
       if (isSpeakable) {
-        if (!excludes || excludes.every((x) => i < x[0] || i > x[1])) {
+        if (
+          !excludes ||
+          excludes.every((x: number[]) => i < x[0] || i > x[1])
+        ) {
           textWord += letters[i];
         }
       }
@@ -4866,7 +4847,7 @@ class TalkingHead {
         if (ttsSentence.length || (isLast && lipsyncAnim.length)) {
           const o = {
             anim: lipsyncAnim,
-          };
+          } as any;
           if (onsubtitles) o.onSubtitles = onsubtitles;
           if (ttsSentence.length && !opt.avatarMute) {
             o.text = ttsSentence;
@@ -4877,7 +4858,7 @@ class TalkingHead {
             if (opt.ttsVoice) o.pitch = opt.ttsPitch;
             if (opt.ttsVolume) o.volume = opt.ttsVolume;
           }
-          this.speechQueue.push(o);
+          this['speechQueue'].push(o);
 
           // Reset sentence and animation sequence
           ttsSentence = [];
@@ -4888,18 +4869,18 @@ class TalkingHead {
 
         // Send emoji, if the divider was a known emoji
         if (isEmoji) {
-          let emoji = this.animEmojis[letters[i]];
-          if (emoji && emoji.link) emoji = this.animEmojis[emoji.link];
+          let emoji = this['animEmojis'][letters[i]];
+          if (emoji && emoji.link) emoji = this['animEmojis'][emoji.link];
           if (emoji) {
-            this.speechQueue.push({ emoji: emoji });
+            this['speechQueue'].push({ emoji: emoji });
           }
         }
 
-        this.speechQueue.push({ break: 100 });
+        this['speechQueue'].push({ break: 100 });
       }
     }
 
-    this.speechQueue.push({ break: 1000 });
+    this['speechQueue'].push({ break: 1000 });
 
     // Start speaking (if not already)
     this.startSpeaking();
@@ -4909,11 +4890,11 @@ class TalkingHead {
    * Add emoji to speech queue.
    * @param {string} em Emoji.
    */
-  async speakEmoji(em) {
-    let emoji = this.animEmojis[em];
-    if (emoji && emoji.link) emoji = this.animEmojis[emoji.link];
+  async speakEmoji(em: string | number) {
+    let emoji = this['animEmojis'][em];
+    if (emoji && emoji.link) emoji = this['animEmojis'][emoji.link];
     if (emoji) {
-      this.speechQueue.push({ emoji: emoji });
+      this['speechQueue'].push({ emoji: emoji });
     }
     this.startSpeaking();
   }
@@ -4922,8 +4903,8 @@ class TalkingHead {
    * Add a break to the speech queue.
    * @param {numeric} t Duration in milliseconds.
    */
-  async speakBreak(t) {
-    this.speechQueue.push({ break: t });
+  async speakBreak(t: any) {
+    this['speechQueue'].push({ break: t });
     this.startSpeaking();
   }
 
@@ -4931,8 +4912,8 @@ class TalkingHead {
    * Callback when speech queue processes this marker.
    * @param {markerfn} onmarker Callback function.
    */
-  async speakMarker(onmarker) {
-    this.speechQueue.push({ marker: onmarker });
+  async speakMarker(onmarker: any) {
+    this['speechQueue'].push({ marker: onmarker });
     this.startSpeaking();
   }
 
@@ -4940,20 +4921,21 @@ class TalkingHead {
    * Play background audio.
    * @param {string} url URL for the audio, stop if null.
    */
-  async playBackgroundAudio(url) {
+  async playBackgroundAudio(url: string | URL | Request) {
     // Fetch audio
     let response = await fetch(url);
     let arraybuffer = await response.arrayBuffer();
 
     // Play audio in a loop
     this.stopBackgroundAudio();
-    this.audioBackgroundSource = this.audioCtx.createBufferSource();
-    this.audioBackgroundSource.loop = true;
-    this.audioBackgroundSource.buffer =
-      await this.audioCtx.decodeAudioData(arraybuffer);
-    this.audioBackgroundSource.playbackRate.value = 1 / this.animSlowdownRate;
-    this.audioBackgroundSource.connect(this.audioBackgroundGainNode);
-    this.audioBackgroundSource.start(0);
+    this['audioBackgroundSource'] = this['audioCtx'].createBufferSource();
+    this['audioBackgroundSource'].loop = true;
+    this['audioBackgroundSource'].buffer =
+      await this['audioCtx'].decodeAudioData(arraybuffer);
+    this['audioBackgroundSource'].playbackRate.value =
+      1 / this['animSlowdownRate'];
+    this['audioBackgroundSource'].connect(this['audioBackgroundGainNode']);
+    this['audioBackgroundSource'].start(0);
   }
 
   /**
@@ -4961,9 +4943,9 @@ class TalkingHead {
    */
   stopBackgroundAudio() {
     try {
-      this.audioBackgroundSource.stop();
+      this['audioBackgroundSource'].stop();
     } catch (error) {}
-    this.audioBackgroundSource.disconnect();
+    this['audioBackgroundSource'].disconnect();
   }
 
   /**
@@ -4975,15 +4957,15 @@ class TalkingHead {
       // load impulse response from file
       let response = await fetch(url);
       let arraybuffer = await response.arrayBuffer();
-      this.audioReverbNode.buffer =
-        await this.audioCtx.decodeAudioData(arraybuffer);
+      this['audioReverbNode'].buffer =
+        await this['audioCtx'].decodeAudioData(arraybuffer);
     } else {
       // dry impulse
-      const samplerate = this.audioCtx.sampleRate;
-      const impulse = this.audioCtx.createBuffer(2, samplerate, samplerate);
+      const samplerate = this['audioCtx'].sampleRate;
+      const impulse = this['audioCtx'].createBuffer(2, samplerate, samplerate);
       impulse.getChannelData(0)[0] = 1;
       impulse.getChannelData(1)[0] = 1;
-      this.audioReverbNode.buffer = impulse;
+      this['audioReverbNode'].buffer = impulse;
     }
   }
 
@@ -4993,44 +4975,44 @@ class TalkingHead {
    * @param {number} [background=null] Gain for background audio, if null do not change
    * @param {number} [fadeSecs=0] Gradual exponential fade in/out time in seconds
    */
-  setMixerGain(speech, background = null, fadeSecs = 0) {
+  setMixerGain(speech: number | null, background = null, fadeSecs = 0) {
     if (speech !== null) {
-      this.audioSpeechGainNode.gain.cancelScheduledValues(
-        this.audioCtx.currentTime,
+      this['audioSpeechGainNode'].gain.cancelScheduledValues(
+        this['audioCtx'].currentTime,
       );
       if (fadeSecs) {
-        this.audioSpeechGainNode.gain.setValueAtTime(
-          Math.max(this.audioSpeechGainNode.gain.value, 0.0001),
-          this.audioCtx.currentTime,
+        this['audioSpeechGainNode'].gain.setValueAtTime(
+          Math.max(this['audioSpeechGainNode'].gain.value, 0.0001),
+          this['audioCtx'].currentTime,
         );
-        this.audioSpeechGainNode.gain.exponentialRampToValueAtTime(
+        this['audioSpeechGainNode'].gain.exponentialRampToValueAtTime(
           Math.max(speech, 0.0001),
-          this.audioCtx.currentTime + fadeSecs,
+          this['audioCtx'].currentTime + fadeSecs,
         );
       } else {
-        this.audioSpeechGainNode.gain.setValueAtTime(
+        this['audioSpeechGainNode'].gain.setValueAtTime(
           speech,
-          this.audioCtx.currentTime,
+          this['audioCtx'].currentTime,
         );
       }
     }
     if (background !== null) {
-      this.audioBackgroundGainNode.gain.cancelScheduledValues(
-        this.audioCtx.currentTime,
+      this['audioBackgroundGainNode'].gain.cancelScheduledValues(
+        this['audioCtx'].currentTime,
       );
       if (fadeSecs) {
-        this.audioBackgroundGainNode.gain.setValueAtTime(
-          Math.max(this.audioBackgroundGainNode.gain.value, 0.0001),
-          this.audioCtx.currentTime,
+        this['audioBackgroundGainNode'].gain.setValueAtTime(
+          Math.max(this['audioBackgroundGainNode'].gain.value, 0.0001),
+          this['audioCtx'].currentTime,
         );
-        this.audioBackgroundGainNode.gain.exponentialRampToValueAtTime(
+        this['audioBackgroundGainNode'].gain.exponentialRampToValueAtTime(
           Math.max(background, 0.0001),
-          this.audioCtx.currentTime + fadeSecs,
+          this['audioCtx'].currentTime + fadeSecs,
         );
       } else {
-        this.audioBackgroundGainNode.gain.setValueAtTime(
+        this['audioBackgroundGainNode'].gain.setValueAtTime(
           background,
-          this.audioCtx.currentTime,
+          this['audioCtx'].currentTime,
         );
       }
     }
@@ -5042,11 +5024,25 @@ class TalkingHead {
    * @param {Options} [opt=null] Text-specific options for lipsyncLang
    * @param {subtitlesfn} [onsubtitles=null] Callback when a subtitle is written
    */
-  speakAudio(r, opt = null, onsubtitles = null) {
+  speakAudio(
+    r: {
+      words: string | any[];
+      wtimes: any[];
+      wdurations: any[];
+      visemes: string | any[];
+      vtimes: any[];
+      vdurations: any[];
+      markers: string | any[];
+      mtimes: any[];
+      audio: any;
+    },
+    opt: any = null,
+    onsubtitles = null,
+  ) {
     opt = opt || {};
     const lipsyncLang =
-      opt.lipsyncLang || this.avatar.lipsyncLang || this.opt.lipsyncLang;
-    const o = {};
+      opt.lipsyncLang || this['avatar'].lipsyncLang || this['opt'].lipsyncLang;
+    const o = {} as any;
 
     if (r.words) {
       let lipsyncAnim = [];
@@ -5161,8 +5157,8 @@ class TalkingHead {
     }
 
     if (Object.keys(o).length) {
-      this.speechQueue.push(o);
-      this.speechQueue.push({ break: 300 });
+      this['speechQueue'].push(o);
+      this['speechQueue'].push({ break: 300 });
       this.startSpeaking();
     }
   }
@@ -5172,17 +5168,17 @@ class TalkingHead {
    * @param {boolean} [force=false] If true, forces to proceed
    */
   async playAudio(force = false) {
-    if (!this.armature || (this.isAudioPlaying && !force)) return;
-    this.isAudioPlaying = true;
-    if (this.audioPlaylist.length) {
-      const item = this.audioPlaylist.shift();
+    if (!this['armature'] || (this['isAudioPlaying'] && !force)) return;
+    this['isAudioPlaying'] = true;
+    if (this['audioPlaylist'].length) {
+      const item = this['audioPlaylist'].shift();
 
       // If Web Audio API is suspended, try to resume it
       if (
-        this.audioCtx.state === 'suspended' ||
-        this.audioCtx.state === 'interrupted'
+        this['audioCtx'].state === 'suspended' ||
+        this['audioCtx'].state === 'interrupted'
       ) {
-        const resume = this.audioCtx.resume();
+        const resume = this['audioCtx'].resume();
         const timeout = new Promise((_r, rej) =>
           setTimeout(() => rej('p2'), 1000),
         );
@@ -5208,14 +5204,16 @@ class TalkingHead {
       }
 
       // Create audio source
-      this.audioSpeechSource = this.audioCtx.createBufferSource();
-      this.audioSpeechSource.buffer = audio;
-      this.audioSpeechSource.playbackRate.value = 1 / this.animSlowdownRate;
-      this.audioSpeechSource.connect(this.audioAnalyzerNode);
-      this.audioSpeechSource.addEventListener(
+      // Create audio source
+      this['audioSpeechSource'] = this['audioCtx'].createBufferSource();
+      this['audioSpeechSource'].buffer = audio;
+      this['audioSpeechSource'].playbackRate.value =
+        1 / this['animSlowdownRate'];
+      this['audioSpeechSource'].connect(this['audioAnalyzerNode']);
+      this['audioSpeechSource'].addEventListener(
         'ended',
         () => {
-          this.audioSpeechSource.disconnect();
+          this['audioSpeechSource'].disconnect();
           this.playAudio(true);
         },
         { once: true },
@@ -5226,20 +5224,24 @@ class TalkingHead {
       if (item.anim) {
         // Find the lowest negative time point, if any
         delay = Math.abs(
-          Math.max(0, Math.min(...item.anim.map((x) => Math.min(...x.ts)))),
+          Math.max(
+            0,
+            Math.min(...item.anim.map((x: { ts: any }) => Math.min(...x.ts))),
+          ),
         );
-        item.anim.forEach((x) => {
+        item.anim.forEach((x: any) => {
           for (let i = 0; i < x.ts.length; i++) {
-            x.ts[i] = this.animClock + x.ts[i] + delay;
+            x.ts[i] = this['animClock'] + x.ts[i] + delay;
           }
-          this.animQueue.push(x);
+          this['animQueue'].push(x);
         });
       }
 
       // Play, dealy in seconds so pre-animations can be played
-      this.audioSpeechSource.start(delay / 1000);
+      // Play, dealy in seconds so pre-animations can be played
+      this['audioSpeechSource'].start(delay / 1000);
     } else {
-      this.isAudioPlaying = false;
+      this['isAudioPlaying'] = false;
       this.startSpeaking(true);
     }
   }
@@ -5250,18 +5252,18 @@ class TalkingHead {
    * @param {boolean} [force=false] If true, forces to proceed (e.g. after break)
    */
   async startSpeaking(force = false) {
-    if (!this.armature || (this.isSpeaking && !force)) return;
-    this.stateName = 'speaking';
-    this.isSpeaking = true;
-    if (this.speechQueue.length) {
-      let line = this.speechQueue.shift();
+    if (!this['armature'] || (this['isSpeaking'] && !force)) return;
+    this['stateName'] = 'speaking';
+    this['isSpeaking'] = true;
+    if (this['speechQueue'].length) {
+      let line = this['speechQueue'].shift();
       if (line.emoji) {
         // Look at the camera
         this.lookAtCamera(500);
 
         // Only emoji
-        let duration = line.emoji.dt.reduce((a, b) => a + b, 0);
-        this.animQueue.push(this.animFactory(line.emoji));
+        let duration = line.emoji.dt.reduce((a: any, b: any) => a + b, 0);
+        this['animQueue'].push(this.animFactory(line.emoji));
         setTimeout(this.startSpeaking.bind(this), duration, true);
       } else if (line.break) {
         // Break
@@ -5272,8 +5274,9 @@ class TalkingHead {
         this.speakWithHands();
 
         // Make a playlist
-        this.audioPlaylist.push({ anim: line.anim, audio: line.audio });
-        this.onSubtitles = line.onSubtitles || null;
+        // Make a playlist
+        this['audioPlaylist'].push({ anim: line.anim, audio: line.audio });
+        this['onSubtitles'] = line.onSubtitles || null;
         this.resetLips();
         if (line.mood) this.setMood(line.mood);
         this.playAudio();
@@ -5285,138 +5288,89 @@ class TalkingHead {
         try {
           // Convert text to SSML
           let ssml = '<speak>';
-          line.text.forEach((x, i) => {
-            // Add mark
-            if (i > 0) {
-              ssml += " <mark name='" + x.mark + "'/>";
-            }
+          line.text.forEach(
+            (
+              x: {
+                mark: string;
+                word: {
+                  replaceAll: (
+                    arg0: string,
+                    arg1: string,
+                  ) => {
+                    (): any;
+                    new (): any;
+                    replaceAll: {
+                      (
+                        arg0: string,
+                        arg1: string,
+                      ): {
+                        (): any;
+                        new (): any;
+                        replaceAll: {
+                          (
+                            arg0: string,
+                            arg1: string,
+                          ): {
+                            (): any;
+                            new (): any;
+                            replaceAll: {
+                              (
+                                arg0: string,
+                                arg1: string,
+                              ): {
+                                (): any;
+                                new (): any;
+                                replaceAll: {
+                                  (arg0: string, arg1: string): string;
+                                  new (): any;
+                                };
+                              };
+                              new (): any;
+                            };
+                          };
+                          new (): any;
+                        };
+                      };
+                      new (): any;
+                    };
+                  };
+                };
+              },
+              i: number,
+            ) => {
+              // Add mark
+              if (i > 0) {
+                ssml += " <mark name='" + x.mark + "'/>";
+              }
 
-            // Add word
-            ssml += x.word
-              .replaceAll('&', '&amp;')
-              .replaceAll('<', '&lt;')
-              .replaceAll('>', '&gt;')
-              .replaceAll('"', '&quot;')
-              .replaceAll("'", '&apos;')
-              .replace(/^\p{Dash_Punctuation}$/gu, '<break time="750ms"/>');
-          });
+              // Add word
+              ssml += x.word
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&apos;')
+                .replace(/^\p{Dash_Punctuation}$/gu, '<break time="750ms"/>');
+            },
+          );
           ssml += '</speak>';
 
-          const o = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json; charset=utf-8',
-            },
-            body: JSON.stringify({
-              input: {
-                ssml: ssml,
-              },
-              voice: {
-                languageCode:
-                  line.lang || this.avatar.ttsLang || this.opt.ttsLang,
-                name: line.voice || this.avatar.ttsVoice || this.opt.ttsVoice,
-              },
-              audioConfig: {
-                audioEncoding: this.ttsAudioEncoding,
-                speakingRate:
-                  (line.rate || this.avatar.ttsRate || this.opt.ttsRate) +
-                  this.mood.speech.deltaRate,
-                pitch:
-                  (line.pitch || this.avatar.ttsPitch || this.opt.ttsPitch) +
-                  this.mood.speech.deltaPitch,
-                volumeGainDb:
-                  (line.volume || this.avatar.ttsVolume || this.opt.ttsVolume) +
-                  this.mood.speech.deltaVolume,
-              },
-              enableTimePointing: [1], // Timepoint information for mark tags
-            }),
-          };
-
-          // JSON Web Token
-          if (this.opt.jwtGet && typeof this.opt.jwtGet === 'function') {
-            o.headers['Authorization'] = 'Bearer ' + (await this.opt.jwtGet());
-          }
-
-          const res = await fetch(
-            this.opt.ttsEndpoint +
-              (this.opt.ttsApikey ? '?key=' + this.opt.ttsApikey : ''),
-            o,
-          );
-          const data = await res.json();
-
-          if (res.status === 200 && data && data.audioContent) {
-            // Audio data
-            const buf = this.b64ToArrayBuffer(data.audioContent);
-            const audio = await this.audioCtx.decodeAudioData(buf);
-            this.speakWithHands();
-
-            // Workaround for Google TTS not providing all timepoints
-            const times = [0];
-            let markIndex = 0;
-            line.text.forEach((x, i) => {
-              if (i > 0) {
-                let ms = times[times.length - 1];
-                if (data.timepoints[markIndex]) {
-                  ms = data.timepoints[markIndex].timeSeconds * 1000;
-                  if (data.timepoints[markIndex].markName === '' + x.mark) {
-                    markIndex++;
-                  }
-                }
-                times.push(ms);
-              }
-            });
-
-            // Word-to-audio alignment
-            const timepoints = [{ mark: 0, time: 0 }];
-            times.forEach((x, i) => {
-              if (i > 0) {
-                let prevDuration = x - times[i - 1];
-                if (prevDuration > 150) prevDuration - 150; // Trim out leading space
-                timepoints[i - 1].duration = prevDuration;
-                timepoints.push({ mark: i, time: x });
-              }
-            });
-            let d = 1000 * audio.duration; // Duration in ms
-            if (d > this.opt.ttsTrimEnd) d = d - this.opt.ttsTrimEnd; // Trim out silence at the end
-            timepoints[timepoints.length - 1].duration =
-              d - timepoints[timepoints.length - 1].time;
-
-            // Re-set animation starting times and rescale durations
-            line.anim.forEach((x) => {
-              const timepoint = timepoints[x.mark];
-              if (timepoint) {
-                for (let i = 0; i < x.ts.length; i++) {
-                  x.ts[i] =
-                    timepoint.time +
-                    x.ts[i] * timepoint.duration +
-                    this.opt.ttsTrimStart;
-                }
-              }
-            });
-
-            // Add to the playlist
-            this.audioPlaylist.push({ anim: line.anim, audio: audio });
-            this.onSubtitles = line.onSubtitles || null;
-            this.resetLips();
-            if (line.mood) this.setMood(line.mood);
-            this.playAudio();
-          } else {
-            this.startSpeaking(true);
-          }
+          this['el'].dispatchEvent(new CustomEvent('speak', { detail: { line, ssml } }));
         } catch (error) {
           console.error('Error:', error);
           this.startSpeaking(true);
         }
       } else if (line.anim) {
         // Only subtitles
-        this.onSubtitles = line.onSubtitles || null;
+        // Only subtitles
+        this['onSubtitles'] = line.onSubtitles || null;
         this.resetLips();
         if (line.mood) this.setMood(line.mood);
-        line.anim.forEach((x, i) => {
+        line.anim.forEach((x: any, i: number) => {
           for (let j = 0; j < x.ts.length; j++) {
-            x.ts[j] = this.animClock + 10 * i;
+            x.ts[j] = this['animClock'] + 10 * i;
           }
-          this.animQueue.push(x);
+          this['animQueue'].push(x);
         });
         setTimeout(this.startSpeaking.bind(this), 10 * line.anim.length, true);
       } else if (line.marker) {
@@ -5428,8 +5382,75 @@ class TalkingHead {
         this.startSpeaking(true);
       }
     } else {
-      this.stateName = 'idle';
-      this.isSpeaking = false;
+      this['stateName'] = 'idle';
+      this['isSpeaking'] = false;
+    }
+  }
+
+
+  /**
+   * Speak from tts result.
+   */
+  async speakFromTTS(line: any, data: any) {
+    if (data && data.audioContent) {
+      // Audio data
+      const buf = this.b64ToArrayBuffer(data.audioContent);
+      const audio = await this['audioCtx'].decodeAudioData(buf);
+      this.speakWithHands();
+
+      // Workaround for Google TTS not providing all timepoints
+      const times = [0];
+      let markIndex = 0;
+      line.text.forEach((x: { mark: string }, i: number) => {
+        if (i > 0) {
+          let ms = times[times.length - 1];
+          if (data.timepoints[markIndex]) {
+            ms = data.timepoints[markIndex].timeSeconds * 1000;
+            if (data.timepoints[markIndex].markName === '' + x.mark) {
+              markIndex++;
+            }
+          }
+          times.push(ms);
+        }
+      });
+
+      // Word-to-audio alignment
+      const timepoints = [{ mark: 0, time: 0 }] as any[];
+      times.forEach((x, i) => {
+        if (i > 0) {
+          let prevDuration = x - times[i - 1];
+          if (prevDuration > 150) prevDuration - 150; // Trim out leading space
+          timepoints[i - 1].duration = prevDuration;
+          timepoints.push({ mark: i, time: x });
+        }
+      });
+      let d = 1000 * audio.duration; // Duration in ms
+      if (d > this['opt'].ttsTrimEnd) d = d - this['opt'].ttsTrimEnd; // Trim out silence at the end
+      timepoints[timepoints.length - 1].duration =
+        d - timepoints[timepoints.length - 1].time;
+
+      // Re-set animation starting times and rescale durations
+      line.anim.forEach((x: any) => {
+        const timepoint = timepoints[x.mark];
+        if (timepoint) {
+          for (let i = 0; i < x.ts.length; i++) {
+            x.ts[i] =
+              timepoint.time +
+              x.ts[i] * timepoint.duration +
+              this['opt'].ttsTrimStart;
+          }
+        }
+      });
+
+      // Add to the playlist
+      // Add to the playlist
+      this['audioPlaylist'].push({ anim: line.anim, audio: audio });
+      this['onSubtitles'] = line.onSubtitles || null;
+      this.resetLips();
+      if (line.mood) this.setMood(line.mood);
+      this.playAudio();
+    } else {
+      this.startSpeaking(true);
     }
   }
 
@@ -5438,18 +5459,19 @@ class TalkingHead {
    */
   pauseSpeaking() {
     try {
-      this.audioSpeechSource.stop();
+      this['audioSpeechSource'].stop();
     } catch (error) {}
-    this.audioPlaylist.length = 0;
-    this.stateName = 'idle';
-    this.isSpeaking = false;
-    this.isAudioPlaying = false;
-    this.animQueue = this.animQueue.filter(
-      (x) => x.template.name !== 'viseme' && x.template.name !== 'subtitles',
+    this['audioPlaylist'].length = 0;
+    this['stateName'] = 'idle';
+    this['isSpeaking'] = false;
+    this['isAudioPlaying'] = false;
+    this['animQueue'] = this['animQueue'].filter(
+      (x: { template: { name: string } }) =>
+        x.template.name !== 'viseme' && x.template.name !== 'subtitles',
     );
-    if (this.armature) {
+    if (this['armature']) {
       this.resetLips();
-      this.render();
+      this['render']();
     }
   }
 
@@ -5458,19 +5480,20 @@ class TalkingHead {
    */
   stopSpeaking() {
     try {
-      this.audioSpeechSource.stop();
+      this['audioSpeechSource'].stop();
     } catch (error) {}
-    this.audioPlaylist.length = 0;
-    this.speechQueue.length = 0;
-    this.animQueue = this.animQueue.filter(
-      (x) => x.template.name !== 'viseme' && x.template.name !== 'subtitles',
+    this['audioPlaylist'].length = 0;
+    this['speechQueue'].length = 0;
+    this['animQueue'] = this['animQueue'].filter(
+      (x: { template: { name: string } }) =>
+        x.template.name !== 'viseme' && x.template.name !== 'subtitles',
     );
-    this.stateName = 'idle';
-    this.isSpeaking = false;
-    this.isAudioPlaying = false;
-    if (this.armature) {
+    this['stateName'] = 'idle';
+    this['isSpeaking'] = false;
+    this['isAudioPlaying'] = false;
+    if (this['armature']) {
       this.resetLips();
-      this.render();
+      this['render']();
     }
   }
 
@@ -5478,8 +5501,8 @@ class TalkingHead {
    * Make eye contact.
    * @param {number} t Time in milliseconds
    */
-  makeEyeContact(t) {
-    this.animQueue.push(
+  makeEyeContact(t: any) {
+    this['animQueue'].push(
       this.animFactory({
         name: 'eyecontact',
         dt: [0, t],
@@ -5492,16 +5515,18 @@ class TalkingHead {
    * Look ahead.
    * @param {number} t Time in milliseconds
    */
-  lookAhead(t) {
+  lookAhead(t: any) {
     if (t) {
       // Randomize head/eyes ratio
       let drotx = (Math.random() - 0.5) / 4;
       let droty = (Math.random() - 0.5) / 4;
 
       // Remove old, if any
-      let old = this.animQueue.findIndex((y) => y.template.name === 'lookat');
+      let old = this['animQueue'].findIndex(
+        (y: { template: { name: string } }) => y.template.name === 'lookat',
+      );
       if (old !== -1) {
-        this.animQueue.splice(old, 1);
+        this['animQueue'].splice(old, 1);
       }
 
       // Add new anim
@@ -5520,7 +5545,7 @@ class TalkingHead {
           headMove: [0],
         },
       };
-      this.animQueue.push(this.animFactory(templateLookAt));
+      this['animQueue'].push(this.animFactory(templateLookAt));
     }
   }
 
@@ -5528,14 +5553,14 @@ class TalkingHead {
    * Turn head and eyes to look at the camera.
    * @param {number} t Time in milliseconds
    */
-  lookAtCamera(t) {
-    if (this.avatar.hasOwnProperty('avatarIgnoreCamera')) {
-      if (this.avatar.avatarIgnoreCamera) {
+  lookAtCamera(t: number) {
+    if (this['avatar'].hasOwnProperty('avatarIgnoreCamera')) {
+      if (this['avatar'].avatarIgnoreCamera) {
         this.lookAhead(t);
       } else {
         this.lookAt(null, null, t);
       }
-    } else if (this.opt.avatarIgnoreCamera) {
+    } else if (this['opt'].avatarIgnoreCamera) {
       this.lookAhead(t);
     } else {
       this.lookAt(null, null, t);
@@ -5548,20 +5573,20 @@ class TalkingHead {
    * @param {number} y Y-coordinate relative to visual viewport
    * @param {number} t Time in milliseconds
    */
-  lookAt(x, y, t) {
+  lookAt(x: any, y: any, t: any) {
     // Eyes position
-    const rect = this.nodeAvatar.getBoundingClientRect();
-    this.objectLeftEye.updateMatrixWorld(true);
-    this.objectRightEye.updateMatrixWorld(true);
+    const rect = this['nodeAvatar'].getBoundingClientRect();
+    this['objectLeftEye'].updateMatrixWorld(true);
+    this['objectRightEye'].updateMatrixWorld(true);
     const plEye = new THREE.Vector3().setFromMatrixPosition(
-      this.objectLeftEye.matrixWorld,
+      this['objectLeftEye'].matrixWorld,
     );
     const prEye = new THREE.Vector3().setFromMatrixPosition(
-      this.objectRightEye.matrixWorld,
+      this['objectRightEye'].matrixWorld,
     );
     const pEyes = new THREE.Vector3().addVectors(plEye, prEye).divideScalar(2);
 
-    pEyes.project(this.camera);
+    pEyes.project(this['camera']);
     let eyesx = ((pEyes.x + 1) / 2) * rect.width + rect.left;
     let eyesy = (-(pEyes.y - 1) / 2) * rect.height + rect.top;
 
@@ -5570,17 +5595,17 @@ class TalkingHead {
     if (y === null) y = eyesy;
 
     // Use body/camera rotation to determine the required head rotation
-    q.copy(this.poseTarget.props['Hips.quaternion']);
-    q.multiply(this.poseTarget.props['Spine.quaternion']);
-    q.multiply(this.poseTarget.props['Spine1.quaternion']);
-    q.multiply(this.poseTarget.props['Spine2.quaternion']);
-    q.multiply(this.poseTarget.props['Neck.quaternion']);
-    q.multiply(this.poseTarget.props['Head.quaternion']);
+    q.copy(this['poseTarget'].props['Hips.quaternion']);
+    q.multiply(this['poseTarget'].props['Spine.quaternion']);
+    q.multiply(this['poseTarget'].props['Spine1.quaternion']);
+    q.multiply(this['poseTarget'].props['Spine2.quaternion']);
+    q.multiply(this['poseTarget'].props['Neck.quaternion']);
+    q.multiply(this['poseTarget'].props['Head.quaternion']);
     e.setFromQuaternion(q);
     let rx = e.x / (40 / 24); // Refer to setValue(bodyRotateX)
     let ry = e.y / (9 / 4); // Refer to setValue(bodyRotateY)
-    let camerarx = Math.min(0.4, Math.max(-0.4, this.camera.rotation.x));
-    let camerary = Math.min(0.4, Math.max(-0.4, this.camera.rotation.y));
+    let camerarx = Math.min(0.4, Math.max(-0.4, this['camera'].rotation.x));
+    let camerary = Math.min(0.4, Math.max(-0.4, this['camera'].rotation.y));
 
     // Calculate new delta
     let maxx = Math.max(window.innerWidth - eyesx, eyesx);
@@ -5602,9 +5627,11 @@ class TalkingHead {
 
     if (t) {
       // Remove old, if any
-      let old = this.animQueue.findIndex((y) => y.template.name === 'lookat');
+      let old = this['animQueue'].findIndex(
+        (y: { template: { name: string } }) => y.template.name === 'lookat',
+      );
       if (old !== -1) {
-        this.animQueue.splice(old, 1);
+        this['animQueue'].splice(old, 1);
       }
 
       // Add new anim
@@ -5623,7 +5650,7 @@ class TalkingHead {
           headMove: [0],
         },
       };
-      this.animQueue.push(this.animFactory(templateLookAt));
+      this['animQueue'].push(this.animFactory(templateLookAt));
     }
   }
 
@@ -5633,21 +5660,21 @@ class TalkingHead {
    * @param {number} y Y-coordinate relative to visual viewport
    * @return {Boolean} If true, (x,y) touch the avatar
    */
-  touchAt(x, y) {
-    const rect = this.nodeAvatar.getBoundingClientRect();
+  touchAt(x: number, y: number) {
+    const rect = this['nodeAvatar'].getBoundingClientRect();
     const pointer = new THREE.Vector2(
       ((x - rect.left) / rect.width) * 2 - 1,
       -((y - rect.top) / rect.height) * 2 + 1,
     );
     const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(pointer, this.camera);
-    const intersects = raycaster.intersectObject(this.armature);
+    raycaster.setFromCamera(pointer, this['camera']);
+    const intersects = raycaster.intersectObject(this['armature']);
     if (intersects.length > 0) {
-      const target = intersects[0].point;
+      const target = intersects[0].point as any;
       const LeftArmPos = new THREE.Vector3();
       const RightArmPos = new THREE.Vector3();
-      this.objectLeftArm.getWorldPosition(LeftArmPos);
-      this.objectRightArm.getWorldPosition(RightArmPos);
+      this['objectLeftArm'].getWorldPosition(LeftArmPos);
+      this['objectRightArm'].getWorldPosition(RightArmPos);
       const LeftD2 = LeftArmPos.distanceToSquared(target);
       const RightD2 = RightArmPos.distanceToSquared(target);
       if (LeftD2 < RightD2) {
@@ -5747,9 +5774,9 @@ class TalkingHead {
         'RightHand',
       ].forEach((x) => {
         let key = x + '.quaternion';
-        this.poseTarget.props[key].copy(this.getPoseTemplateProp(key));
-        this.poseTarget.props[key].t = this.animClock;
-        this.poseTarget.props[key].d = 1000;
+        this['poseTarget'].props[key].copy(this.getPoseTemplateProp(key));
+        this['poseTarget'].props[key].t = this['animClock'];
+        this['poseTarget'].props[key].d = 1000;
       });
     }
 
@@ -5764,10 +5791,10 @@ class TalkingHead {
   speakWithHands(delay = 0, prob = 0.5) {
     // Only if we are standing and not bending and probabilities match up
     if (
-      this.mixer ||
-      this.gesture ||
-      !this.poseTarget.template.standing ||
-      this.poseTarget.template.bend ||
+      this['mixer'] ||
+      this['gesture'] ||
+      !this['poseTarget'].template.standing ||
+      this['poseTarget'].template.bend ||
       Math.random() > prob
     )
       return;
@@ -5852,7 +5879,7 @@ class TalkingHead {
 
     // Moveto
     const dt = [];
-    const moveto = [];
+    const moveto = [] as any[];
 
     // First move
     dt.push(100 + Math.round(Math.random() * 500));
@@ -5868,7 +5895,7 @@ class TalkingHead {
       },
     });
     ['LeftArm', 'LeftForeArm', 'RightArm', 'RightForeArm'].forEach((x) => {
-      moveto[0].props[x + '.quaternion'] = this.ikMesh
+      moveto[0].props[x + '.quaternion'] = this['ikMesh']
         .getObjectByName(x)
         .quaternion.clone();
     });
@@ -5894,52 +5921,36 @@ class TalkingHead {
       dt: dt,
       vs: { moveto: moveto },
     });
-    this.animQueue.push(anim);
+    this['animQueue'].push(anim);
   }
 
   /**
    * Get slowdown.
    * @return {numeric} Slowdown factor.
    */
-  getSlowdownRate(k) {
-    return this.animSlowdownRate;
+  getSlowdownRate(k: any) {
+    return this['animSlowdownRate'];
   }
 
   /**
    * Set slowdown.
    * @param {numeric} k Slowdown factor.
    */
-  setSlowdownRate(k) {
-    this.animSlowdownRate = k;
-    this.audioSpeechSource.playbackRate.value = 1 / this.animSlowdownRate;
-    this.audioBackgroundSource.playbackRate.value = 1 / this.animSlowdownRate;
-  }
-
-  /**
-   * Get autorotate speed.
-   * @return {numeric} Autorotate speed.
-   */
-  getAutoRotateSpeed(k) {
-    return this.controls.autoRotateSpeed;
-  }
-
-  /**
-   * Set autorotate.
-   * @param {numeric} speed Autorotate speed, e.g. value 2 = 30 secs per orbit at 60fps.
-   */
-  setAutoRotateSpeed(speed) {
-    this.controls.autoRotateSpeed = speed;
-    this.controls.autoRotate = speed > 0;
+  setSlowdownRate(k: any) {
+    this['animSlowdownRate'] = k;
+    this['audioSpeechSource'].playbackRate.value = 1 / this['animSlowdownRate'];
+    this['audioBackgroundSource'].playbackRate.value =
+      1 / this['animSlowdownRate'];
   }
 
   /**
    * Start animation cycle.
    */
   start() {
-    if (this.armature && this.isRunning === false) {
-      this.audioCtx.resume();
-      this.animTimeLast = performance.now();
-      this.isRunning = true;
+    if (this['armature'] && this['isRunning'] === false) {
+      this['audioCtx'].resume();
+      this['animTimeLast'] = performance.now();
+      this['isRunning'] = true;
       requestAnimationFrame(this.animate.bind(this));
     }
   }
@@ -5948,8 +5959,8 @@ class TalkingHead {
    * Stop animation cycle.
    */
   stop() {
-    this.isRunning = false;
-    this.audioCtx.suspend();
+    this['isRunning'] = false;
+    this['audioCtx'].suspend();
   }
 
   /**
@@ -5958,58 +5969,58 @@ class TalkingHead {
    * @param {Object} [opt={}] Options
    * @param {function} [onchange=null] Callback function for start
    */
-  startListening(analyzer, opt = {}, onchange = null) {
-    this.listeningAnalyzer = analyzer;
-    this.listeningAnalyzer.fftSize = 256;
-    this.listeningAnalyzer.smoothingTimeConstant = 0.1;
-    this.listeningAnalyzer.minDecibels = -70;
-    this.listeningAnalyzer.maxDecibels = -10;
-    this.listeningOnchange =
+  startListening(analyzer: any, opt: any = {}, onchange = null) {
+    this['listeningAnalyzer'] = analyzer;
+    this['listeningAnalyzer'].fftSize = 256;
+    this['listeningAnalyzer'].smoothingTimeConstant = 0.1;
+    this['listeningAnalyzer'].minDecibels = -70;
+    this['listeningAnalyzer'].maxDecibels = -10;
+    this['listeningOnchange'] =
       onchange && typeof onchange === 'function' ? onchange : null;
 
-    this.listeningSilenceThresholdLevel = opt?.hasOwnProperty(
+    this['listeningSilenceThresholdLevel'] = opt?.hasOwnProperty(
       'listeningSilenceThresholdLevel',
     )
       ? opt.listeningSilenceThresholdLevel
-      : this.opt.listeningSilenceThresholdLevel;
-    this.listeningSilenceThresholdMs = opt?.hasOwnProperty(
+      : this['opt'].listeningSilenceThresholdLevel;
+    this['listeningSilenceThresholdMs'] = opt?.hasOwnProperty(
       'listeningSilenceThresholdMs',
     )
       ? opt.listeningSilenceThresholdMs
-      : this.opt.listeningSilenceThresholdMs;
-    this.listeningSilenceDurationMax = opt?.hasOwnProperty(
+      : this['opt'].listeningSilenceThresholdMs;
+    this['listeningSilenceDurationMax'] = opt?.hasOwnProperty(
       'listeningSilenceDurationMax',
     )
       ? opt.listeningSilenceDurationMax
-      : this.opt.listeningSilenceDurationMax;
-    this.listeningActiveThresholdLevel = opt?.hasOwnProperty(
+      : this['opt'].listeningSilenceDurationMax;
+    this['listeningActiveThresholdLevel'] = opt?.hasOwnProperty(
       'listeningActiveThresholdLevel',
     )
       ? opt.listeningActiveThresholdLevel
-      : this.opt.listeningActiveThresholdLevel;
-    this.listeningActiveThresholdMs = opt?.hasOwnProperty(
+      : this['opt'].listeningActiveThresholdLevel;
+    this['listeningActiveThresholdMs'] = opt?.hasOwnProperty(
       'listeningActiveThresholdMs',
     )
       ? opt.listeningActiveThresholdMs
-      : this.opt.listeningActiveThresholdMs;
-    this.listeningActiveDurationMax = opt?.hasOwnProperty(
+      : this['opt'].listeningActiveThresholdMs;
+    this['listeningActiveDurationMax'] = opt?.hasOwnProperty(
       'listeningActiveDurationMax',
     )
       ? opt.listeningActiveDurationMax
-      : this.opt.listeningActiveDurationMax;
+      : this['opt'].listeningActiveDurationMax;
 
-    this.listeningActive = false;
-    this.listeningVolume = 0;
-    this.listeningTimer = 0;
-    this.listeningTimerTotal = 0;
-    this.isListening = true;
+    this['listeningActive'] = false;
+    this['listeningVolume'] = 0;
+    this['listeningTimer'] = 0;
+    this['listeningTimerTotal'] = 0;
+    this['isListening'] = true;
   }
 
   /**
    * Stop animation cycle.
    */
   stopListening() {
-    this.isListening = false;
+    this['isListening'] = false;
   }
 
   /**
@@ -6020,34 +6031,49 @@ class TalkingHead {
    * @param {number} [ndx=0] Index of the clip
    * @param {number} [scale=0.01] Position scale factor
    */
-  async playAnimation(url, onprogress = null, dur = 10, ndx = 0, scale = 0.01) {
-    if (!this.armature) return;
+  async playAnimation(
+    url: string,
+    onprogress = null,
+    dur = 10,
+    ndx = 0,
+    scale = 0.01,
+  ) {
+    if (!this['armature']) return;
 
-    let item = this.animClips.find((x) => x.url === url + '-' + ndx);
+    let item = this['animClips'].find(
+      (x: { url: string }) => x.url === url + '-' + ndx,
+    );
     if (item) {
       // Reset pose update
-      let anim = this.animQueue.find((x) => x.template.name === 'pose');
+      let anim = this['animQueue'].find(
+        (x: { template: { name: string } }) => x.template.name === 'pose',
+      );
       if (anim) {
         anim.ts[0] = Infinity;
       }
 
       // Set new pose
-      Object.entries(item.pose.props).forEach((x) => {
-        this.poseBase.props[x[0]] = x[1].clone();
-        this.poseTarget.props[x[0]] = x[1].clone();
-        this.poseTarget.props[x[0]].t = 0;
-        this.poseTarget.props[x[0]].d = 1000;
+      Object.entries(item.pose.props).forEach((x: any) => {
+        this['poseBase'].props[x[0]] = x[1].clone();
+        this['poseTarget'].props[x[0]] = x[1].clone();
+        this['poseTarget'].props[x[0]].t = 0;
+        this['poseTarget'].props[x[0]].d = 1000;
       });
 
       // Create a new mixer
-      this.mixer = new THREE.AnimationMixer(this.armature);
-      this.mixer.addEventListener('finished', this.stopAnimation.bind(this), {
-        once: true,
-      });
+      // Create a new mixer
+      this['mixer'] = new THREE.AnimationMixer(this['armature']);
+      this['mixer'].addEventListener(
+        'finished',
+        this.stopAnimation.bind(this),
+        {
+          once: true,
+        },
+      );
 
       // Play action
       const repeat = Math.ceil(dur / item.clip.duration);
-      const action = this.mixer.clipAction(item.clip);
+      const action = this['mixer'].clipAction(item.clip);
       action.setLoop(THREE.LoopRepeat, repeat);
       action.clampWhenFinished = true;
       action.fadeIn(0.5).play();
@@ -6061,8 +6087,8 @@ class TalkingHead {
         let anim = fbx.animations[ndx];
 
         // Rename and scale Mixamo tracks, create a pose
-        const props = {};
-        anim.tracks.forEach((t) => {
+        const props = {} as any;
+        anim.tracks.forEach((t: any) => {
           t.name = t.name.replaceAll('mixamorig', '');
           const ids = t.name.split('.');
           if (ids[1] === 'position') {
@@ -6091,7 +6117,7 @@ class TalkingHead {
         });
 
         // Add to clips
-        const newPose = { props: props };
+        const newPose = { props: props } as any;
         if (props['Hips.position']) {
           if (props['Hips.position'].y < 0.5) {
             newPose.lying = true;
@@ -6099,7 +6125,7 @@ class TalkingHead {
             newPose.standing = true;
           }
         }
-        this.animClips.push({
+        this['animClips'].push({
           url: url + '-' + ndx,
           clip: anim,
           pose: newPose,
@@ -6119,25 +6145,28 @@ class TalkingHead {
    */
   stopAnimation() {
     // Stop mixer
-    this.mixer = null;
+    // Stop mixer
+    this['mixer'] = null;
 
     // Restart gesture
-    if (this.gesture) {
-      for (let [p, v] of Object.entries(this.gesture)) {
-        v.t = this.animClock;
+    if (this['gesture']) {
+      for (let [p, v] of Object.entries(this['gesture']) as any) {
+        v.t = this['animClock'];
         v.d = 1000;
-        if (this.poseTarget.props.hasOwnProperty(p)) {
-          this.poseTarget.props[p].copy(v);
-          this.poseTarget.props[p].t = this.animClock;
-          this.poseTarget.props[p].d = 1000;
+        if (this['poseTarget'].props.hasOwnProperty(p)) {
+          this['poseTarget'].props[p].copy(v);
+          this['poseTarget'].props[p].t = this['animClock'];
+          this['poseTarget'].props[p].d = 1000;
         }
       }
     }
 
     // Restart pose animation
-    let anim = this.animQueue.find((x) => x.template.name === 'pose');
+    let anim = this['animQueue'].find(
+      (x: { template: { name: string } }) => x.template.name === 'pose',
+    );
     if (anim) {
-      anim.ts[0] = this.animClock;
+      anim.ts[0] = this['animClock'];
     }
     this.setPoseFromTemplate(null);
   }
@@ -6150,13 +6179,21 @@ class TalkingHead {
    * @param {number} [ndx=0] Index of the clip
    * @param {number} [scale=0.01] Position scale factor
    */
-  async playPose(url, onprogress = null, dur = 5, ndx = 0, scale = 0.01) {
-    if (!this.armature) return;
+  async playPose(
+    url: string,
+    onprogress = null,
+    dur = 5,
+    ndx = 0,
+    scale = 0.01,
+  ) {
+    if (!this['armature']) return;
 
     // Check if we already have the pose template ready
-    let pose = this.poseTemplates[url];
+    let pose = this['poseTemplates'][url];
     if (!pose) {
-      const item = this.animPoses.find((x) => x.url === url + '-' + ndx);
+      const item = this['animPoses'].find(
+        (x: { url: string }) => x.url === url + '-' + ndx,
+      );
       if (item) {
         pose = item.pose;
       }
@@ -6164,12 +6201,14 @@ class TalkingHead {
 
     // If we have the template, use it, otherwise try to load it
     if (pose) {
-      this.poseName = url;
+      this['poseName'] = url;
 
-      this.mixer = null;
-      let anim = this.animQueue.find((x) => x.template.name === 'pose');
+      this['mixer'] = null;
+      let anim = this['animQueue'].find(
+        (x: { template: { name: string } }) => x.template.name === 'pose',
+      );
       if (anim) {
-        anim.ts[0] = this.animClock + dur * 1000 + 2000;
+        anim.ts[0] = this['animClock'] + dur * 1000 + 2000;
       }
       this.setPoseFromTemplate(pose);
     } else {
@@ -6182,8 +6221,8 @@ class TalkingHead {
         let anim = fbx.animations[ndx];
 
         // Create a pose
-        const props = {};
-        anim.tracks.forEach((t) => {
+        const props = {} as any;
+        anim.tracks.forEach((t: any) => {
           // Rename and scale Mixamo tracks
           t.name = t.name.replaceAll('mixamorig', '');
           const ids = t.name.split('.');
@@ -6210,7 +6249,7 @@ class TalkingHead {
         });
 
         // Add to pose
-        const newPose = { props: props };
+        const newPose = { props: props } as any;
         if (props['Hips.position']) {
           if (props['Hips.position'].y < 0.5) {
             newPose.lying = true;
@@ -6218,7 +6257,7 @@ class TalkingHead {
             newPose.standing = true;
           }
         }
-        this.animPoses.push({
+        this['animPoses'].push({
           url: url + '-' + ndx,
           pose: newPose,
         });
@@ -6247,57 +6286,64 @@ class TalkingHead {
    * @param {boolean} [mirror=false] Mirror gesture
    * @param {number} [ms=1000] Transition time in milliseconds
    */
-  playGesture(name, dur = 3, mirror = false, ms = 1000) {
-    if (!this.armature) return;
+  playGesture(...args: any[]) {
+    const [name, dur = 3, mirror = false, ms = 1000] = args;
+
+    if (!this['armature']) return;
 
     // Hand gesture, if any
-    let g = this.gestureTemplates[name];
+    let g = this['gestureTemplates'][name];
     if (g) {
       // New gesture always overrides the existing one
-      if (this.gestureTimeout) {
-        clearTimeout(this.gestureTimeout);
-        this.gestureTimeout = null;
+      if (this['gestureTimeout']) {
+        clearTimeout(this['gestureTimeout']);
+        this['gestureTimeout'] = null;
       }
 
       // Stop talking hands animation
-      let ndx = this.animQueue.findIndex(
-        (y) => y.template.name === 'talkinghands',
+      let ndx = this['animQueue'].findIndex(
+        (y: { template: { name: string } }) =>
+          y.template.name === 'talkinghands',
       );
       if (ndx !== -1) {
-        this.animQueue[ndx].ts = this.animQueue[ndx].ts.map((x) => 0);
+        this['animQueue'][ndx].ts = this['animQueue'][ndx].ts.map(
+          (x: any) => 0,
+        );
       }
 
       // Set gesture
-      this.gesture = this.propsToThreeObjects(g);
+      // Set gesture
+      this['gesture'] = this.propsToThreeObjects(g);
       if (mirror) {
-        this.gesture = this.mirrorPose(this.gesture);
+        this['gesture'] = this.mirrorPose(this['gesture']);
       }
-      if (name === 'namaste' && this.avatar.body === 'M') {
+      if (name === 'namaste' && this['avatar'].body === 'M') {
         // Work-a-round for male model so that the hands meet
-        this.gesture['RightArm.quaternion'].rotateTowards(
+        // Work-a-round for male model so that the hands meet
+        this['gesture']['RightArm.quaternion'].rotateTowards(
           new THREE.Quaternion(0, 1, 0, 0),
           -0.25,
         );
-        this.gesture['LeftArm.quaternion'].rotateTowards(
+        this['gesture']['LeftArm.quaternion'].rotateTowards(
           new THREE.Quaternion(0, 1, 0, 0),
           -0.25,
         );
       }
 
       // Apply to target
-      for (let [p, val] of Object.entries(this.gesture)) {
-        val.t = this.animClock;
+      for (let [p, val] of Object.entries(this['gesture']) as any) {
+        val.t = this['animClock'];
         val.d = ms;
-        if (this.poseTarget.props.hasOwnProperty(p)) {
-          this.poseTarget.props[p].copy(val);
-          this.poseTarget.props[p].t = this.animClock;
-          this.poseTarget.props[p].d = ms;
+        if (this['poseTarget'].props.hasOwnProperty(p)) {
+          this['poseTarget'].props[p].copy(val);
+          this['poseTarget'].props[p].t = this['animClock'];
+          this['poseTarget'].props[p].d = ms;
         }
       }
 
       // Timer
       if (dur && Number.isFinite(dur)) {
-        this.gestureTimeout = setTimeout(
+        this['gestureTimeout'] = setTimeout(
           this.stopGesture.bind(this, ms),
           1000 * dur,
         );
@@ -6305,11 +6351,11 @@ class TalkingHead {
     }
 
     // Animated emoji, if any
-    let em = this.animEmojis[name];
+    let em = this['animEmojis'][name];
     if (em) {
       // Follow link
       if (em && em.link) {
-        em = this.animEmojis[em.link];
+        em = this['animEmojis'][em.link];
       }
 
       if (em) {
@@ -6329,23 +6375,23 @@ class TalkingHead {
 
           // If longer, increase longer parts; if shorter, scale everything
           if (excess > 0) {
-            const dt = [];
+            const dt: number[] = [];
             for (let i = 1; i < anim.ts.length; i++)
               dt.push(anim.ts[i] - anim.ts[i - 1]);
             const rescale = em.template?.rescale || dt.map((x) => x / total);
             const excess = dur * 1000 - total;
-            anim.ts = anim.ts.map((x, i, arr) => {
+            anim.ts = anim.ts.map((x: any, i: any, arr: any) => {
               return i === 0
                 ? first
                 : arr[i - 1] + dt[i - 1] + rescale[i - 1] * excess;
             });
           } else {
             const scale = (dur * 1000) / total;
-            anim.ts = anim.ts.map((x) => first + scale * (x - first));
+            anim.ts = anim.ts.map((x: any) => first + scale * (x - first));
           }
         }
 
-        this.animQueue.push(anim);
+        this['animQueue'].push(anim);
       }
     }
   }
@@ -6356,28 +6402,28 @@ class TalkingHead {
    */
   stopGesture(ms = 1000) {
     // Stop gesture timer
-    if (this.gestureTimeout) {
-      clearTimeout(this.gestureTimeout);
-      this.gestureTimeout = null;
+    if (this['gestureTimeout']) {
+      clearTimeout(this['gestureTimeout']);
+      this['gestureTimeout'] = null;
     }
 
     // Stop hand gesture, if any
-    if (this.gesture) {
-      const gs = Object.entries(this.gesture);
-      this.gesture = null;
+    if (this['gesture']) {
+      const gs = Object.entries(this['gesture']);
+      this['gesture'] = null;
       for (const [p, val] of gs) {
-        if (this.poseTarget.props.hasOwnProperty(p)) {
-          this.poseTarget.props[p].copy(this.getPoseTemplateProp(p));
-          this.poseTarget.props[p].t = this.animClock;
-          this.poseTarget.props[p].d = ms;
+        if (this['poseTarget'].props.hasOwnProperty(p)) {
+          this['poseTarget'].props[p].copy(this.getPoseTemplateProp(p));
+          this['poseTarget'].props[p].t = this['animClock'];
+          this['poseTarget'].props[p].d = ms;
         }
       }
     }
 
     // Stop animated emoji gesture, if any
-    let i = this.animQueue.findIndex((y) => y.gesture);
+    let i = this['animQueue'].findIndex((y: { gesture: any }) => y.gesture);
     if (i !== -1) {
-      this.animQueue.splice(i, 1);
+      this['animQueue'].splice(i, 1);
     }
   }
 
@@ -6390,7 +6436,12 @@ class TalkingHead {
    * @param {Boolean} [relative=false] If true, target is relative to root
    * @param {numeric} [d=null] If set, apply in d milliseconds
    */
-  ikSolve(ik, target = null, relative = false, d = null) {
+  ikSolve(
+    ik: { iterations?: any; root: any; effector: any; links: any },
+    target: any = null,
+    relative: boolean = false,
+    d: any = null,
+  ) {
     const targetVec = new THREE.Vector3();
     const effectorPos = new THREE.Vector3();
     const effectorVec = new THREE.Vector3();
@@ -6401,22 +6452,29 @@ class TalkingHead {
     const vector = new THREE.Vector3();
 
     // Reset IK setup positions and rotations
-    const root = this.ikMesh.getObjectByName(ik.root);
+    const root = this['ikMesh'].getObjectByName(ik.root);
     root.position.setFromMatrixPosition(
-      this.armature.getObjectByName(ik.root).matrixWorld,
+      this['armature'].getObjectByName(ik.root).matrixWorld,
     );
     root.quaternion.setFromRotationMatrix(
-      this.armature.getObjectByName(ik.root).matrixWorld,
+      this['armature'].getObjectByName(ik.root).matrixWorld,
     );
     if (target && relative) {
       target.add(root.position);
     }
-    const effector = this.ikMesh.getObjectByName(ik.effector);
+    const effector = this['ikMesh'].getObjectByName(ik.effector);
     const links = ik.links;
-    links.forEach((x) => {
-      x.bone = this.ikMesh.getObjectByName(x.link);
-      x.bone.quaternion.copy(this.getPoseTemplateProp(x.link + '.quaternion'));
-    });
+    links.forEach(
+      (x: {
+        bone: { quaternion: { copy: (arg0: any) => void } };
+        link: string;
+      }) => {
+        x.bone = this['ikMesh'].getObjectByName(x.link);
+        x.bone.quaternion.copy(
+          this.getPoseTemplateProp(x.link + '.quaternion'),
+        );
+      },
+    );
     root.updateMatrixWorld(true);
     const iterations = ik.iterations || 10;
 
@@ -6481,10 +6539,12 @@ class TalkingHead {
 
     // Apply
     if (d) {
-      links.forEach((x) => {
-        this.poseTarget.props[x.link + '.quaternion'].copy(x.bone.quaternion);
-        this.poseTarget.props[x.link + '.quaternion'].t = this.animClock;
-        this.poseTarget.props[x.link + '.quaternion'].d = d;
+      links.forEach((x: { link: string; bone: { quaternion: any } }) => {
+        this['poseTarget'].props[x.link + '.quaternion'].copy(
+          x.bone.quaternion,
+        );
+        this['poseTarget'].props[x.link + '.quaternion'].t = this['animClock'];
+        this['poseTarget'].props[x.link + '.quaternion'].d = d;
       });
     }
   }

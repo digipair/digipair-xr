@@ -1,11 +1,7 @@
 {
-  "name": "@digipair-xr/skill-web-aframe",
+  "name": "@digipair-xr/talkinghead",
   "version": "0.0.1",
   "dependencies": {},
-  "keywords": [
-    "digipair",
-    "web"
-  ],
   "main": "./index.cjs.js",
   "module": "./index.esm.js"
 }

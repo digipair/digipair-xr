@@ -1,0 +1,31 @@
+{
+  "name": "talkinghead",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/talkinghead/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/talkinghead",
+        "main": "libs/talkinghead/src/index.ts",
+        "tsConfig": "libs/talkinghead/tsconfig.lib.json",
+        "assets": [
+          "libs/talkinghead/src/index.d.ts",
+          "libs/talkinghead/src/schema.json",
+          "libs/talkinghead/src/schema.fr.json"
+        ],
+        "rollupConfig": ["libs/talkinghead/rollup.build.cjs"],
+        "project": "libs/talkinghead/package.json",
+        "compiler": "swc",
+        "format": ["cjs", "esm"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs talkinghead {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    }
+  },
+  "tags": []
+}

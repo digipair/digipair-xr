@@ -10,4 +10,5 @@ import '@digipair-xr/ready-player-me';
 import '@digipair-xr/router';
 import '@digipair-xr/scene';
 import '@digipair-xr/screen-shared';
+import '@digipair-xr/talkinghead';
 import '@digipair-xr/teleport';
