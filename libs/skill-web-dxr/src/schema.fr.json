@@ -1135,85 +1135,84 @@
         "x-events": []
       }
     },
-    "/dxr-teleport": {
-      "post": {
-        "tags": ["web", "spatial", "needPins"],
-        "summary": "Zone de téléportation",
-        "description": "Affichage d'une zone de téléportation",
-        "parameters": [
-          {
-            "name": "color",
-            "summary": "Couleur",
-            "required": false,
-            "description": "Couleur",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "rotationx",
-            "summary": "Rotation X",
-            "required": false,
-            "description": "Rotation X de l'arrivée",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "rotationy",
-            "summary": "Rotation Y",
-            "required": false,
-            "description": "Rotation Y de l'arrivée",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "height",
-            "summary": "Hauteur",
-            "required": false,
-            "description": "Hauteur",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "position",
-            "summary": "Position",
-            "required": false,
-            "description": "Position de l'élément",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "rotation",
-            "summary": "Rotation",
-            "required": false,
-            "description": "Rotation de l'élément",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "scale",
-            "summary": "Echelle",
-            "required": false,
-            "description": "Echelle de l'élément",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "x-events": []
-      }
-    },
     "/dxr-talkhead": {
       "post": {
         "tags": ["web", "spatial", "needPins"],
         "summary": "TalkHead",
         "description": "Ajoute une animation de prise de parole sur un objet 3D",
         "parameters": [
+          {
+            "name": "body",
+            "summary": "Corps",
+            "description": "Type de corps de l'avatar.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lipsyncLang",
+            "summary": "Langue",
+            "description": "Langue de la synchronisation labiale.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "avatarMood",
+            "summary": "Humeur",
+            "description": "Humeur de l'avatar.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "avatarMute",
+            "summary": "Muet",
+            "description": "Avatar muet.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "avatarIdleEyeContact",
+            "summary": "Contact visuel",
+            "description": "Contact visuel de l'avatar au repos.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarIdleHeadMove",
+            "summary": "Mouvement de tête",
+            "description": "Mouvement de tête de l'avatar au repos.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarSpeakingEyeContact",
+            "summary": "Contact visuel",
+            "description": "Contact visuel de l'avatar en parlant.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarSpeakingHeadMove",
+            "summary": "Mouvement de tête",
+            "description": "Mouvement de tête de l'avatar en parlant.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
           {
             "name": "class",
             "summary": "Class",

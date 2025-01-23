@@ -17,7 +17,7 @@ import { TalkingHead } from './talkinghead';
 //         '[' +
 //         (ix + 1) +
 //         ']'
-//       );
+//       );  
 //     if (sibling.nodeType === 1 && sibling.tagName === element.tagName) ix++;
 //   }
 

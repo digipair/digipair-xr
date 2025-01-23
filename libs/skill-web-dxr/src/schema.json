@@ -1123,6 +1123,78 @@
         "description": "Add a taking animation on a 3D object",
         "parameters": [
           {
+            "name": "body",
+            "summary": "Body",
+            "description": "Type of avatar body.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lipsyncLang",
+            "summary": "Language",
+            "description": "Language of lip sync.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "avatarMood",
+            "summary": "Mood",
+            "description": "Mood of the avatar.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "avatarMute",
+            "summary": "Mute",
+            "description": "Mute avatar.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "avatarIdleEyeContact",
+            "summary": "Eye Contact",
+            "description": "Eye contact of the avatar when idle.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarIdleHeadMove",
+            "summary": "Head Movement",
+            "description": "Head movement of the avatar when idle.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarSpeakingEyeContact",
+            "summary": "Eye Contact",
+            "description": "Eye contact of the avatar when speaking.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarSpeakingHeadMove",
+            "summary": "Head Movement",
+            "description": "Head movement of the avatar when speaking.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
