@@ -10,7 +10,7 @@ import {
   unsafeHTML,
 } from '@digipair-xr/core';
 import 'aframe-blink-controls';
-import 'super-hands';
+// import 'super-hands'; // @todo: fix super-hands grabbable
 import '../avatar/avatar';
 import '../camera/camera';
 import '../menu/menu.element';
@@ -19,7 +19,7 @@ import { EventTeleport } from '../teleport/event-teleport';
 import '../teleport/teleportable-cursor';
 import '../toolbar/toolbar';
 import '../utils/Geometry.js';
-import '../utils/look-controls-custom.js';
+// import '../utils/look-controls-custom.js';
 import { PlayerProvider } from './player.provider';
 import './selectable.directive';
 

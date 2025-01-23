@@ -1,6 +1,6 @@
 {
-  "name": "@digipair-xr/core",
-  "version": "0.0.0",
+  "name": "@digipair-xr/talkinghead",
+  "version": "0.0.1",
   "dependencies": {},
   "main": "./index.cjs.js",
   "module": "./index.esm.js"

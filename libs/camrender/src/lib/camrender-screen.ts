@@ -7,7 +7,7 @@ import {
   TemplateResult,
 } from '@digipair-xr/core';
 
-@customElement('xr-camrender-screen')
+@customElement('dxr-camrender-screen')
 export class CamrenderScreenElement extends DXRElement {
   @property({ default: 1.2 })
   width!: number;

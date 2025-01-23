@@ -4,26 +4,39 @@ const path = require('path');
 
 function getRollupOptions(options) {
   const extraGlobals = {};
-  const externals = options.output.format === 'cjs' ? ['@digipair-xr/core'] : [];
+  const externals =
+    options.output.format === 'cjs' ? ['@digipair-xr/core'] : [];
 
   const value = {
     ...options,
-    external: name => {
+    external: (name) => {
       return externals.includes(name);
     },
     plugins: [
       ...options.plugins,
       alias({
-        entries: Object.getOwnPropertyNames(tsconfig.compilerOptions.paths).map(property => ({
-          find: property,
-          replacement: path.resolve(tsconfig.compilerOptions.paths[property][0]),
-        }),
-        [
-          { find: 'three/examples/jsm/loaders/DRACOLoader.js', replacement: 'libs/spline/src/lib/vendors/DRACOLoader.js' },
-          { find: 'three/examples/jsm/utils/BufferGeometryUtils.js', replacement: 'libs/spline/src/lib/vendors/BufferGeometryUtils.js' },
-          { find: 'three', replacement: 'libs/spline/src/lib/vendors/three.js' },
-        ]
-      ),
+        entries: [
+          {
+            find: 'three/examples/jsm/loaders/DRACOLoader.js',
+            replacement: 'libs/spline/src/lib/vendors/DRACOLoader.js',
+          },
+          {
+            find: 'three/examples/jsm/utils/BufferGeometryUtils.js',
+            replacement: 'libs/spline/src/lib/vendors/BufferGeometryUtils.js',
+          },
+          {
+            find: 'three',
+            replacement: 'libs/spline/src/lib/vendors/three.js',
+          },
+          ...Object.getOwnPropertyNames(tsconfig.compilerOptions.paths).map(
+            (property) => ({
+              find: property,
+              replacement: path.resolve(
+                tsconfig.compilerOptions.paths[property][0],
+              ),
+            }),
+          ),
+        ],
       }),
     ],
     output: {

@@ -2,6 +2,7 @@ import { DXRElement, html, inject } from '@digipair-xr/core';
 import '@digipair-xr/html';
 import '@digipair-xr/mesh';
 import { routeElement } from '@digipair-xr/router';
+import '@digipair-xr/talkinghead';
 import { SessionProvider } from '../../session.provider';
 import './title.element';
 
@@ -95,6 +96,15 @@ export class HomeSpaceElement extends DXRElement {
           animation__mouseenter="property: scale; to: 1.03 1.03 1.03; startEvents: mouseenter; dur: 500; easing: easeOutElastic;"
           animation__mouseleave="property: scale; to: 1 1 1; startEvents: mouseleave; dur: 500; easing: easeOutElastic;"
         ></dxr-mesh-animation-mixer>
+      </a-gltf-model>
+
+      <a-gltf-model
+        src="https://models.readyplayer.me/6784ec8c888b5b3590df5af5.glb"
+        position="0 0 -2"
+        scale="1 1 1"
+        rotation="0 0 0"
+      >
+        <dxr-talkinghead></dxr-talkinghead>
       </a-gltf-model>
     `;
   }

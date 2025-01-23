@@ -8,6 +8,124 @@
     "x-icon": "🌐"
   },
   "paths": {
+    "/a-scene": {
+      "post": {
+        "tags": ["spatial", "needPins"],
+        "summary": "a-scene",
+        "description": "The scene primitive is the root entity of an A-Frame scene. It is the\ncontainer for all entities, such as 3D models, lights, cameras, and\nprimitives.",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "background",
+            "summary": "Background",
+            "description": "Background of the scene.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fog",
+            "summary": "Fog",
+            "description": "Fog of the scene.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shadow",
+            "summary": "Shadow",
+            "description": "Shadow of the scene.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "xr-mode-ui",
+            "summary": "XR Mode UI",
+            "description": "XR mode UI of the scene.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "embedded",
+            "summary": "Embedded",
+            "description": "Embedded",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inspector",
+            "summary": "Inspector",
+            "description": "Inspector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyboard-shortcuts",
+            "summary": "Keyboard Shortcuts",
+            "description": "Keyboard Shortcuts",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "x-events": []
+    },
     "/a-box": {
       "key": "post",
       "post": {

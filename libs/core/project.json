@@ -11,9 +11,7 @@
         "outputPath": "dist/libs/core",
         "main": "libs/core/src/index.ts",
         "tsConfig": "libs/core/tsconfig.lib.json",
-        "assets": [
-          "libs/core/src/index.d.ts"
-        ],
+        "assets": ["libs/core/src/index.d.ts"],
         "project": "libs/core/package.json",
         "compiler": "swc",
         "format": ["esm", "cjs"],

@@ -8,7 +8,7 @@
     "x-icon": "🏗"
   },
   "paths": {
-    "/xr-camrender-camera": {
+    "/dxr-camrender-camera": {
       "post": {
         "tags": ["web", "spatial", "needPins"],
         "summary": "Camera",
@@ -123,10 +123,23 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
-    "/xr-camrender-screen": {
+    "/dxr-camrender-screen": {
       "post": {
         "tags": ["web", "spatial", "needPins"],
         "summary": "Ecran de camera",
@@ -232,7 +245,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-html": {
@@ -332,7 +358,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-info": {
@@ -450,7 +489,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-mesh": {
@@ -523,7 +575,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-mesh-animation-mixer": {
@@ -650,7 +715,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-ready-player-me": {
@@ -741,7 +819,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-scene": {
@@ -868,7 +959,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-screen-shared": {
@@ -968,7 +1072,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-teleport": {
@@ -1084,9 +1201,234 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "curved",
+            "summary": "Incurvé",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/dxr-talkinghead": {
+      "post": {
+        "tags": ["web", "spatial", "needPins"],
+        "summary": "TalkHead",
+        "description": "Ajoute une animation de prise de parole sur un objet 3D",
+        "parameters": [
+          {
+            "name": "avatarBody",
+            "summary": "Corps",
+            "description": "Type de corps de l'avatar.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lipsyncLang",
+            "summary": "Langue",
+            "description": "Langue de la synchronisation labiale.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "avatarMood",
+            "summary": "Humeur",
+            "description": "Humeur de l'avatar.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "avatarMute",
+            "summary": "Muet",
+            "description": "Avatar muet.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "avatarIdleEyeContact",
+            "summary": "Contact visuel",
+            "description": "Contact visuel de l'avatar au repos.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarIdleHeadMove",
+            "summary": "Mouvement de tête",
+            "description": "Mouvement de tête de l'avatar au repos.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarSpeakingEyeContact",
+            "summary": "Contact visuel",
+            "description": "Contact visuel de l'avatar en parlant.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarSpeakingHeadMove",
+            "summary": "Mouvement de tête",
+            "description": "Mouvement de tête de l'avatar en parlant.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "color",
+            "summary": "Couleur",
+            "required": false,
+            "description": "Couleur",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotationx",
+            "summary": "Rotation X",
+            "required": false,
+            "description": "Rotation X de l'arrivée",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "rotationy",
+            "summary": "Rotation Y",
+            "required": false,
+            "description": "Rotation Y de l'arrivée",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "summary": "Hauteur",
+            "required": false,
+            "description": "Hauteur",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Position de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Rotation de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Echelle",
+            "required": false,
+            "description": "Echelle de l'élément",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": [
+          {
+            "name": "speak",
+            "summary": "Speak",
+            "description": "Speak event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     }
   },

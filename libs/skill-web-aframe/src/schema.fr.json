@@ -8,8 +8,125 @@
     "x-icon": "🌐"
   },
   "paths": {
+    "/a-scene": {
+      "post": {
+        "tags": ["spatial", "needPins"],
+        "summary": "a-scene",
+        "description": "La primitive de scène est l'entité racine d'une scène A-Frame. C'est le\nconteneur de toutes les entités, telles que les modèles 3D, les lumières, les caméras et\nles primitives.",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Classe",
+            "description": "Classe de l'élément.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id de l'élément.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Contenu Texte",
+            "description": "Contenu texte de l'élément.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "HTML Interne",
+            "description": "HTML interne de l'élément.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot de l'élément.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "background",
+            "summary": "Arrière-plan",
+            "description": "Arrière-plan de la scène.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fog",
+            "summary": "Brouillard",
+            "description": "Brouillard de la scène.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shadow",
+            "summary": "Ombre",
+            "description": "Ombre de la scène.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "xr-mode-ui",
+            "summary": "Interface Utilisateur Mode XR",
+            "description": "Interface utilisateur mode XR de la scène.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "embedded",
+            "summary": "Intégré",
+            "description": "Intégré",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inspector",
+            "summary": "Inspecteur",
+            "description": "Inspecteur",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyboard-shortcuts",
+            "summary": "Raccourcis Clavier",
+            "description": "Raccourcis clavier",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "x-events": []
+    },
     "/a-box": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-box",
@@ -390,7 +507,6 @@
       }
     },
     "/a-camera": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-camera",
@@ -564,7 +680,6 @@
       }
     },
     "/a-circle": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-circle",
@@ -945,7 +1060,6 @@
       }
     },
     "/a-cone": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-cone",
@@ -1353,7 +1467,6 @@
       }
     },
     "/a-cubemap": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-cubemap",
@@ -1473,7 +1586,6 @@
       }
     },
     "/a-cursor": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-cursor",
@@ -1638,7 +1750,6 @@
       }
     },
     "/a-curvedimage": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-curvedimage",
@@ -1902,7 +2013,6 @@
       }
     },
     "/a-cylinder": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-cylinder",
@@ -2301,7 +2411,6 @@
       }
     },
     "/a-dodecahedron": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-dodecahedron",
@@ -2709,7 +2818,6 @@
       }
     },
     "/a-gltf-model": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-gltf-model",
@@ -2838,7 +2946,6 @@
       }
     },
     "/a-icosahedron": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-icosahedron",
@@ -3201,7 +3308,6 @@
       }
     },
     "/a-image": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-image",
@@ -3438,7 +3544,6 @@
       }
     },
     "/a-light": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-light",
@@ -3648,7 +3753,6 @@
       }
     },
     "/a-link": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-link",
@@ -3795,7 +3899,6 @@
       }
     },
     "/a-obj-model": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-obj-model",
@@ -3924,7 +4027,6 @@
       }
     },
     "/a-octahedron": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-octahedron",
@@ -4287,7 +4389,6 @@
       }
     },
     "/a-plane": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-plane",
@@ -4650,7 +4751,6 @@
       }
     },
     "/a-ring": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-ring",
@@ -5049,7 +5149,6 @@
       }
     },
     "/a-sky": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-sky",
@@ -5313,7 +5412,6 @@
       }
     },
     "/a-sound": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-sound",
@@ -5478,7 +5576,6 @@
       }
     },
     "/a-sphere": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-sphere",
@@ -5886,7 +5983,6 @@
       }
     },
     "/a-tetrahedron": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-tetrahedron",
@@ -6249,7 +6345,6 @@
       }
     },
     "/a-text": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-text",
@@ -6558,7 +6653,6 @@
       }
     },
     "/a-torus-knot": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-torus-knot",
@@ -6957,7 +7051,6 @@
       }
     },
     "/a-torus": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-torus",
@@ -7347,7 +7440,6 @@
       }
     },
     "/a-triangle": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-triangle",
@@ -7719,7 +7811,6 @@
       }
     },
     "/a-video": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-video",
@@ -7956,7 +8047,6 @@
       }
     },
     "/a-videosphere": {
-      "key": "post",
       "post": {
         "tags": ["spatial", "needPins"],
         "summary": "a-videosphere",

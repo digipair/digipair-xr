@@ -14,8 +14,6 @@ export class PlayerToolbarElement extends DXRElement {
       .closest(`dxr-scene`)
       .querySelector(':scope > template[slot=toolbar]')?.innerHTML;
 
-    return template
-      ? html`${unsafeHTML(template)}`
-      : html`<dxr-player-toolbar-default></dxr-player-toolbar-default>`;
+    return template ? html`${unsafeHTML(template)}` : html``;
   }
 }

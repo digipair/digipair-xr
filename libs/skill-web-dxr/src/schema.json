@@ -8,7 +8,7 @@
     "x-icon": "🏗"
   },
   "paths": {
-    "/xr-camrender-camera": {
+    "/dxr-camrender-camera": {
       "post": {
         "tags": ["web", "spatial", "needPins"],
         "summary": "Camera",
@@ -123,10 +123,23 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
-    "/xr-camrender-screen": {
+    "/dxr-camrender-screen": {
       "post": {
         "tags": ["web", "spatial", "needPins"],
         "summary": "Camera Screen",
@@ -232,7 +245,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-html": {
@@ -332,7 +358,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-info": {
@@ -450,7 +489,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-mesh": {
@@ -550,7 +602,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-mesh-animation-mixer": {
@@ -677,7 +742,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-ready-player-me": {
@@ -768,7 +846,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-scene": {
@@ -895,7 +986,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-screen-shared": {
@@ -995,7 +1099,20 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     },
     "/dxr-teleport": {
@@ -1113,7 +1230,223 @@
             }
           }
         ],
-        "x-events": []
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/dxr-talkinghead": {
+      "post": {
+        "tags": ["web", "spatial", "needPins"],
+        "summary": "TalkHead",
+        "description": "Add a taking animation on a 3D object",
+        "parameters": [
+          {
+            "name": "avatarBody",
+            "summary": "Body",
+            "description": "Type of avatar body.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lipsyncLang",
+            "summary": "Language",
+            "description": "Language of lip sync.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "avatarMood",
+            "summary": "Mood",
+            "description": "Mood of the avatar.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "avatarMute",
+            "summary": "Mute",
+            "description": "Mute avatar.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "avatarIdleEyeContact",
+            "summary": "Eye Contact",
+            "description": "Eye contact of the avatar when idle.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarIdleHeadMove",
+            "summary": "Head Movement",
+            "description": "Head movement of the avatar when idle.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarSpeakingEyeContact",
+            "summary": "Eye Contact",
+            "description": "Eye contact of the avatar when speaking.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "avatarSpeakingHeadMove",
+            "summary": "Head Movement",
+            "description": "Head movement of the avatar when speaking.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "color",
+            "summary": "Color",
+            "required": false,
+            "description": "Color",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotationx",
+            "summary": "Rotation X",
+            "required": false,
+            "description": "Arrival Rotation X",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "rotationy",
+            "summary": "Rotation Y",
+            "required": false,
+            "description": "Arrival Rotation Y",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "height",
+            "summary": "Height",
+            "required": false,
+            "description": "Height",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "required": false,
+            "description": "Element position",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "required": false,
+            "description": "Element rotation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Scale",
+            "required": false,
+            "description": "Element scale",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": [
+          {
+            "name": "speak",
+            "summary": "Speak",
+            "description": "Speak event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
       }
     }
   },
