@@ -5473,7 +5473,6 @@ class TalkingHead {
     );
     if (this['armature']) {
       this.resetLips();
-      this['render']();
     }
   }
 
@@ -5495,7 +5494,6 @@ class TalkingHead {
     this['isAudioPlaying'] = false;
     if (this['armature']) {
       this.resetLips();
-      this['render']();
     }
   }
 

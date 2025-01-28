@@ -123,6 +123,9 @@ export class MeshElement extends DXRElement {
     (this.el as any).stop = async (...params: any[]) =>
       (this.el as any).talkinghead.stop(...params);
 
+    (this.el as any).stopSpeaking = async (...params: any[]) =>
+      (this.el as any).talkinghead.stopSpeaking(...params);
+
     // Load and show the avatar
     try {
       await head.showAvatar(this.el, parentMesh.el, {
