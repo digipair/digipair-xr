@@ -126,6 +126,245 @@
       },
       "x-events": []
     },
+    "/a-entity": {
+      "post": {
+        "tags": ["spatial", "needPins"],
+        "summary": "a-entity",
+        "description": "The entity primitive is the most flexible primitive. It can be used to group\nentities together, and can have a position, rotation, and scale.",
+        "parameters": [
+          {
+            "name": "class",
+            "summary": "Class",
+            "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "summary": "Id",
+            "description": "Id of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "textContent",
+            "summary": "Text Content",
+            "description": "Text content of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerHTML",
+            "summary": "Inner HTML",
+            "description": "Inner HTML of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slot",
+            "summary": "Slot",
+            "description": "Slot of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "position",
+            "summary": "Position",
+            "description": "Element position",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rotation",
+            "summary": "Rotation",
+            "description": "Element rotation",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scale",
+            "summary": "Scale",
+            "description": "Element scale",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "look-controls",
+            "summary": "Look Controls",
+            "description": "Look controls",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "wasd-controls",
+            "summary": "WASD Controls",
+            "description": "WASD controls",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "wasd-controls-enabled",
+            "summary": "WASD Controls Enabled",
+            "description": "WASD controls enabled",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "look-controls-enabled",
+            "summary": "Look Controls Enabled",
+            "description": "Look controls enabled",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "camera",
+            "summary": "Camera",
+            "description": "Camera",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "geometry",
+            "summary": "Geometry",
+            "description": "Geometry",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "material",
+            "summary": "Material",
+            "description": "Material",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "light",
+            "summary": "Light",
+            "description": "Light",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shadow",
+            "summary": "Shadow",
+            "description": "Shadow",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "animation",
+            "summary": "Animation",
+            "description": "Animation",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "text",
+            "summary": "Text",
+            "description": "Text",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "event-set",
+            "summary": "Event Set",
+            "description": "Event set",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sound",
+            "summary": "Sound",
+            "description": "Sound",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "video",
+            "summary": "Video",
+            "description": "Video",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "summary": "Cursor",
+            "description": "Cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-events": [
+          {
+            "name": "click",
+            "summary": "Click",
+            "description": "Click event.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://schemas.digipair.ai/pinsSettings"
+              }
+            }
+          }
+        ]
+      }
+    },
     "/a-box": {
       "key": "post",
       "post": {
@@ -137,6 +376,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -479,30 +727,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -518,6 +742,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -653,30 +886,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -692,6 +901,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -1034,30 +1252,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -1073,6 +1267,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -1442,30 +1645,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -1481,6 +1660,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -1562,30 +1750,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -1601,6 +1765,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -1727,30 +1900,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -1766,6 +1915,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -1991,30 +2149,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -2030,6 +2164,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -2390,30 +2533,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -2429,6 +2548,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -2798,30 +2926,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -2837,6 +2941,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -2927,30 +3040,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -2966,6 +3055,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -3290,30 +3388,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -3329,6 +3403,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -3527,30 +3610,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -3566,6 +3625,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -3737,30 +3805,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -3776,6 +3820,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -3884,30 +3937,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -3923,6 +3952,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -4013,30 +4051,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -4052,6 +4066,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -4376,30 +4399,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -4415,6 +4414,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -4739,30 +4747,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -4778,6 +4762,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -5138,30 +5131,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -5177,6 +5146,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -5402,30 +5380,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -5441,6 +5395,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -5567,30 +5530,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -5606,6 +5545,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -5975,30 +5923,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -6014,6 +5938,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -6338,30 +6271,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -6377,6 +6286,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -6647,30 +6565,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -6686,6 +6580,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -7046,30 +6949,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -7085,6 +6964,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -7436,30 +7324,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -7475,6 +7339,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -7808,30 +7681,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -7847,6 +7696,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -8045,30 +7903,6 @@
                 "$ref": "https://schemas.digipair.ai/pinsSettings"
               }
             }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
           }
         ]
       }
@@ -8084,6 +7918,15 @@
             "name": "class",
             "summary": "Class",
             "description": "Class of the element.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visible",
+            "summary": "Visible",
+            "description": "Visible",
             "required": false,
             "schema": {
               "type": "string"
@@ -8158,30 +8001,6 @@
             "name": "click",
             "summary": "Click",
             "description": "Click event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseenter",
-            "summary": "Mouse Enter",
-            "description": "Mouse enter event.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "https://schemas.digipair.ai/pinsSettings"
-              }
-            }
-          },
-          {
-            "name": "mouseleave",
-            "summary": "Mouse Leave",
-            "description": "Mouse leave event.",
             "required": false,
             "schema": {
               "type": "array",
