@@ -2652,7 +2652,7 @@ class TalkingHead {
     this['lipsync'] = {
       fi: new lipsyncFi.LipsyncFi(),
       en: new lipsyncEn.LipsyncEn(),
-      fr: new lipsyncFr.LipsyncEn(),
+      fr: new lipsyncFr.LipsyncFr(),
     };
     this['visemeNames'] = [
       'aa',

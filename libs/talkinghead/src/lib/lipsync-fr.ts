@@ -1,9 +1,10 @@
 /**
- * @class English lip-sync processor
+ * @class French lip-sync processor
  * @author Mika Suominen
+ * adapted from English lip-sync processor by Marc Buils
  */
 
-class LipsyncEn {
+class LipsyncFr {
   private visemeDurations: { [key: string]: number };
   private specialDurations: { [key: string]: number };
   private symbols: { [key: string]: string };
@@ -447,61 +448,61 @@ class LipsyncEn {
     // Pauses in relative units (1=average)
     this.specialDurations = { ' ': 1, ',': 3, '-': 0.5, "'": 0.5 };
 
-    // English number words
+    // Frence number words
     this.digits = [
-      'oh',
-      'one',
-      'two',
-      'three',
-      'four',
-      'five',
+      'zéro',
+      'un',
+      'deux',
+      'trois',
+      'quatre',
+      'cinq',
       'six',
-      'seven',
-      'eight',
-      'nine',
+      'sept',
+      'huit',
+      'neuf',
     ];
     this.ones = [
       '',
-      'one',
-      'two',
-      'three',
-      'four',
-      'five',
+      'un',
+      'deux',
+      'trois',
+      'quatre',
+      'cinq',
       'six',
-      'seven',
-      'eight',
-      'nine',
+      'sept',
+      'huit',
+      'neuf',
     ];
     this.tens = [
       '',
       '',
-      'twenty',
-      'thirty',
-      'forty',
-      'fifty',
-      'sixty',
-      'seventy',
-      'eighty',
-      'ninety',
+      'vingt',
+      'trante',
+      'quarante',
+      'cinquante',
+      'soixante',
+      'soixante-dix',
+      'quatre-vingt',
+      'quatre-vingt-dix',
     ];
     this.teens = [
-      'ten',
-      'eleven',
-      'twelve',
-      'thirteen',
-      'fourteen',
-      'fifteen',
-      'sixteen',
-      'seventeen',
-      'eighteen',
-      'nineteen',
+      'dix',
+      'onze',
+      'douze',
+      'treize',
+      'quatorze',
+      'quinze',
+      'seize',
+      'dix-sept',
+      'dix-huit',
+      'dix-neuf',
     ];
 
     // Symbols to English
     this.symbols = {
-      '%': 'percent',
+      '%': 'pourcent',
       '€': 'euros',
-      '&': 'and',
+      '&': 'et',
       '+': 'plus',
       $: 'dollars',
     };
@@ -542,7 +543,7 @@ class LipsyncEn {
     if (num >= 1000) {
       return (
         this.convert_hundreds(Math.floor(num / 1000)) +
-        ' thousand ' +
+        ' mille ' +
         this.convert_hundreds(num % 1000)
       );
     } else {
@@ -554,7 +555,7 @@ class LipsyncEn {
     if (num > 99) {
       return (
         this.ones[Math.floor(num / 100)] +
-        ' hundred ' +
+        ' cents ' +
         this.convert_tens(num % 100)
       );
     } else {
@@ -667,4 +668,4 @@ class LipsyncEn {
   }
 }
 
-export { LipsyncEn };
+export { LipsyncFr };
